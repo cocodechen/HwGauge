@@ -5,7 +5,8 @@
 #include <memory>
 
 #include "Exposer/Exposer.hpp"
-#include "Collector/GPUCollector/NVMLCollector.hpp"
+#include "Collector/GPUCollector/GPUCollector.hpp"
+#include "Collector/GPUCollector/NVML.hpp"
 
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
@@ -38,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 	// Create Prometheus exposer
 	exposer = std::make_unique<hwgauge::Exposer>(address);
-	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVMLCollector>>();
+	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML());
 	std::signal(SIGINT, signal_handler);
 	spdlog::info("Staring exposer on \"{}\"", address);
 	spdlog::info("Press \"Ctrl+C\" to stop exposer");

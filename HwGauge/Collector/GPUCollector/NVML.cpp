@@ -1,29 +1,51 @@
-#include "NVMLCollector.hpp"
+#include "NVML.hpp"
 #include <nvml.h>
 #include <format>
 #include <array>
 
 namespace hwgauge {
-	NVMLCollector::NVMLCollector(std::shared_ptr<Registry> registry)
-		: GPUCollector<NVMLCollector>(std::move(registry))
+	NVML::NVML()
 	{
-	}
-
-	NVMLCollector::~NVMLCollector() {
-		nvmlReturn_t status = nvmlShutdown();
-
-		if (status != NVML_SUCCESS) {
-			throw std::runtime_error(std::format("NVML shutdown failed: {}", nvmlErrorString(status)));
-		}
-	}
-
-	std::vector<GPULabel> NVMLCollector::labels_impl() {
-		nvmlReturn_t status;
-
-		status = nvmlInit();
+		nvmlReturn_t status = nvmlInit();
 		if (status != NVML_SUCCESS) {
 			throw std::runtime_error(std::format("NVML initialization failed: {}", nvmlErrorString(status)));
 		}
+	}
+
+	NVML::~NVML() {
+		if (initialized) {
+			nvmlReturn_t status = nvmlShutdown();
+
+			if (status != NVML_SUCCESS) {
+				throw std::runtime_error(std::format("NVML shutdown failed: {}", nvmlErrorString(status)));
+			}
+		}
+	}
+
+	NVML::NVML(NVML&& other) noexcept
+	{
+		initialized = other.initialized;
+		other.initialized = false;
+	}
+
+	NVML& NVML::operator=(NVML&& other) noexcept
+	{
+		if (this != &other)
+		{
+			if (initialized)
+			{
+				nvmlShutdown();
+			}
+
+			initialized = other.initialized;
+			other.initialized = false;
+		}
+
+		return *this;
+	}
+
+	std::vector<GPULabel> NVML::labels() {
+		nvmlReturn_t status;
 
 		unsigned int devicesCount = 0;
 		status = nvmlDeviceGetCount(std::addressof(devicesCount));
@@ -57,7 +79,7 @@ namespace hwgauge {
 		return labels;
 	}
 
-	std::vector<GPUMetrics> NVMLCollector::sample_impl() {
+	std::vector<GPUMetrics> NVML::sample() {
 		nvmlReturn_t status;
 
 		unsigned int devicesCount = 0;

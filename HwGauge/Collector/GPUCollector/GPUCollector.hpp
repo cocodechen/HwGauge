@@ -22,11 +22,11 @@ namespace hwgauge {
 		double powerUsage;
 	};
 
-	template <typename Derived>
+	template <typename T>
 	class GPUCollector : public Collector {
 	public:
-		explicit GPUCollector(std::shared_ptr<Registry> registry) :
-			Collector(registry),
+		explicit GPUCollector(std::shared_ptr<Registry> registry, T impl) :
+			Collector(registry), impl(std::move(impl)),
 			gpuUtilizationFamily(prometheus::BuildGauge().Name("gpu_utilization_percent").Help("GPU utilization percentage").Register(*registry)),
 			memoryUtilizationFamily(prometheus::BuildGauge().Name("gpu_memory_utilization_percent").Help("GPU memory utilization percentage").Register(*registry)),
 			gpuFrequencyFamily(prometheus::BuildGauge().Name("gpu_frequency_mhz").Help("GPU frequency in MHz").Register(*registry)),
@@ -53,11 +53,13 @@ namespace hwgauge {
 			}
 		}
 
-		std::string name() override { return static_cast<Derived*>(this)->name_impl(); }
-		std::vector<GPULabel> labels() { return static_cast<Derived*>(this)->labels_impl(); }
-		std::vector<GPUMetrics> sample() { return static_cast<Derived*>(this)->sample_impl(); }
+		std::string name() override { return impl.name(); }
+		std::vector<GPULabel> labels() { return impl.labels(); }
+		std::vector<GPUMetrics> sample() { return impl.sample(); }
 
 	private:
+		T impl;
+
 		prometheus::Family<prometheus::Gauge>& gpuUtilizationFamily;
 		std::vector<prometheus::Gauge*> gpuUtilizationGauges;
 
