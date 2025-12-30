@@ -1,3 +1,4 @@
+#ifdef HWGAUGE_USE_INTEL_PCM
 #include "PCM.hpp"
 #include "cpucounters.h"
 
@@ -178,3 +179,4 @@ namespace hwgauge {
     }
 
 } // namespace hwgauge
+#endif

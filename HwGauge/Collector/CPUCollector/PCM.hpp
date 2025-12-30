@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef HWGAUGE_USE_INTEL_PCM
 #include "CPUCollector.hpp"
 #include <string>
 #include <vector>
@@ -46,3 +46,4 @@ namespace hwgauge {
     };
 
 } // namespace hwgauge
+#endif
