@@ -1,10 +1,6 @@
 # HwGauge/CMakeLists.txt: CMake configuration for HwGauge with NVML support
 cmake_minimum_required(VERSION 3.25)
 
-# Components Options
-option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" ON)
-option(HWGAUGE_USE_NVML "Enable collectors for Nvidia GPUs" ON)
-
 # Collect source files
 file(GLOB_RECURSE HWGAUGE_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
@@ -47,6 +43,12 @@ if(HWGAUGE_USE_NVML)
     find_package(CUDAToolkit REQUIRED)
     target_link_libraries(HwGauge PRIVATE CUDA::nvml)
     target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_NVML=1)
+endif()
+
+if(HWGAUGE_USE_INTEL_PCM)
+    target_link_libraries(HwGauge PRIVATE pcm-lib)
+    target_include_directories(HwGauge PRIVATE ../vendors/pcm/src)
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_INTEL_PCM=1)
 endif()
 
 # Add spdlog library

@@ -10,6 +10,10 @@
 #ifdef HWGAUGE_USE_NVML
 #	include "Collector/GPUCollector/NVML.hpp"
 #endif
+#include "Collector/CPUCollector/CPUCollector.hpp"
+#ifdef HWGAUGE_USE_INTEL_PCM
+#	include "Collector/CPUCollector/PCM.hpp"
+#endif
 
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
@@ -34,14 +38,14 @@ int main(int argc, char* argv[]) {
 	application.add_option("-a,--address", address, "Address to start Prometheus exposer")
 		->default_val(default_address);
 
-	CLI11_PARSE(application, argc, argv);
-
 	// Command-line arguments: interval
 	constexpr int default_interval = 1;
 	int interval_seconds = default_interval;
-	application.add_option("-i,--interval", interval_seconds,
-		"Collection interval in seconds")
-		->default_val(default_interval);
+	application.add_option("-i,--interval", interval_seconds, "Collection interval in seconds")
+		->default_val(default_interval)
+		->check(CLI::PositiveNumber);
+
+	CLI11_PARSE(application, argc, argv);
 
 	// Initialize spdlog logger
 	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [tid %t] %v");
@@ -53,6 +57,8 @@ int main(int argc, char* argv[]) {
 
 #ifdef HWGAUGE_USE_NVML
 	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML());
+#endif
+#ifdef HWGAUGE_USE_INTEL_PCM
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

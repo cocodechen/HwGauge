@@ -7,6 +7,10 @@ if(POLICY CMP0141)
     set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+# Components Options
+option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" ON)
+option(HWGAUGE_USE_NVML "Enable collectors for Nvidia GPUs" ON)
+
 # Project declaration
 project(HwGauge
     VERSION 1.0.0
@@ -141,3 +145,7 @@ add_subdirectory(vendors/CLI11)
 set(ENABLE_COMPRESSION OFF CACHE BOOL "Disable prometheus-cpp compression" FORCE)
 set(ENABLE_PUSH OFF CACHE BOOL "Disable prometheus-cpp push" FORCE)
 add_subdirectory(vendors/prometheus-cpp)
+
+if(HWGAUGE_USE_INTEL_PCM)
+    add_subdirectory(vendors/pcm)
+endif()
