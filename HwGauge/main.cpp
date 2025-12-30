@@ -59,6 +59,7 @@ int main(int argc, char* argv[]) {
 	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML());
 #endif
 #ifdef HWGAUGE_USE_INTEL_PCM
+	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM());
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

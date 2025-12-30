@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_NVML
 #include "GPUCollector.hpp"
 #include <string>
 #include <vector>
@@ -24,3 +25,4 @@ namespace hwgauge {
 		bool initialized = false;
 	};
 }
+#endif

@@ -111,8 +111,8 @@ namespace hwgauge {
 
         for (pcm::uint32 s = 0; s < numSockets; ++s)
             labels.push_back(CPULabel{
-                .index = int(s),
-                .name = std::format("Socket {}", s)
+                .index = s,
+                .name = "Socket {}" + std::to_string(s)
                 });
 
         return labels;

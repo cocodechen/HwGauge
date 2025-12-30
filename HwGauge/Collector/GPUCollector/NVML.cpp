@@ -1,3 +1,4 @@
+#ifdef HWGAUGE_USE_NVML
 #include "NVML.hpp"
 #include <nvml.h>
 #include <array>
@@ -140,3 +141,4 @@ namespace hwgauge {
 		return metrics;
 	}
 }
+#endif
