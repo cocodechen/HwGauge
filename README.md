@@ -1,79 +1,178 @@
-# HwGauge
+﻿# HwGauge
 
-**HwGauge** is a lightweight hardware power consumption exporter designed to provide Prometheus metrics for CPU and GPU energy usage. It leverages modern C++ to provide high-performance monitoring with minimal overhead.
+HwGauge is a lightweight hardware power-consumption exporter that exposes **CPU and GPU energy metrics as Prometheus Gauges**.
+It is implemented in modern C++ to provide **high-performance monitoring with minimal overhead**.
 
-## Features
+## ✨ Features
 
-* **CPU Monitoring**: Integration with **Intel PCM** (Processor Counter Monitor) for detailed Intel CPU metrics.
-* **GPU Monitoring**: Integration with **NVIDIA NVML** for NVIDIA GPU power tracking.
-* **Prometheus Exposer**: Built-in HTTP server to expose metrics at a configurable endpoint.
+* 🖥️ **CPU Monitoring** — Intel PCM (Processor Counter Monitor)
+* 🎮 **GPU Monitoring** — NVIDIA NVML (CUDA Toolkit required)
+* 📡 **Prometheus Exposer** — Built-in HTTP server with configurable endpoint
+* ⚙️ **Template-based Collector Framework** — clean separation of metrics & hardware backends
 
-## Prerequisites
+---
 
-* **CMake**: Version 3.25 or higher is required.
-* **Compiler**: A C++17 compatible compiler (GCC, Clang, or MSVC).
-* **CUDA Toolkit**: Must be installed to enable NVIDIA GPU monitoring (NVML).
-* **Permissions**: Root or sudo privileges are required to access hardware registers (especially for Intel PCM).
+## 📦 Prerequisites
 
-## Installation & Building
+| Requirement     | Notes                                     |
+| --------------- | ----------------------------------------- |
+| CMake ≥ 3.25    | Required for building                     |
+| C++17 compiler  | GCC / Clang / MSVC                        |
+| CUDA Toolkit    | Required for NVML GPU monitoring          |
+| Root privileges | Needed to access hardware registers (PCM) |
 
-### 1. Clone the Repository
+---
 
-Ensure you use the `--recursive` flag to fetch all necessary submodules (spdlog, CLI11, prometheus-cpp, and pcm):
+## 🚀 Installation & Build
+
+### 1️⃣ Clone repository (include submodules)
 
 ```bash
 git clone https://github.com/X1ngChui/HwGauge.git --recursive
 cd HwGauge/
 ```
 
-### 2. Manual Fix for Intel PCM
-Due to a library version conflict in the submodule, you have two choices regarding Intel PCM:
-* Option A (Patching): Open vendors/pcm/CMakeLists.txt and remove or comment out the line `add_subdirectory(tests)`.
-* Option B (Disabling): If you do not need Intel CPU metrics, you can simply disable the component during the CMake configuration step using -DHWGAUGE_USE_INTEL_PCM=OFF.
+### 2️⃣ Intel PCM Patch (optional but recommended)
 
-### 3. Build the Project
+Due to a submodule conflict, choose one of the following:
+
+**Option A — Patch PCM tests (recommended)**
+Edit `vendors/pcm/CMakeLists.txt` and comment/remove:
+
+```
+add_subdirectory(tests)
+```
+
+**Option B — Disable PCM entirely**
 
 ```bash
-mkdir build && cd build/
+-DHWGAUGE_USE_INTEL_PCM=OFF
+```
+
+---
+
+### 3️⃣ Build
+
+```bash
+mkdir build && cd build
 cmake ..
 cmake --build . --parallel
 ```
 
-## Usage
+---
 
-After a successful build, the binary will be located in the `bin/` directory.
+## ⚙️ CMake Configuration Options
 
-### Running the Exposer
+| Option                  | Default | Description                  |
+| ----------------------- | ------- | ---------------------------- |
+| `HWGAUGE_USE_INTEL_PCM` | `ON`    | Enable Intel CPU collectors  |
+| `HWGAUGE_USE_NVML`      | `ON`    | Enable NVIDIA GPU collectors |
 
-You must run the application with `sudo` to allow the collectors to access hardware data:
+Disable collectors you don't need to reduce dependencies.
+
+---
+
+## ▶️ Usage
+
+After building, the binary is available in `bin/`.
+
+### Run exporter (sudo required)
 
 ```bash
-chmod +x bin/hwgauge 
+chmod +x bin/hwgauge
 sudo bin/hwgauge [OPTIONS]
 ```
 
-### Command Line Arguments
+### Command-line options
 
-The application supports the following options:
+| Option           | Description                 | Default          |
+| ---------------- | --------------------------- | ---------------- |
+| `-a, --address`  | HTTP exposer bind address   | `127.0.0.1:8000` |
+| `-i, --interval` | Sampling interval (seconds) | `1`              |
 
-| Option | Description | Default |
-| --- | --- | --- |
-| `-a, --address` | The IP address and port to start the Prometheus exposer. | `127.0.0.1:8000` |
-| `-i, --interval` | The data collection interval in seconds. | `1` |
-
-**Example:**
+**Example**
 
 ```bash
 sudo bin/hwgauge --address 0.0.0.0:8080 --interval 2
 ```
 
-## Configuration Options
+---
 
-You can toggle specific collectors during the CMake configuration phase:
+## 📊 Exported Prometheus Metrics
 
-* 
-`HWGAUGE_USE_INTEL_PCM`: Enable/Disable Intel CPU collectors (Default: `ON`).
+### 🖥️ CPU (Intel PCM)
 
+| Metric                        | Unit | Description              |
+| ----------------------------- | ---- | ------------------------ |
+| `cpu_utilization_percent`     | %    | CPU utilization          |
+| `cpu_frequency_mhz`           | MHz  | Current frequency        |
+| `cpu_c0_residency_percent`    | %    | Active state residency   |
+| `cpu_c6_residency_percent`    | %    | Deep sleep residency     |
+| `cpu_power_usage_watts`       | W    | CPU power draw           |
+| `memory_read_bandwidth_mbps`  | MB/s | Memory read throughput   |
+| `memory_write_bandwidth_mbps` | MB/s | Memory write throughput  |
+| `memory_power_usage_watts`    | W    | Memory power consumption |
 
-* 
-`HWGAUGE_USE_NVML`: Enable/Disable Nvidia GPU collectors (Default: `ON`).
+---
+
+### 🎮 GPU (NVIDIA NVML)
+
+| Metric                           | Unit | Description      |
+| -------------------------------- | ---- | ---------------- |
+| `gpu_utilization_percent`        | %    | Core utilization |
+| `gpu_memory_utilization_percent` | %    | VRAM utilization |
+| `gpu_frequency_mhz`              | MHz  | Core clock       |
+| `gpu_memory_frequency_mhz`       | MHz  | Memory clock     |
+| `gpu_power_usage_watts`          | W    | Power draw       |
+
+---
+
+## 🧩 Collector Architecture
+
+HwGauge uses a **template-based strategy pattern**:
+
+1. **Collector Wrapper (`CPUCollector<T>`, `GPUCollector<T>`)**
+
+   * Registers Prometheus `Family` / `Gauge`
+   * Manages update loop
+
+2. **Hardware Implementation (`T impl`)**
+
+   * Fetches real hardware metrics
+   * PCM, NVML, or user-defined backend
+
+No inheritance required — duck typing via templates.
+
+---
+
+## 🛠️ Extend — Add Your Own Collector
+
+To support new hardware (AMD GPU, storage, etc.):
+
+### 1️⃣ Define metric + label structs
+
+Used for raw data & device identifiers.
+
+### 2️⃣ Implement class `T` with methods
+
+* `std::string name()`
+* `std::vector<LabelStruct> labels()`
+* `std::vector<MetricStruct> sample()`
+
+(`sample()` size must match `labels()`)
+
+### 3️⃣ Implement wrapper collector
+
+* inherit `Collector`
+* register Prometheus families
+* update gauges in `collect()`
+
+### 4️⃣ Register in `main.cpp`
+
+```cpp
+#ifdef HWGAUGE_USE_MYIMPL
+exposer->add_collector<
+    hwgauge::MyNewCollector<hwgauge::MyImpl>
+>(hwgauge::MyImpl());
+#endif
+```
