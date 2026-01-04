@@ -14,6 +14,7 @@ namespace hwgauge {
 	};
 
 	struct CPUMetrics {
+		double cpuUtilization;         // CPU utilization percentage
 		double cpuFrequency;           // CPU frequency in MHz
 		double c0Residency;            // C0 state residency percentage
 		double c6Residency;            // C6 state residency percentage
@@ -28,6 +29,7 @@ namespace hwgauge {
 	public:
 		explicit CPUCollector(std::shared_ptr<Registry> registry, T impl) :
 			Collector(registry), impl(std::move(impl)),
+			cpuUtilizationFamily(prometheus::BuildGauge().Name("cpu_utilization_percent").Help("CPU utilization percentage").Register(*registry)),
 			cpuFrequencyFamily(prometheus::BuildGauge().Name("cpu_frequency_mhz").Help("CPU frequency in MHz").Register(*registry)),
 			c0ResidencyFamily(prometheus::BuildGauge().Name("cpu_c0_residency_percent").Help("CPU C0 state residency percentage").Register(*registry)),
 			c6ResidencyFamily(prometheus::BuildGauge().Name("cpu_c6_residency_percent").Help("CPU C6 state residency percentage").Register(*registry)),
@@ -37,6 +39,7 @@ namespace hwgauge {
 			memoryPowerUsageFamily(prometheus::BuildGauge().Name("memory_power_usage_watts").Help("Memory power usage in watts").Register(*registry))
 		{
 			for (auto& label : labels()) {
+				cpuUtilizationGauges.push_back(std::addressof(cpuFrequencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
 				cpuFrequencyGauges.push_back(std::addressof(cpuFrequencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
 				c0ResidencyGauges.push_back(std::addressof(c0ResidencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
 				c6ResidencyGauges.push_back(std::addressof(c6ResidencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
@@ -51,6 +54,7 @@ namespace hwgauge {
 		void collect() override {
 			std::size_t index = 0;
 			for (auto& metrics : sample()) {
+				cpuUtilizationGauges[index]->Set(metrics.cpuUtilization);
 				cpuFrequencyGauges[index]->Set(metrics.cpuFrequency);
 				c0ResidencyGauges[index]->Set(metrics.c0Residency);
 				c6ResidencyGauges[index]->Set(metrics.c6Residency);
@@ -68,6 +72,9 @@ namespace hwgauge {
 
 	private:
 		T impl;
+
+		prometheus::Family<prometheus::Gauge>& cpuUtilizationFamily;
+		std::vector<prometheus::Gauge*> cpuUtilizationGauges;
 
 		prometheus::Family<prometheus::Gauge>& cpuFrequencyFamily;
 		std::vector<prometheus::Gauge*> cpuFrequencyGauges;

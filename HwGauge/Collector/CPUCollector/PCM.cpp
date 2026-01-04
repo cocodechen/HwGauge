@@ -113,7 +113,7 @@ namespace hwgauge {
         for (pcm::uint32 s = 0; s < numSockets; ++s)
             labels.push_back(CPULabel{
                 s,
-                "Socket " + std::to_string(s)
+                pcmInstance->getCPUBrandString(),
                 });
 
         return labels;
@@ -142,6 +142,8 @@ namespace hwgauge {
             const auto& after = afterState[s];
 
             CPUMetrics m{};
+
+            m.cpuUtilization = 100.0 * pcm::getExecUsage(before, after);
 
             /* ===== Frequency (Hz, averaged active) ===== */
             m.cpuFrequency =
