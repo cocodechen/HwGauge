@@ -53,6 +53,22 @@ if(HWGAUGE_USE_INTEL_PCM)
 
 endif()
 
+# Add Ascend NPU
+if(HWGAUGE_USE_NPU)
+    # 添加昇腾相关库
+    target_include_directories(HwGauge PUBLIC
+        /usr/local/Ascend/driver/include
+    )
+    target_link_directories(HwGauge PUBLIC
+        /usr/local/Ascend/driver/lib64/driver
+    )
+    target_link_libraries(HwGauge PRIVATE
+        dcmi
+        ascend_hal
+    )
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_NPU=1)
+endif()
+
 # Add spdlog library
 target_link_libraries(HwGauge PRIVATE spdlog::spdlog)
 

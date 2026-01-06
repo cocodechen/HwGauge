@@ -15,6 +15,11 @@
 #	include "Collector/CPUCollector/PCM.hpp"
 #endif
 
+#include "Collector/NPUCollector/NPUCollector.hpp"
+#ifdef HWGAUGE_USE_NPU
+#	include "Collector/NPUCollector/NPUImpl.hpp"
+#endif
+
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
 static void signal_handler(int signal) {
@@ -60,6 +65,10 @@ int main(int argc, char* argv[]) {
 #endif
 #ifdef HWGAUGE_USE_INTEL_PCM
 	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM());
+#endif
+
+#ifdef HWGAUGE_USE_NPU
+	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl());
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

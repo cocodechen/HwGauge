@@ -10,6 +10,7 @@ endif()
 # Components Options
 option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" ON)
 option(HWGAUGE_USE_NVML "Enable collectors for Nvidia GPUs" ON)
+option(HWGAUGE_USE_NPU "Enable collectors for Ascend NPUs" ON)
 
 # Project declaration
 project(HwGauge
