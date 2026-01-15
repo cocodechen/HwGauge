@@ -34,10 +34,6 @@ target_include_directories(HwGauge PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Add Intel PCM library
-if(HWGAUGE_USE_INTEL_PCM)
-endif()
-
 # Add NVML library
 if(HWGAUGE_USE_NVML)
     find_package(CUDAToolkit REQUIRED)
@@ -52,7 +48,6 @@ if(HWGAUGE_USE_INTEL_PCM)
     target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_INTEL_PCM=1)
 
 endif()
-
 
 # Add Ascend NPU
 if(HWGAUGE_USE_NPU)
@@ -109,6 +104,46 @@ if(HWGAUGE_USE_NPU)
         message(WARNING "  ASCEND_HAL_LIB: ${ASCEND_HAL_LIB}")
         message(WARNING "Please check if Ascend driver is installed and set CMAKE_PREFIX_PATH if needed")
         set(HWGAUGE_USE_NPU OFF CACHE BOOL "Enable collectors for NPU (Ascend)" FORCE)
+    endif()
+endif()
+
+# Add PostgreSQL library
+# find_package(PostgreSQL REQUIRED)
+# target_include_directories(HwGauge PRIVATE ${PostgreSQL_INCLUDE_DIRS})
+# target_link_libraries(HwGauge PRIVATE ${PostgreSQL_LIBRARIES})
+# target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_POSTGRESQL=1)
+# message(STATUS "PostgreSQL support enabled")
+
+# Add PostgreSQL library (conditional)
+if(HWGAUGE_USE_POSTGRESQL)
+    if(WIN32)
+        # Windows上需要指定PostgreSQL路径
+        set(POSTGRESQL_ROOT "C:/Program Files/PostgreSQL" CACHE PATH "PostgreSQL installation root")
+        find_package(PostgreSQL REQUIRED PATHS "${POSTGRESQL_ROOT}")
+        
+        # Windows上可能需要链接额外的库
+        if(PostgreSQL_FOUND)
+            target_link_libraries(HwGauge PRIVATE 
+                ${PostgreSQL_LIBRARIES}
+                ws2_32  # Windows sockets
+                secur32 # Security API
+            )
+        endif()
+    else()
+        # Linux/macOS使用标准查找
+        find_package(PostgreSQL REQUIRED)
+        target_link_libraries(HwGauge PRIVATE ${PostgreSQL_LIBRARIES})
+    endif()
+    
+    if(PostgreSQL_FOUND)
+        target_include_directories(HwGauge PRIVATE ${PostgreSQL_INCLUDE_DIRS})
+        target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_POSTGRESQL=1)
+        message(STATUS "PostgreSQL support enabled")
+        message(STATUS "  Include dir: ${PostgreSQL_INCLUDE_DIRS}")
+        message(STATUS "  Libraries: ${PostgreSQL_LIBRARIES}")
+    else()
+        message(WARNING "PostgreSQL support requested but not found")
+        set(HWGAUGE_USE_POSTGRESQL OFF CACHE BOOL "Enable PostgreSQL backend" FORCE)
     endif()
 endif()
 

@@ -6,6 +6,7 @@
 #include <chrono>
 
 #include "Exposer/Exposer.hpp"
+#include "Collector/DBConfig.hpp"
 #include "Collector/GPUCollector/GPUCollector.hpp"
 #ifdef HWGAUGE_USE_NVML
 #	include "Collector/GPUCollector/NVML.hpp"
@@ -50,13 +51,34 @@ int main(int argc, char* argv[]) {
 		->default_val(default_interval)
 		->check(CLI::PositiveNumber);
 
+	// Command-line arguments: database
+	bool dbEnable = false;
+	application.add_flag("--db-enable", dbEnable, "Enable database storage for NPU metrics");
+
+	hwgauge::ConnectionConfig dbConfig;
+	application.add_option("--db-host", dbConfig.host, "Database host")
+		->default_val("localhost");
+	application.add_option("--db-port", dbConfig.port, "Database port")
+		->default_val("5432");
+	application.add_option("--db-name", dbConfig.dbname, "Database name")
+		->default_val("postgres");
+	application.add_option("--db-user", dbConfig.user, "Database user")
+		->default_val("postgres");
+	application.add_option("--db-password", dbConfig.password, "Database password")
+		->default_val("123456");
+	// Command-line arguments: table_name
+	std::string dbTableName = "metrics";
+	application.add_option("--db-table", dbTableName, "Database table name for device metrics")
+		->default_val("table");
+
 	CLI11_PARSE(application, argc, argv);
 
 	// Initialize spdlog logger
 	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [tid %t] %v");
+	spdlog::set_level(spdlog::level::info); 
 	spdlog::info("Spdlog initialized successfully");
 
-	// Create Prometheus exposer
+	// Create exposer
 	exposer = std::make_unique<hwgauge::Exposer>(address, std::chrono::seconds(interval_seconds));
 	std::signal(SIGINT, signal_handler);
 
@@ -68,7 +90,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 #ifdef HWGAUGE_USE_NPU
-	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl());
+	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl(),dbEnable,dbConfig,dbTableName);
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

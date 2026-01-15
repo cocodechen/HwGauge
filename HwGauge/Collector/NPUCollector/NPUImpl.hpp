@@ -2,9 +2,8 @@
 
 #ifdef HWGAUGE_USE_NPU
 
-#include <string>
 #include <vector>
-#include "NPUCollector.hpp"
+#include "NPUMetrics.hpp"
 
 namespace hwgauge
 {
@@ -20,18 +19,26 @@ namespace hwgauge
         
         /*返回所有设备的标签*/
         std::vector<NPULabel> labels();
+
         /*采集所有设备的指标数据*/
         std::vector<NPUMetrics> sample();
+
+        /*采集所有设备的静态数据*/
+        std::vector<NPUInfo> getInfo();
         
     private:
         /*唯一的标签*/
         std::vector<NPULabel> label_list;
         bool is_label_initialized;
+        /*唯一的静态信息*/
+        std::vector<NPUInfo> info_list;
+        bool is_info_got;
 
-        /*采集单个设备的指标*/
-        void collect_single_device(int card, int device, NPUMetrics& metric);
-        /*错误信息*/
-        void raise_error(const std::string&msg, int ret,int card,int dev,bool fatal);
+        /*采集单个设备的指标数据*/
+        void collect_single_device_metric(int card, int device, NPUMetrics& metric);
+
+        /*采集单个设备的静态数据*/
+        void collect_single_device_info(int card, int device, NPUInfo& info);
     };
 }
 
