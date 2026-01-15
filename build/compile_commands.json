@@ -1,0 +1,212 @@
+[
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/CPUCollector/PCM.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/CPUCollector/PCM.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/GPUCollector/NVML.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/GPUCollector/NVML.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUDatabase.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUDatabase.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o -c /mnt/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/main.cpp.o -c /mnt/xc/HwGauge/HwGauge/main.cpp",
+  "file": "/mnt/xc/HwGauge/HwGauge/main.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/spdlog.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/spdlog.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/color_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/color_sinks.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/file_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/file_sinks.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/async.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/async.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/async.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/async.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/cfg.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/cfg.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
+  "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/check_names.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/check_names.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/check_names.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/check_names.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/counter.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/counter.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/counter.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/counter.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/builder.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/builder.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/builder.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/builder.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/ckms_quantiles.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/ckms_quantiles.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/ckms_quantiles.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/ckms_quantiles.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/time_window_quantiles.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/time_window_quantiles.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/time_window_quantiles.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/time_window_quantiles.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/utils.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/utils.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/utils.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/utils.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/family.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/family.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/family.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/family.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/gauge.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/gauge.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/gauge.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/gauge.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/histogram.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/histogram.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/histogram.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/histogram.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/info.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/info.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/info.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/info.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/registry.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/registry.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/registry.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/registry.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/serializer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/serializer.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/serializer.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/serializer.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/summary.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/summary.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/summary.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/summary.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/text_serializer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/text_serializer.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/text_serializer.cc",
+  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/text_serializer.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++ -DCIVETWEB_API=\"\" -DNDEBUG -DNO_CACHING -DNO_CGI -DNO_FILES -DNO_SSL -DSOCKET_TIMEOUT_QUANTUM=200 -DUSE_IPV6 -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -w -o CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/CivetServer.cpp.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/CivetServer.cpp",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/CivetServer.cpp",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/CivetServer.cpp.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/cc -DCIVETWEB_API=\"\" -DNDEBUG -DNO_CACHING -DNO_CGI -DNO_FILES -DNO_SSL -DSOCKET_TIMEOUT_QUANTUM=200 -DUSE_IPV6 -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -O3 -DNDEBUG -std=c17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -w -o CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/civetweb.c.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/civetweb.c",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/civetweb.c",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/civetweb.c.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/basic_auth.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/basic_auth.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/basic_auth.cc",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/basic_auth.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/endpoint.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/endpoint.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/endpoint.cc",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/endpoint.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/exposer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/exposer.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/exposer.cc",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/exposer.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/handler.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/handler.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/handler.cc",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/handler.cc.o"
+},
+{
+  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
+  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/metrics_collector.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/metrics_collector.cc",
+  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/metrics_collector.cc",
+  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/metrics_collector.cc.o"
+}
+]

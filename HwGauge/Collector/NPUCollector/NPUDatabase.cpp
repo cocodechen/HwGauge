@@ -1,3 +1,5 @@
+#if defined(HWGAUGE_USE_POSTGRESQL) && defined(HWGAUGE_USE_NPU)
+
 #include "NPUDatabase.hpp"
 
 #include "spdlog/spdlog.h"
@@ -10,11 +12,7 @@ namespace hwgauge
         : conn(nullptr), config(config_)
     {
         // 建立连接
-        if (!connect())
-        {
-            createDatabase(config.dbname);
-            exit(EXIT_FAILURE);
-        }
+        if (!connect())exit(EXIT_FAILURE);
 
         // 创建指标数据表
         metric_table_name=table_name_+"_metric";
@@ -291,5 +289,6 @@ namespace hwgauge
         PQclear(res);
         return true;
     }
-
 }
+
+#endif

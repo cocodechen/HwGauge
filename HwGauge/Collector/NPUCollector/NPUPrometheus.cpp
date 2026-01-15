@@ -1,3 +1,5 @@
+#ifdef HWGAUGE_USE_NPU
+
 #include "NPUPrometheus.hpp"
 
 namespace hwgauge
@@ -114,3 +116,5 @@ namespace hwgauge
         }
     }
 }
+
+#endif

@@ -8,9 +8,9 @@ if(POLICY CMP0141)
 endif()
 
 # Components Options
-option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" ON)
+option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" OFF)
 option(HWGAUGE_USE_NVML "Enable collectors for Nvidia GPUs" OFF)
-option(HWGAUGE_USE_NPU "Enable collectors for Ascend NPUs" OFF)
+option(HWGAUGE_USE_NPU "Enable collectors for Ascend NPUs" ON)
 
 option(HWGAUGE_USE_POSTGRESQL "Enable PostgreSQL backend" OFF)
 

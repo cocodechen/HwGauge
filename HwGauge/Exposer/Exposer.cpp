@@ -1,7 +1,6 @@
 #include "Exposer.hpp"
 #include "spdlog/spdlog.h"
 #include <exception>
-#include <format>
 
 namespace hwgauge {
 	void Exposer::run() {

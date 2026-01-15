@@ -1,4 +1,6 @@
 #pragma once
+
+#ifdef HWGAUGE_USE_NPU
 #include <string>
 
 struct NPULabel
@@ -36,3 +38,5 @@ struct NPUInfo
     std::string chip_type; //芯片类型
     std::string chip_name; //芯片名称
 };
+
+#endif

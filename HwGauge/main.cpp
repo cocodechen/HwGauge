@@ -16,8 +16,8 @@
 #	include "Collector/CPUCollector/PCM.hpp"
 #endif
 
-#include "Collector/NPUCollector/NPUCollector.hpp"
 #ifdef HWGAUGE_USE_NPU
+#	include "Collector/NPUCollector/NPUCollector.hpp"
 #	include "Collector/NPUCollector/NPUImpl.hpp"
 #endif
 
@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
 		->default_val(default_interval)
 		->check(CLI::PositiveNumber);
 
+#ifdef HWGAUGE_USE_POSTGRESQL
 	// Command-line arguments: database
 	bool dbEnable = false;
 	application.add_flag("--db-enable", dbEnable, "Enable database storage for NPU metrics");
@@ -70,6 +71,7 @@ int main(int argc, char* argv[]) {
 	std::string dbTableName = "metrics";
 	application.add_option("--db-table", dbTableName, "Database table name for device metrics")
 		->default_val("table");
+#endif
 
 	CLI11_PARSE(application, argc, argv);
 
@@ -90,7 +92,11 @@ int main(int argc, char* argv[]) {
 #endif
 
 #ifdef HWGAUGE_USE_NPU
+#ifdef HWGAUGE_USE_POSTGRESQL
 	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl(),dbEnable,dbConfig,dbTableName);
+#else
+	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl());
+#endif
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

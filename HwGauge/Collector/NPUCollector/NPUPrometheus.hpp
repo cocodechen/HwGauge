@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_NPU
 #include "prometheus/gauge.h"
 #include "prometheus/family.h"
 #include "NPUMetrics.hpp"
@@ -36,3 +37,5 @@ namespace hwgauge
         prometheus::Family<prometheus::Gauge>* voltage_gauge_;
     };
 }
+
+#endif

@@ -1,4 +1,5 @@
 #pragma once
+#if defined(HWGAUGE_USE_POSTGRESQL) && defined(HWGAUGE_USE_NPU)
 
 #include "NPUMetrics.hpp"
 #include "Collector/DBConfig.hpp"
@@ -100,3 +101,5 @@ namespace hwgauge
 
     };
 }
+
+#endif

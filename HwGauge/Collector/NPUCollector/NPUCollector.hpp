@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_NPU
+
 #include "prometheus/gauge.h"
 #include "prometheus/family.h"
 #include "Collector/Collector.hpp"
@@ -15,6 +17,7 @@ namespace hwgauge
     class NPUCollector : public Collector
     {
     public:
+#ifdef HWGAUGE_USE_POSTGRESQL
         explicit NPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
             Collector(registry), 
             impl(std::move(impl)), 
@@ -33,6 +36,11 @@ namespace hwgauge
                 }
             }
         }
+#endif
+        explicit NPUCollector(std::shared_ptr<Registry> registry, T impl) :
+            Collector(registry), 
+            impl(std::move(impl)), 
+            pm(registry){}
         
         virtual ~NPUCollector() = default;
 
@@ -48,9 +56,11 @@ namespace hwgauge
             }
             // prometheus
             pm.write(label_list,metric_list);
+
+#ifdef HWGAUGE_USE_POSTGRESQL
             // database
             if(dbEnable && db)db->writeMetric(label_list,metric_list);
-
+#endif
         }
 
         std::string name() override { return impl.name(); }
@@ -64,6 +74,10 @@ namespace hwgauge
         NPUPrometheus pm;
         
         bool dbEnable;
+#ifdef HWGAUGE_USE_POSTGRESQL
         std::unique_ptr<NPUDatabase> db;
+#endif
     };
 }
+
+#endif

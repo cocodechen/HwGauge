@@ -1,5 +1,6 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_POSTGRESQL
 #include <string>
 namespace hwgauge
 {
@@ -39,3 +40,4 @@ namespace hwgauge
         {}
     };
 }
+#endif
