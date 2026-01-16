@@ -6,23 +6,18 @@
 #include <iostream>
 #include <cstring>
 
+
 namespace hwgauge
 {
-    NPUDatabase::NPUDatabase(const ConnectionConfig& config_, const std::string table_name_)
-        : conn(nullptr), config(config_)
+    NPUDatabase::NPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)
+        : Database<NPULabel, NPUMetrics>(config_)
     {
-        // 建立连接
-        if (!connect())exit(EXIT_FAILURE);
-
-        // 创建指标数据表
-        metric_table_name=table_name_+"_metric";
-        if (!createMetricTable())exit(EXIT_FAILURE);
-
-        // 创建静态数据表
-        info_table_name=table_name_+"_info";
-        if (!createInfoTable())exit(EXIT_FAILURE);
-
-        // 构建类成员SQL模板
+        // 设置表名
+        metric_table_name = table_name_prefix + "_metric";
+        info_table_name = table_name_prefix + "_info";
+        // 创建表
+        if (!createMetricTable() || !createInfoTable())throw hwgauge::FatalError("[Database] Create Table Failed");
+        // 构建SQL模板
         metric_insert_sql =
             "INSERT INTO " + metric_table_name +
             " (timestamp, card_id, device_id, util_aicore, util_aicpu, util_mem, util_membw, util_vec,"
@@ -40,150 +35,7 @@ namespace hwgauge
         spdlog::info("[NPUDatabase] Initialize successfully");
     }
 
-    NPUDatabase::~NPUDatabase()
-    {
-        disconnect();
-    }
-
-    bool NPUDatabase::isConnected() const
-    {
-        if(conn != nullptr && PQstatus(conn) == CONNECTION_OK)return true;
-        else
-        {
-            spdlog::warn("[NPUDatabase] Database has not connected");
-            return false;
-        }
-    }
-
-    void NPUDatabase::writeMetric(const std::vector<NPULabel>& label_list,
-                    const std::vector<NPUMetrics>& metric_list,
-                    bool useTransaction)
-    {
-        if (!isConnected())exit(EXIT_FAILURE);
-        // 开启事务
-        if (useTransaction)
-        {
-            if(!startTransaction())return;
-        } 
-
-        auto timestamp = getNowTime();
-        int inserted = 0;
-        for (size_t i = 0; i < label_list.size(); ++i)
-        {
-            const NPULabel& label = label_list[i];
-            const NPUMetrics& metric = metric_list[i];
-
-            std::vector<std::string>buf(15);
-            const char* params[15] = {
-                to_sql_param_string(timestamp,buf[0]),
-                to_sql_param_int(label.card_id, buf[1]),
-                to_sql_param_int(label.device_id, buf[2]),
-                to_sql_param_int(metric.util_aicore, buf[3]),
-                to_sql_param_int(metric.util_aicpu, buf[4]),
-                to_sql_param_int(metric.util_mem, buf[5]),
-                to_sql_param_int(metric.util_membw, buf[6]),
-                to_sql_param_int(metric.util_vec, buf[7]),
-                to_sql_param_int(metric.freq_aicore, buf[8]),
-                to_sql_param_int(metric.freq_aicpu, buf[9]),
-                to_sql_param_int(metric.freq_mem, buf[10]),
-                to_sql_param_double(metric.power, buf[11]),
-                to_sql_param_int(metric.health, buf[12]),
-                to_sql_param_int(metric.temperature, buf[13]),
-                to_sql_param_double(metric.voltage, buf[14])
-            };
-
-            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 15)))
-            {
-                if (useTransaction)
-                {
-                    PQexec(conn, "ROLLBACK");
-                    spdlog::warn("[NPUDatabase] Transaction rolled back due to previous error");
-                }
-                return;
-            }
-            ++inserted;
-        }
-        // 提交事务
-        if (useTransaction)
-        {
-            if(!commitTransaction())return;
-        } 
-        spdlog::info("[NPUDatabase] Successfully inserted {}/{} records into {}", inserted, label_list.size(), metric_table_name);
-    }
-    
-    void NPUDatabase::writeInfo(const std::vector<NPULabel>& label_list,
-                const std::vector<NPUInfo>& info_list,
-                bool useTransaction)
-    {
-        if (!isConnected()) exit(EXIT_FAILURE);
-        // 开启事务
-        if (useTransaction)
-        {
-            if(!startTransaction())return;
-        } 
-
-        int inserted = 0;
-        for (size_t i = 0; i < label_list.size(); ++i)
-        {
-            const NPULabel& label = label_list[i];
-            const NPUInfo& info   = info_list[i];
-
-            std::vector<std::string>buf(4);
-            const char* params[4] = {
-                to_sql_param_int(label.card_id, buf[0]),
-                to_sql_param_int(label.device_id, buf[1]),
-                to_sql_param_string(info.chip_type, buf[2]),
-                to_sql_param_string(info.chip_name, buf[3])
-            };
-
-            if (!execSQL(info_insert_sql, std::vector<const char*>(params, params + 4)))
-            {
-                if (useTransaction)
-                {
-                    PQexec(conn, "ROLLBACK");
-                    spdlog::warn("[NPUDatabase] Transaction rolled back due to previous error");
-                }
-                return;
-            }
-            ++inserted;
-        }
-        // 提交事务
-        if (useTransaction)
-        {
-            if(!commitTransaction())return;
-        } 
-
-        spdlog::info("[NPUDatabase] Successfully inserted/updated {}/{} static info records into {}", inserted, label_list.size(), info_table_name);
-    }
-    
-    bool NPUDatabase::connect()
-    {
-        std::string conn_info = "host=" + config.host +
-                                " port=" + config.port +
-                                " dbname=" + config.dbname +
-                                " user=" + config.user +
-                                " password=" + config.password +
-                                " connect_timeout=" + std::to_string(config.connect_timeout);
-        conn = PQconnectdb(conn_info.c_str());
-        if (PQstatus(conn) != CONNECTION_OK)
-        {
-            spdlog::error("[NPUDatabase] Failed to connect to database");
-            disconnect();
-            return false;
-        }
-        spdlog::info("[NPUDatabase] Connected to database {}",config.dbname);
-        return true;
-    }
-
-    void NPUDatabase::disconnect()
-    {
-        if (conn)
-        {
-            PQfinish(conn);
-            conn = nullptr;
-            spdlog::info("[NPUDatabase] Disconnected from database");
-        }
-    }
+    NPUDatabase::~NPUDatabase(){}
 
     bool NPUDatabase::createMetricTable()
     {
@@ -233,61 +85,78 @@ namespace hwgauge
         return true;
     }
 
-    bool NPUDatabase::execSQL(const std::string& sql, const std::vector<const char*>& params)
+    void NPUDatabase::writeMetric(const std::vector<NPULabel>& label_list,
+                                  const std::vector<NPUMetrics>& metric_list,
+                                  bool useTransaction)
     {
-        PGresult* res = nullptr;
-        // 执行语句
-        if (params.empty())res = PQexec(conn, sql.c_str());
-        else
+        if (!isConnected())throw hwgauge::FatalError("[NPUDatabase] The database hasn't been connected before writing");
+        if (useTransaction && !startTransaction())return;
+        
+        auto timestamp = getNowTime();
+        int inserted = 0;
+        for (size_t i = 0; i < label_list.size(); ++i)
         {
-            res = PQexecParams(
-                conn,
-                sql.c_str(),
-                static_cast<int>(params.size()),
-                nullptr,
-                params.data(),
-                nullptr,
-                nullptr,
-                0
-            );
-        }
-        // 判断执行结果，确定是否回滚
-        if (!res || PQresultStatus(res) != PGRES_COMMAND_OK)
-        {
-            spdlog::warn("[NPUDatabase] SQL execution failed: {}", PQerrorMessage(conn));
-            PQclear(res);
-            return false;
-        }
-        PQclear(res);
-        return true;
-    }
+            const NPULabel& label = label_list[i];
+            const NPUMetrics& metric = metric_list[i];
 
-    bool NPUDatabase::startTransaction()
-    {
-        PGresult*res = PQexec(conn, "BEGIN");
-        if (PQresultStatus(res) != PGRES_COMMAND_OK)
-        {
-            spdlog::warn("[NPUDatabase] Failed to begin transaction for static info: {}", 
-                        std::string(PQerrorMessage(conn)));
-            PQclear(res);
-            return false;
-        }
-        PQclear(res);
-        return true;
-    }
+            std::vector<std::string> buf(15);
+            const char* params[15] = {
+                to_sql_param_string(timestamp, buf[0]),
+                to_sql_param_int(label.card_id, buf[1]),
+                to_sql_param_int(label.device_id, buf[2]),
+                to_sql_param_int(metric.util_aicore, buf[3]),
+                to_sql_param_int(metric.util_aicpu, buf[4]),
+                to_sql_param_int(metric.util_mem, buf[5]),
+                to_sql_param_int(metric.util_membw, buf[6]),
+                to_sql_param_int(metric.util_vec, buf[7]),
+                to_sql_param_int(metric.freq_aicore, buf[8]),
+                to_sql_param_int(metric.freq_aicpu, buf[9]),
+                to_sql_param_int(metric.freq_mem, buf[10]),
+                to_sql_param_double(metric.power, buf[11]),
+                to_sql_param_int(metric.health, buf[12]),
+                to_sql_param_int(metric.temperature, buf[13]),
+                to_sql_param_double(metric.voltage, buf[14])
+            };
 
-    bool NPUDatabase::commitTransaction()
-    {
-        PGresult*res = PQexec(conn, "COMMIT");
-        if (PQresultStatus(res) != PGRES_COMMAND_OK)
-        {
-            spdlog::warn("[NPUDatabase] Failed to commit transaction for static info: {}", 
-                        std::string(PQerrorMessage(conn)));
-            PQclear(res);
-            return false;
+            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 15)))
+            {
+                if(useTransaction) rollbackTransaction();
+                return;
+            }
+            ++inserted;
         }
-        PQclear(res);
-        return true;
+        if (useTransaction && !commitTransaction())return;
+        spdlog::info("[NPUDatabase] Successfully inserted {}/{} records into {}", inserted, label_list.size(), metric_table_name);
+    }
+    
+    void NPUDatabase::writeInfo(const std::vector<NPULabel>& label_list,
+                                bool useTransaction)
+    {
+        if (!isConnected())throw hwgauge::FatalError("[NPUDatabase] The database hasn't been connected before writing");
+        if (useTransaction && !startTransaction())return;
+        
+        int inserted = 0;
+        for (size_t i = 0; i < label_list.size(); ++i)
+        {
+            const NPULabel& label = label_list[i];
+
+            std::vector<std::string> buf(4);
+            const char* params[4] = {
+                to_sql_param_int(label.card_id, buf[0]),
+                to_sql_param_int(label.device_id, buf[1]),
+                to_sql_param_string(label.chip_type, buf[2]),
+                to_sql_param_string(label.chip_name, buf[3])
+            };
+
+            if (!execSQL(info_insert_sql, std::vector<const char*>(params, params + 4)))
+            {
+                if (useTransaction) rollbackTransaction();
+                return;
+            }
+            ++inserted;
+        }
+        if (useTransaction && !commitTransaction())return;
+        spdlog::info("[NPUDatabase] Successfully inserted/updated {}/{} static info records into {}", inserted, label_list.size(), info_table_name);
     }
 }
 

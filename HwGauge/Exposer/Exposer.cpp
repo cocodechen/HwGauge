@@ -1,9 +1,11 @@
 #include "Exposer.hpp"
 #include "spdlog/spdlog.h"
-#include <exception>
+#include "Collector/Exception.hpp"
 
-namespace hwgauge {
-	void Exposer::run() {
+namespace hwgauge
+{
+	void Exposer::run()
+	{
 		running.store(true, std::memory_order_release);
 		exposer.RegisterCollectable(registry);
 
@@ -17,7 +19,8 @@ namespace hwgauge {
 			next_tick += interval;
 			auto now = clock::now();
 
-			if (now < next_tick) {
+			if (now < next_tick)
+			{
 				std::this_thread::sleep_until(next_tick);
 			}
 		}
@@ -28,14 +31,26 @@ namespace hwgauge {
 	}
 
 	void Exposer::collect() {
-		for (auto& collector : collectors) {
+		for (auto& collector : collectors)
+		{
 			std::string name = collector->name();
-			try {
+			try
+			{
 				collector->collect();
 				spdlog::trace("Retrieve metrics from {} successfully", name);
 			}
-			catch (const std::exception& e) {
-				spdlog::error("Faild to collect metrics from {}: {}", name, e.what());
+			catch (const hwgauge::RecoverableError& e)
+			{
+				// 记录错误，继续下一个 collector / 下一轮
+				spdlog::error("Recoverable error from {}: {}",name, e.what());
+				continue;
+			}
+			catch (const hwgauge::FatalError& e)
+			{
+				// 记录错误，停止整个采集循环
+				spdlog::critical("Fatal error from {}: {}",name, e.what());
+				stop();
+				return;
 			}
 		}
 	}

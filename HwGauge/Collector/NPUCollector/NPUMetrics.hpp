@@ -7,6 +7,8 @@ struct NPULabel
 {
     int card_id;
     int device_id;
+    std::string chip_type; //芯片类型
+    std::string chip_name; //芯片名称
 };
 
 struct NPUMetrics
@@ -31,12 +33,6 @@ struct NPUMetrics
     int temperature;
     //电压（V）
     double voltage;
-};
-
-struct NPUInfo
-{
-    std::string chip_type; //芯片类型
-    std::string chip_name; //芯片名称
 };
 
 #endif

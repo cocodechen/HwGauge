@@ -56,6 +56,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/FetchContent.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/FindPackageMessage.cmake"
+  "/usr/local/cmake-arm/share/cmake-3.26/Modules/FindPostgreSQL.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/FindThreads.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/GNUInstallDirs.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/GenerateExportHeader.cmake"
@@ -67,6 +68,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/Platform/Linux-GNU.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/Platform/Linux.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/Platform/UnixPaths.cmake"
+  "/usr/local/cmake-arm/share/cmake-3.26/Modules/SelectLibraryConfigurations.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/WriteBasicConfigVersionFile.cmake"
   "/usr/local/cmake-arm/share/cmake-3.26/Modules/exportheader.cmake.in"
   )

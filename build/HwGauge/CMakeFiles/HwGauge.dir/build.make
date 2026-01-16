@@ -188,6 +188,9 @@ bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/build.make
+bin/hwgauge: /usr/local/Ascend/driver/lib64/driver/libdcmi.so
+bin/hwgauge: /usr/local/Ascend/driver/lib64/driver/libascend_hal.so
+bin/hwgauge: /usr/lib/aarch64-linux-gnu/libpq.so
 bin/hwgauge: lib/libspdlog.a
 bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-pull.a
 bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-core.a
