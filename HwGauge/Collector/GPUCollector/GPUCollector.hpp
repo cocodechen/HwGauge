@@ -1,79 +1,80 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_NVML
+
 #include "prometheus/gauge.h"
 #include "prometheus/family.h"
 #include "Collector/Collector.hpp"
-#include <string>
+#include "GPUPrometheus.hpp"
+#include "GPUDatabase.hpp"
+
 #include <utility>
-#include <vector>
 
-namespace hwgauge {
-	struct GPULabel {
-		std::size_t index;
-		std::string name;
-	};
+namespace hwgauge
+{
+    template<typename T>
+    class GPUCollector : public Collector
+    {
+    public:
 
-	struct GPUMetrics {
-		double gpuUtilization;
-		double memoryUtilization;
-		double gpuFrequency;
-		double memoryFrequency;
-		double powerUsage;
-	};
+#ifdef HWGAUGE_USE_POSTGRESQL
+        explicit GPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
+            Collector(registry), 
+            impl(std::move(impl)), 
+            pm(registry),
+            label_list(labels()),
+            dbEnable(dbEnable_)
+        {
+            if (dbEnable_)
+            {
+                db = std::make_unique<GPUDatabase>(dbConfig, dbTableName);
+                // 完成npu静态数据的写入
+                if(db)db->writeInfo(label_list);
+            }
+        }
+#endif
+        explicit GPUCollector(std::shared_ptr<Registry> registry, T impl) :
+            Collector(registry), 
+            impl(std::move(impl)), 
+            pm(registry),
+            label_list(labels()){}
+        
+        virtual ~GPUCollector() = default;
 
-	template <typename T>
-	class GPUCollector : public Collector {
-	public:
-		explicit GPUCollector(std::shared_ptr<Registry> registry, T impl) :
-			Collector(registry), impl(std::move(impl)),
-			gpuUtilizationFamily(prometheus::BuildGauge().Name("gpu_utilization_percent").Help("GPU utilization percentage").Register(*registry)),
-			memoryUtilizationFamily(prometheus::BuildGauge().Name("gpu_memory_utilization_percent").Help("GPU memory utilization percentage").Register(*registry)),
-			gpuFrequencyFamily(prometheus::BuildGauge().Name("gpu_frequency_mhz").Help("GPU frequency in MHz").Register(*registry)),
-			memoryFrequencyFamily(prometheus::BuildGauge().Name("gpu_memory_frequency_mhz").Help("GPU memory frequency in MHz").Register(*registry)),
-			powerUsageFamily(prometheus::BuildGauge().Name("gpu_power_usage_watts").Help("GPU power usage in watts").Register(*registry))
-		{
-			for (auto& label : labels()) {
-				gpuUtilizationGauges.push_back(std::addressof(gpuUtilizationFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				memoryUtilizationGauges.push_back(std::addressof(memoryUtilizationFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				gpuFrequencyGauges.push_back(std::addressof(gpuFrequencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				memoryFrequencyGauges.push_back(std::addressof(memoryFrequencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				powerUsageGauges.push_back(std::addressof(powerUsageFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
+        void collect() override
+        {
+            // 获取标签（设备列表）和指标数据
+            auto metric_list = sample(label_list);
+
+			// 输出调试
+			for(int i=0;i<label_list.size();i++)
+			{
+				outGPU(label_list[i],metric_list[i]);
 			}
-		}
-		virtual ~GPUCollector() = default;
 
-		void collect() override {
-			std::size_t index = 0;
-			for (auto& metrics : sample()) {
-				gpuUtilizationGauges[index]->Set(metrics.gpuUtilization);
-				memoryUtilizationGauges[index]->Set(metrics.memoryUtilization);
-				gpuFrequencyGauges[index]->Set(metrics.gpuFrequency);
-				memoryFrequencyGauges[index]->Set(metrics.memoryFrequency);
-				powerUsageGauges[index]->Set(metrics.powerUsage);
-				index++;
-			}
-		}
+            // prometheus
+            pm.write(label_list,metric_list);
 
-		std::string name() override { return impl.name(); }
-		std::vector<GPULabel> labels() { return impl.labels(); }
-		std::vector<GPUMetrics> sample() { return impl.sample(); }
+#ifdef HWGAUGE_USE_POSTGRESQL
+            // database
+            if(dbEnable && db)db->writeMetric(label_list,metric_list);
+#endif
+        }
 
-	private:
-		T impl;
+        std::string name() override { return impl.name(); }
+        std::vector<GPULabel> labels() { return impl.labels(); }
+        std::vector<GPUMetrics> sample(std::vector<GPULabel>&labels) { return impl.sample(labels); }
 
-		prometheus::Family<prometheus::Gauge>& gpuUtilizationFamily;
-		std::vector<prometheus::Gauge*> gpuUtilizationGauges;
+    private:
+        T impl;
+        GPUPrometheus pm;
+        std::vector<GPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更新
 
-		prometheus::Family<prometheus::Gauge>& memoryUtilizationFamily;
-		std::vector<prometheus::Gauge*> memoryUtilizationGauges;
-
-		prometheus::Family<prometheus::Gauge>& gpuFrequencyFamily;
-		std::vector<prometheus::Gauge*> gpuFrequencyGauges;
-
-		prometheus::Family<prometheus::Gauge>& memoryFrequencyFamily;
-		std::vector<prometheus::Gauge*> memoryFrequencyGauges;
-
-		prometheus::Family<prometheus::Gauge>& powerUsageFamily;
-		std::vector<prometheus::Gauge*> powerUsageGauges;
-	};
+#ifdef HWGAUGE_USE_POSTGRESQL
+        bool dbEnable;
+        std::unique_ptr<GPUDatabase> db;
+#endif
+    };
 }
+
+#endif

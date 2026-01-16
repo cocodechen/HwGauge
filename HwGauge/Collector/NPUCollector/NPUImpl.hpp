@@ -20,25 +20,12 @@ namespace hwgauge
         /*返回所有设备的标签*/
         std::vector<NPULabel> labels();
 
-        /*采集所有设备的指标数据*/
-        std::vector<NPUMetrics> sample();
-
-        /*采集所有设备的静态数据*/
-        std::vector<NPUInfo> getInfo();
+        /*采集标签label的指标数据*/
+        std::vector<NPUMetrics> sample(std::vector<NPULabel>&labels);
         
     private:
-        /*唯一的标签*/
-        std::vector<NPULabel> label_list;
-        bool is_label_initialized;
-        /*唯一的静态信息*/
-        std::vector<NPUInfo> info_list;
-        bool is_info_got;
-
         /*采集单个设备的指标数据*/
         void collect_single_device_metric(int card, int device, NPUMetrics& metric);
-
-        /*采集单个设备的静态数据*/
-        void collect_single_device_info(int card, int device, NPUInfo& info);
     };
 }
 

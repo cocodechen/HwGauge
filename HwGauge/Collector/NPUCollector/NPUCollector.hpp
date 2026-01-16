@@ -8,7 +8,6 @@
 #include "NPUPrometheus.hpp"
 #include "NPUDatabase.hpp"
 
-#include "spdlog/spdlog.h"
 #include <utility>
 
 namespace hwgauge
@@ -22,38 +21,30 @@ namespace hwgauge
             Collector(registry), 
             impl(std::move(impl)), 
             pm(registry),
+            label_list(labels()),
             dbEnable(dbEnable_)
         {
             if (dbEnable_)
             {
                 db = std::make_unique<NPUDatabase>(dbConfig, dbTableName);
                 // 完成npu静态数据的写入
-                if(db)
-                {
-                    auto label_list = labels();
-                    auto info_list = getInfo();
-                    db->writeInfo(label_list,info_list);
-                }
+                if(db)db->writeInfo(label_list);
             }
         }
 #endif
         explicit NPUCollector(std::shared_ptr<Registry> registry, T impl) :
             Collector(registry), 
             impl(std::move(impl)), 
-            pm(registry){}
+            pm(registry),
+            label_list(labels())
+            {}
         
         virtual ~NPUCollector() = default;
 
         void collect() override
         {
             // 获取标签（设备列表）和指标数据
-            auto label_list = labels();
-            auto metric_list = sample();
-            if (label_list.size() != metric_list.size())
-            {
-                spdlog::warn("[NPUCollector] Label list and metric list size mismatch");
-                return;
-            }
+            auto metric_list = sample(label_list);
             // prometheus
             pm.write(label_list,metric_list);
 
@@ -65,16 +56,15 @@ namespace hwgauge
 
         std::string name() override { return impl.name(); }
         std::vector<NPULabel> labels() { return impl.labels(); }
-        std::vector<NPUMetrics> sample() { return impl.sample(); }
-        std::vector<NPUInfo> getInfo() { return impl.getInfo(); }
+        std::vector<NPUMetrics> sample(std::vector<NPULabel>&labels) { return impl.sample(labels); }
 
     private:
         T impl;
-
         NPUPrometheus pm;
-        
-        bool dbEnable;
+        std::vector<NPULabel>label_list;
+
 #ifdef HWGAUGE_USE_POSTGRESQL
+        bool dbEnable;
         std::unique_ptr<NPUDatabase> db;
 #endif
     };

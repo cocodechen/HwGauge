@@ -4,6 +4,7 @@
 #include <iostream>
 #include <dcmi_interface_api.h>
 #include "spdlog/spdlog.h"
+#include "Collector/Exception.hpp"
 
 #include "NPUImpl.hpp"
 
@@ -14,13 +15,7 @@ namespace hwgauge
     NPUImpl::NPUImpl()
     {
         int ret = dcmi_init();
-        if(ret!=NPU_OK)
-        {
-            spdlog::error("[NPUImpl] dcmi_init failed (ret={})",ret);
-            exit(EXIT_FAILURE);
-        }
-        is_label_initialized=false;
-        is_info_got=false;
+        if(ret!=NPU_OK)throw hwgauge::FatalError("[NPUImpl] dcmi_init failed");
     }
 
     std::string NPUImpl::name() const
@@ -30,85 +25,68 @@ namespace hwgauge
 
     std::vector<NPULabel> NPUImpl::labels()
     {
-        if(is_label_initialized)return label_list;
-        is_label_initialized=true;
         //获取卡列表
         int ret;
         int card_count = 0;
         int card_list[MAX_CARD_NUM] = {0};
         ret=dcmi_get_card_list(&card_count, card_list, MAX_CARD_NUM);
-        if(ret!=NPU_OK)
-        {
-            spdlog::error("[NPUImpl] dcmi_get_card_list failed (ret={})",ret);
-            exit(EXIT_FAILURE);
-        }
-        if(card_count==0)
-        {
-            spdlog::error("[NPUImpl] The card of num is zero");
-            exit(EXIT_FAILURE);
-        }
+        if(ret!=NPU_OK)throw hwgauge::FatalError("[NPUImpl] dcmi_get_card_list failed");
+        if(card_count==0)throw hwgauge::FatalError("[NPUImpl] The card of num is zero");
 
         //遍历每个卡和设备
+        std::vector<NPULabel> labels;
+        NPULabel label;
         for (int i = 0; i < card_count; i++)
         {
             int card = card_list[i];
             int device_count = 0, mcu_id = 0, cpu_id = 0;
             ret=dcmi_get_device_id_in_card(card, &device_count, &mcu_id, &cpu_id);
-
             if(ret!=NPU_OK)
             {
                 spdlog::warn("[NPUImpl] dcmi_get_device_id_in_card failed (ret={}, card={})",ret,card);
                 continue;
             }
-            NPULabel label;
+
             for (int dev = 0; dev < device_count; dev++)
             {
                 label.card_id = card;
                 label.device_id = dev;
-                label_list.push_back(label);
+                struct dcmi_chip_info chip_info = {0};
+                ret = dcmi_get_device_chip_info(card, dev, &chip_info);
+                if (ret == NPU_OK)
+                {
+                    label.chip_type.assign(
+                        reinterpret_cast<const char*>(chip_info.chip_type),
+                        strnlen(reinterpret_cast<const char*>(chip_info.chip_type), sizeof(chip_info.chip_type))
+                    );
+                    label.chip_name.assign(
+                        reinterpret_cast<const char*>(chip_info.chip_name),
+                        strnlen(reinterpret_cast<const char*>(chip_info.chip_name), sizeof(chip_info.chip_name))
+                    );
+                }
+                else
+                {
+                    label.chip_type="";
+                    label.chip_name="";
+                    spdlog::warn("[NPUImpl] Get npu info failed (ret={}, card={}, device={})",ret,card,dev);
+                }
+                labels.push_back(label);
             }
         }
-        return label_list;
+        return labels;
     }
         
-    /*采集所有设备的指标数据*/
-    std::vector<NPUMetrics> NPUImpl::sample()
+    std::vector<NPUMetrics> NPUImpl::sample(std::vector<NPULabel>&labels)
     {
-        if(!is_label_initialized)
-        {
-            spdlog::error("[NPUImpl] Label hasn't been called");
-            exit(EXIT_FAILURE);
-        }
         std::vector<NPUMetrics> metrics;
         NPUMetrics metric;
         //为每个设备采集数据
-        for (const auto& label : label_list)
+        for (const auto& label : labels)
         {
             collect_single_device_metric(label.card_id, label.device_id, metric);
             metrics.push_back(metric);
         }
         return metrics;
-    }
-
-    std::vector<NPUInfo> NPUImpl::getInfo()
-    {
-        if(!is_label_initialized)
-        {
-            spdlog::error("[NPUImpl] Label hasn't been called");
-            exit(EXIT_FAILURE);
-        }
-        if(is_info_got)return info_list;
-        is_info_got=true;
-        //遍历每个卡和设备
-        std::vector<NPUInfo> infos;
-        NPUInfo info;
-        //为每个设备采集数据
-        for (const auto& label : label_list)
-        {
-            collect_single_device_info(label.card_id, label.device_id, info);
-            info_list.push_back(info);
-        }
-        return info_list;
     }
 
     void NPUImpl::collect_single_device_metric(int card, int device, NPUMetrics& metric)
@@ -228,29 +206,6 @@ namespace hwgauge
         }
     }
 
-    void NPUImpl::collect_single_device_info(int card, int device, NPUInfo& info)
-    {
-        int ret;
-        struct dcmi_chip_info chip_info = {0};
-        ret = dcmi_get_device_chip_info(card, device, &chip_info);
-        if (ret == NPU_OK)
-        {
-            info.chip_type.assign(
-                reinterpret_cast<const char*>(chip_info.chip_type),
-                strnlen(reinterpret_cast<const char*>(chip_info.chip_type), sizeof(chip_info.chip_type))
-            );
-            info.chip_name.assign(
-                reinterpret_cast<const char*>(chip_info.chip_name),
-                strnlen(reinterpret_cast<const char*>(chip_info.chip_name), sizeof(chip_info.chip_name))
-            );
-        }
-        else
-        {
-            info.chip_type="";
-            info.chip_name="";
-            spdlog::warn("[NPUImpl] Get npu info failed (ret={}, card={}, device={})",ret,card,device);
-        }
-    }
 }
 
 #endif

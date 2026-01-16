@@ -1,7 +1,8 @@
 #pragma once
 
 #ifdef HWGAUGE_USE_NVML
-#include "GPUCollector.hpp"
+
+#include "GPUMetrics.hpp"
 #include <string>
 #include <vector>
 
@@ -19,7 +20,7 @@ namespace hwgauge {
 
 		std::string name() { return "NVML Collector"; }
 		std::vector<GPULabel> labels();
-		std::vector<GPUMetrics> sample();
+		std::vector<GPUMetrics> sample(std::vector<GPULabel>&labels);
 
 	private:
 		bool initialized = false;

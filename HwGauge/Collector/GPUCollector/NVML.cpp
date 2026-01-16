@@ -1,23 +1,24 @@
 #ifdef HWGAUGE_USE_NVML
+
 #include "NVML.hpp"
 #include <nvml.h>
 #include <array>
+#include "Collector/Exception.hpp"
 
 namespace hwgauge {
 	NVML::NVML()
 	{
 		nvmlReturn_t status = nvmlInit();
 		if (status != NVML_SUCCESS) {
-			throw std::runtime_error("NVML initialization failed");
+			throw hwgauge::FatalError("NVML initialization failed");
 		}
 	}
 
 	NVML::~NVML() {
 		if (initialized) {
 			nvmlReturn_t status = nvmlShutdown();
-
 			if (status != NVML_SUCCESS) {
-				throw std::runtime_error("NVML shutdown failed");
+				throw hwgauge::FatalError("NVML shutdown failed");
 			}
 		}
 	}
@@ -44,7 +45,8 @@ namespace hwgauge {
 		return *this;
 	}
 
-	std::vector<GPULabel> NVML::labels() {
+	std::vector<GPULabel> NVML::labels()
+	{
 		nvmlReturn_t status;
 
 		unsigned int devicesCount = 0;
@@ -79,14 +81,15 @@ namespace hwgauge {
 		return labels;
 	}
 
-	std::vector<GPUMetrics> NVML::sample() {
+	std::vector<GPUMetrics> NVML::sample(std::vector<GPULabel>&labels)
+	{
 		nvmlReturn_t status;
 
-		unsigned int devicesCount = 0;
-		status = nvmlDeviceGetCount(std::addressof(devicesCount));
-		if (status != NVML_SUCCESS) {
-			throw std::runtime_error("NVML get devices count failed");
-		}
+		unsigned int devicesCount = labels.size();
+		// status = nvmlDeviceGetCount(std::addressof(devicesCount));
+		// if (status != NVML_SUCCESS) {
+		// 	throw std::runtime_error("NVML get devices count failed");
+		// }
 
 		std::vector<GPUMetrics> metrics;
 		for (std::size_t index = 0; index < devicesCount; index++) {

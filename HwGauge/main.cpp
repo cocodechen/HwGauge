@@ -4,16 +4,19 @@
 #include <csignal>
 #include <memory>
 #include <chrono>
+#include <atomic>
 
 #include "Exposer/Exposer.hpp"
 #include "Collector/DBConfig.hpp"
-#include "Collector/GPUCollector/GPUCollector.hpp"
-#ifdef HWGAUGE_USE_NVML
-#	include "Collector/GPUCollector/NVML.hpp"
-#endif
-#include "Collector/CPUCollector/CPUCollector.hpp"
+
+#	include "Collector/CPUCollector/CPUCollector.hpp"
 #ifdef HWGAUGE_USE_INTEL_PCM
 #	include "Collector/CPUCollector/PCM.hpp"
+#endif
+
+#ifdef HWGAUGE_USE_NVML
+#	include "Collector/GPUCollector/GPUCollector.hpp"
+#	include "Collector/GPUCollector/NVML.hpp"
 #endif
 
 #ifdef HWGAUGE_USE_NPU
@@ -21,15 +24,24 @@
 #	include "Collector/NPUCollector/NPUImpl.hpp"
 #endif
 
+
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
-static void signal_handler(int signal) {
-	if (signal == SIGINT && exposer != nullptr) {
-		spdlog::info("Stopping exposer");
-		exposer->stop();
-		exposer.reset();
-	}
+// static void signal_handler(int signal) {
+// 	if (signal == SIGINT && exposer != nullptr) {
+// 		spdlog::info("Stopping exposer");
+// 		exposer->stop();
+// 		exposer.reset();
+// 	}
+// }
+std::atomic<bool> g_stop_requested{false};
+static void signal_handler(int signal)
+{
+    if (signal == SIGINT) {
+        g_stop_requested.store(true, std::memory_order_relaxed);
+    }
 }
+
 
 int main(int argc, char* argv[]) {
 	// Parse command-line arguments
@@ -84,11 +96,17 @@ int main(int argc, char* argv[]) {
 	exposer = std::make_unique<hwgauge::Exposer>(address, std::chrono::seconds(interval_seconds));
 	std::signal(SIGINT, signal_handler);
 
-#ifdef HWGAUGE_USE_NVML
-	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML());
-#endif
+
 #ifdef HWGAUGE_USE_INTEL_PCM
 	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM());
+#endif
+
+#ifdef HWGAUGE_USE_NVML
+#ifdef HWGAUGE_USE_POSTGRESQL
+	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML(),dbEnable,dbConfig,dbTableName);
+#else
+	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML());
+#endif
 #endif
 
 #ifdef HWGAUGE_USE_NPU
@@ -101,6 +119,21 @@ int main(int argc, char* argv[]) {
 
 	spdlog::info("Staring exposer on \"{}\"", address);
 	spdlog::info("Press \"Ctrl+C\" to stop exposer");
+
+	//exposer->run();
+	
+	std::thread signal_watcher([&]{
+		while (!g_stop_requested.load(std::memory_order_relaxed))
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		}
+		spdlog::info("Stopping exposer");
+		exposer->stop();
+	});
+
 	exposer->run();
+
+	signal_watcher.join();
+	exposer.reset();
 	return 0;
 }

@@ -116,36 +116,28 @@ endif()
 
 # Add PostgreSQL library (conditional)
 if(HWGAUGE_USE_POSTGRESQL)
+    # Windows / Linux 都用 Module 模式
+    find_package(PostgreSQL REQUIRED)
+    target_include_directories(HwGauge PRIVATE
+        ${PostgreSQL_INCLUDE_DIRS}
+    )
+    target_link_libraries(HwGauge PRIVATE
+        ${PostgreSQL_LIBRARIES}
+    )
     if(WIN32)
-        # Windows上需要指定PostgreSQL路径
-        set(POSTGRESQL_ROOT "C:/Program Files/PostgreSQL" CACHE PATH "PostgreSQL installation root")
-        find_package(PostgreSQL REQUIRED PATHS "${POSTGRESQL_ROOT}")
-        
-        # Windows上可能需要链接额外的库
-        if(PostgreSQL_FOUND)
-            target_link_libraries(HwGauge PRIVATE 
-                ${PostgreSQL_LIBRARIES}
-                ws2_32  # Windows sockets
-                secur32 # Security API
-            )
-        endif()
-    else()
-        # Linux/macOS使用标准查找
-        find_package(PostgreSQL REQUIRED)
-        target_link_libraries(HwGauge PRIVATE ${PostgreSQL_LIBRARIES})
+        target_link_libraries(HwGauge PRIVATE
+            ws2_32
+            secur32
+        )
     endif()
-    
-    if(PostgreSQL_FOUND)
-        target_include_directories(HwGauge PRIVATE ${PostgreSQL_INCLUDE_DIRS})
-        target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_POSTGRESQL=1)
-        message(STATUS "PostgreSQL support enabled")
-        message(STATUS "  Include dir: ${PostgreSQL_INCLUDE_DIRS}")
-        message(STATUS "  Libraries: ${PostgreSQL_LIBRARIES}")
-    else()
-        message(WARNING "PostgreSQL support requested but not found")
-        set(HWGAUGE_USE_POSTGRESQL OFF CACHE BOOL "Enable PostgreSQL backend" FORCE)
-    endif()
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_POSTGRESQL=1)
+
+    message(STATUS "PostgreSQL support enabled")
+    message(STATUS "  Include dir: ${PostgreSQL_INCLUDE_DIRS}")
+    message(STATUS "  Libraries: ${PostgreSQL_LIBRARIES}")
+
 endif()
+
 
 # Add spdlog library
 target_link_libraries(HwGauge PRIVATE spdlog::spdlog)
