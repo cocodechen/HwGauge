@@ -9,19 +9,20 @@
 #include "Exposer/Exposer.hpp"
 #include "Collector/DBConfig.hpp"
 
-#	include "Collector/CPUCollector/CPUCollector.hpp"
+
 #ifdef HWGAUGE_USE_INTEL_PCM
-#	include "Collector/CPUCollector/PCM.hpp"
+#include "Collector/CPUCollector/CPUCollector.hpp"
+#include "Collector/CPUCollector/PCM.hpp"
 #endif
 
 #ifdef HWGAUGE_USE_NVML
-#	include "Collector/GPUCollector/GPUCollector.hpp"
-#	include "Collector/GPUCollector/NVML.hpp"
+#include "Collector/GPUCollector/GPUCollector.hpp"
+#include "Collector/GPUCollector/NVML.hpp"
 #endif
 
 #ifdef HWGAUGE_USE_NPU
-#	include "Collector/NPUCollector/NPUCollector.hpp"
-#	include "Collector/NPUCollector/NPUImpl.hpp"
+#include "Collector/NPUCollector/NPUCollector.hpp"
+#include "Collector/NPUCollector/NPUImpl.hpp"
 #endif
 
 
@@ -98,7 +99,11 @@ int main(int argc, char* argv[]) {
 
 
 #ifdef HWGAUGE_USE_INTEL_PCM
+#ifdef HWGAUGE_USE_POSTGRESQL
+	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM(),dbEnable,dbConfig,dbTableName);
+#else
 	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM());
+#endif
 #endif
 
 #ifdef HWGAUGE_USE_NVML
