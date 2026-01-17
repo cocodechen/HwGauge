@@ -1,6 +1,6 @@
 #pragma once
 #ifdef HWGAUGE_USE_INTEL_PCM
-#include "CPUCollector.hpp"
+#include "CPUMetrics.hpp"
 #include <string>
 #include <vector>
 #include <memory>
@@ -28,7 +28,7 @@ namespace hwgauge {
         std::string name() { return "PCM CPU Collector"; }
 
         std::vector<CPULabel>   labels();
-        std::vector<CPUMetrics> sample();
+        std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels);
 
     private:
         bool initialized{ false };

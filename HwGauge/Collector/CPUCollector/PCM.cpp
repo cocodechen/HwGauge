@@ -1,8 +1,8 @@
 #ifdef HWGAUGE_USE_INTEL_PCM
 #include "PCM.hpp"
-#include "cpucounters.h"
+#include "Collector/Exception.hpp"
 
-#include <stdexcept>
+#include "cpucounters.h"
 #include <thread>
 #include <chrono>
 
@@ -62,7 +62,7 @@ namespace hwgauge {
     {
         pcmInstance = pcm::PCM::getInstance();
         if (!pcmInstance)
-            throw std::runtime_error("PCM: Failed to get PCM instance");
+            throw hwgauge::FatalError("PCM: Failed to get PCM instance");
 
         auto status = pcmInstance->program();
 
@@ -71,17 +71,17 @@ namespace hwgauge {
             break;
 
         case pcm::PCM::MSRAccessDenied:
-            throw std::runtime_error(
+            throw hwgauge::FatalError(
                 "PCM: Access to CPU counters denied. Run with privileges.");
 
         case pcm::PCM::PMUBusy:
             pcmInstance->resetPMU();
             if (pcmInstance->program() != pcm::PCM::Success)
-                throw std::runtime_error("PCM: PMU busy and reset failed");
+                throw hwgauge::FatalError("PCM: PMU busy and reset failed");
             break;
 
         default:
-            throw std::runtime_error("PCM init failed: " + std::to_string(int(status)));
+            throw hwgauge::FatalError("PCM init failed: " + std::to_string(int(status)));
         }
 
         initialized = true;
@@ -105,7 +105,7 @@ namespace hwgauge {
     std::vector<CPULabel> PCM::labels()
     {
         if (!initialized || !pcmInstance)
-            throw std::runtime_error("PCM: Not initialized");
+            throw hwgauge::FatalError("PCM: Not initialized");
 
         std::vector<CPULabel> labels;
         auto numSockets = pcmInstance->getNumSockets();
@@ -121,10 +121,10 @@ namespace hwgauge {
 
     /* ---------- sampling ---------- */
 
-    std::vector<CPUMetrics> PCM::sample()
+    std::vector<CPUMetrics> PCM::sample(std::vector<CPULabel>&labels)
     {
         if (!initialized || !pcmInstance)
-            throw std::runtime_error("PCM: Not initialized");
+            throw hwgauge::FatalError("PCM: Not initialized");
 
         snapshot(afterState);
         auto afterTime = std::chrono::steady_clock::now();
@@ -134,10 +134,11 @@ namespace hwgauge {
                 afterTime - beforeTime).count();
 
         std::vector<CPUMetrics> metrics;
-        auto numSockets = pcmInstance->getNumSockets();
+        //auto numSockets = pcmInstance->getNumSockets();
 
-        for (pcm::uint32 s = 0; s < numSockets; ++s)
+         for (const auto& label : labels)
         {
+            auto s = label.index; 
             const auto& before = beforeState[s];
             const auto& after = afterState[s];
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #ifdef HWGAUGE_USE_NPU
+
 #include <string>
+#include <iostream>
 
 namespace hwgauge
 {

@@ -1,100 +1,80 @@
 #pragma once
 
+#ifdef HWGAUGE_USE_INTEL_PCM
+
 #include "prometheus/gauge.h"
 #include "prometheus/family.h"
 #include "Collector/Collector.hpp"
-#include <string>
+#include "CPUPrometheus.hpp"
+#include "CPUDatabase.hpp"
+
 #include <utility>
-#include <vector>
 
-namespace hwgauge {
-	struct CPULabel {
-		std::size_t index;
-		std::string name;
-	};
+namespace hwgauge
+{
+    template<typename T>
+    class CPUCollector : public Collector
+    {
+    public:
 
-	struct CPUMetrics {
-		double cpuUtilization;         // CPU utilization percentage
-		double cpuFrequency;           // CPU frequency in MHz
-		double c0Residency;            // C0 state residency percentage
-		double c6Residency;            // C6 state residency percentage
-		double powerUsage;             // CPU power usage in watts
-		double memoryReadBandwidth;    // Memory read bandwidth in MB/s
-		double memoryWriteBandwidth;   // Memory write bandwidth in MB/s
-		double memoryPowerUsage;       // Memory power usage in watts
-	};
+#ifdef HWGAUGE_USE_POSTGRESQL
+        explicit CPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
+            Collector(registry), 
+            impl(std::move(impl)), 
+            pm(registry),
+            label_list(labels()),
+            dbEnable(dbEnable_)
+        {
+            if (dbEnable_)
+            {
+                db = std::make_unique<CPUDatabase>(dbConfig, dbTableName);
+                // 完成npu静态数据的写入
+                if(db)db->writeInfo(label_list);
+            }
+        }
+#endif
+        explicit CPUCollector(std::shared_ptr<Registry> registry, T impl) :
+            Collector(registry), 
+            impl(std::move(impl)), 
+            pm(registry),
+            label_list(labels()){}
+        
+        virtual ~CPUCollector() = default;
 
-	template <typename T>
-	class CPUCollector : public Collector {
-	public:
-		explicit CPUCollector(std::shared_ptr<Registry> registry, T impl) :
-			Collector(registry), impl(std::move(impl)),
-			cpuUtilizationFamily(prometheus::BuildGauge().Name("cpu_utilization_percent").Help("CPU utilization percentage").Register(*registry)),
-			cpuFrequencyFamily(prometheus::BuildGauge().Name("cpu_frequency_mhz").Help("CPU frequency in MHz").Register(*registry)),
-			c0ResidencyFamily(prometheus::BuildGauge().Name("cpu_c0_residency_percent").Help("CPU C0 state residency percentage").Register(*registry)),
-			c6ResidencyFamily(prometheus::BuildGauge().Name("cpu_c6_residency_percent").Help("CPU C6 state residency percentage").Register(*registry)),
-			powerUsageFamily(prometheus::BuildGauge().Name("cpu_power_usage_watts").Help("CPU power usage in watts").Register(*registry)),
-			memoryReadBandwidthFamily(prometheus::BuildGauge().Name("memory_read_bandwidth_mbps").Help("Memory read bandwidth in MB/s").Register(*registry)),
-			memoryWriteBandwidthFamily(prometheus::BuildGauge().Name("memory_write_bandwidth_mbps").Help("Memory write bandwidth in MB/s").Register(*registry)),
-			memoryPowerUsageFamily(prometheus::BuildGauge().Name("memory_power_usage_watts").Help("Memory power usage in watts").Register(*registry))
-		{
-			for (auto& label : labels()) {
-				cpuUtilizationGauges.push_back(std::addressof(cpuUtilizationFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				cpuFrequencyGauges.push_back(std::addressof(cpuFrequencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				c0ResidencyGauges.push_back(std::addressof(c0ResidencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				c6ResidencyGauges.push_back(std::addressof(c6ResidencyFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				powerUsageGauges.push_back(std::addressof(powerUsageFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				memoryReadBandwidthGauges.push_back(std::addressof(memoryReadBandwidthFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				memoryWriteBandwidthGauges.push_back(std::addressof(memoryWriteBandwidthFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
-				memoryPowerUsageGauges.push_back(std::addressof(memoryPowerUsageFamily.Add({ { "index", std::to_string(label.index) }, { "name", label.name } })));
+        void collect() override
+        {
+            // 获取标签（设备列表）和指标数据
+            auto metric_list = sample(label_list);
+
+			// 输出调试
+			for(int i=0;i<label_list.size();i++)
+			{
+				outCPU(label_list[i],metric_list[i]);
 			}
-		}
-		virtual ~CPUCollector() = default;
 
-		void collect() override {
-			std::size_t index = 0;
-			for (auto& metrics : sample()) {
-				cpuUtilizationGauges[index]->Set(metrics.cpuUtilization);
-				cpuFrequencyGauges[index]->Set(metrics.cpuFrequency);
-				c0ResidencyGauges[index]->Set(metrics.c0Residency);
-				c6ResidencyGauges[index]->Set(metrics.c6Residency);
-				powerUsageGauges[index]->Set(metrics.powerUsage);
-				memoryReadBandwidthGauges[index]->Set(metrics.memoryReadBandwidth);
-				memoryWriteBandwidthGauges[index]->Set(metrics.memoryWriteBandwidth);
-				memoryPowerUsageGauges[index]->Set(metrics.memoryPowerUsage);
-				index++;
-			}
-		}
+            // prometheus
+            pm.write(label_list,metric_list);
 
-		std::string name() override { return impl.name(); }
-		std::vector<CPULabel> labels() { return impl.labels(); }
-		std::vector<CPUMetrics> sample() { return impl.sample(); }
+#ifdef HWGAUGE_USE_POSTGRESQL
+            // database
+            if(dbEnable && db)db->writeMetric(label_list,metric_list);
+#endif
+        }
 
-	private:
-		T impl;
+        std::string name() override { return impl.name(); }
+        std::vector<CPULabel> labels() { return impl.labels(); }
+        std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels) { return impl.sample(labels); }
 
-		prometheus::Family<prometheus::Gauge>& cpuUtilizationFamily;
-		std::vector<prometheus::Gauge*> cpuUtilizationGauges;
+    private:
+        T impl;
+        CPUPrometheus pm;
+        std::vector<CPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更新
 
-		prometheus::Family<prometheus::Gauge>& cpuFrequencyFamily;
-		std::vector<prometheus::Gauge*> cpuFrequencyGauges;
-
-		prometheus::Family<prometheus::Gauge>& c0ResidencyFamily;
-		std::vector<prometheus::Gauge*> c0ResidencyGauges;
-
-		prometheus::Family<prometheus::Gauge>& c6ResidencyFamily;
-		std::vector<prometheus::Gauge*> c6ResidencyGauges;
-
-		prometheus::Family<prometheus::Gauge>& powerUsageFamily;
-		std::vector<prometheus::Gauge*> powerUsageGauges;
-
-		prometheus::Family<prometheus::Gauge>& memoryReadBandwidthFamily;
-		std::vector<prometheus::Gauge*> memoryReadBandwidthGauges;
-
-		prometheus::Family<prometheus::Gauge>& memoryWriteBandwidthFamily;
-		std::vector<prometheus::Gauge*> memoryWriteBandwidthGauges;
-
-		prometheus::Family<prometheus::Gauge>& memoryPowerUsageFamily;
-		std::vector<prometheus::Gauge*> memoryPowerUsageGauges;
-	};
+#ifdef HWGAUGE_USE_POSTGRESQL
+        bool dbEnable;
+        std::unique_ptr<CPUDatabase> db;
+#endif
+    };
 }
+
+#endif
