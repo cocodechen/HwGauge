@@ -1,7 +1,8 @@
 ﻿# HwGauge
 
-HwGauge is a lightweight hardware power-consumption exporter that exposes **CPU、GPU and NPU energy metrics as Prometheus Gauges**.
+HwGauge is a lightweight hardware power-consumption exporter that exposes **CPU, GPU and NPU energy metrics as Prometheus Or PostgreSQL Gauges**.
 It is implemented in modern C++ to provide **high-performance monitoring with minimal overhead**.
+
 
 ## ✨ Features
 
@@ -9,19 +10,73 @@ It is implemented in modern C++ to provide **high-performance monitoring with mi
 * 🎮 **GPU Monitoring** — NVIDIA NVML (CUDA Toolkit required)
 * 🧠 **NPU Monitoring** — Ascend NPU (DCMI required)
 * 📡 **Prometheus Exposer** — Built-in HTTP server with configurable endpoint
+* 🗄️ **PostgreSQL Storage** — Store metrics in PostgreSQL for long-term retention
 * ⚙️ **Template-based Collector Framework** — clean separation of metrics & hardware backends
+* 🔌 **Unified Database Interface** — Support multiple storage backends with common API
 
+---
+
+## ⚙️ Architecture Diagram
+```mermaid
+flowchart TD
+    subgraph "采集层 (Data Collection)"
+        A1[CPUImpl<br/>Intel PCM]
+        A2[GPUImpl<br/>NVIDIA NVML]
+        A3[NPUImpl<br/>Huawei DCMI]
+    end
+
+    subgraph "收集层 (Collectors)"
+        B1[CPUCollector<br/>inherits Collector]
+        B2[GPUCollector<br/>inherits Collector]
+        B3[NPUCollector<br/>inherits Collector]
+    end
+
+    subgraph "输出层 (Output)"
+        direction LR
+        C1[Prometheus]
+        C2[PostgreSQL]
+        C3[Terminal]
+    end
+
+    D[Exposer<br/>Scheduler]
+
+    D --> B1
+    D --> B2
+    D --> B3
+
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+
+    B1 --> C1
+    B1 --> C2
+    B1 --> C3
+    B2 --> C1
+    B2 --> C2
+    B2 --> C3
+    B3 --> C1
+    B3 --> C1
+    B3 --> C2
+    B3 --> C3
+```
 ---
 
 ## 📦 Prerequisites
 
-| Requirement     | Notes                                     |
-| --------------- | ----------------------------------------- |
-| CMake ≥ 3.25    | Required for building                     |
-| C++17 compiler  | GCC / Clang / MSVC                        |
-| CUDA Toolkit    | Required for NVML GPU monitoring          |
-| NPU SDK/Driver  | Required for NPU monitoring               |
-| Root privileges | Needed to access hardware registers (PCM) |
+| Requirement        | Notes                                                              |
+| ------------------ | ------------------------------------------------------------------ |
+| CMake ≥ 3.25       | Required for building                                              |
+| C++17 compiler     | GCC / Clang / MSVC                                                 |
+| CUDA Toolkit       | Required for NVML GPU monitoring                                   |
+| NPU SDK/Driver     | Required for NPU monitoring                                        |
+| prometheus-cpp     | Prometheus client development library(for Prometheus module)|
+| libpq-dev          | PostgreSQL client development library (for SQL module)             |
+| PostgreSQL Server  | PostgreSQL server for storing metrics (optional)                   |
+| Root privileges    | Needed to access hardware registers (PCM)                          |
+
+**模块依赖说明:**
+- **Prometheus模块**: 需要安装Prometheus C++客户端库，配置见 `vendors/prometheus-cpp/`
+- **PostgreSQL模块**: 需要安装libpq-dev和PostgreSQL服务器
 
 ---
 
@@ -67,10 +122,14 @@ cmake --build . --parallel
 
 | Option                  | Default | Description                  |
 | ----------------------- | ------- | ---------------------------- |
-| `HWGAUGE_USE_INTEL_PCM` | `ON`    | Enable Intel CPU collectors  |
-| `HWGAUGE_USE_NVML`      | `ON`    | Enable NVIDIA GPU collectors |
-| `HWGAUGE_USE_NPU`       | `ON`    | Enable Ascend NPU collectors |
+| `HWGAUGE_USE_INTEL_PCM` | `OFF`    | Enable Intel CPU collectors  |
+| `HWGAUGE_USE_NVML`      | `OFF`    | Enable NVIDIA GPU collectors |
+| `HWGAUGE_USE_NPU`       | `OFF`    | Enable Ascend NPU collectors |
+| `HWGAUGE_USE_PROMETHEUS` | `OFF`  | Enable Prometheus exporte|
+|`HWGAUGE_USE_POSTGRESQL`|`OFF`|Enable PostgreSQL storage|
+
 Disable collectors you don't need to reduce dependencies.
+
 
 ---
 
@@ -82,20 +141,12 @@ After building, the binary is available in `bin/`.
 
 ```bash
 chmod +x bin/hwgauge
-sudo bin/hwgauge [OPTIONS]
+sudo ./bin/hwgauge [OPTIONS]
 ```
 
 ### Command-line options
-
-| Option           | Description                 | Default          |
-| ---------------- | --------------------------- | ---------------- |
-| `-a, --address`  | HTTP exposer bind address   | `127.0.0.1:8000` |
-| `-i, --interval` | Sampling interval (seconds) | `1`              |
-
-**Example**
-
 ```bash
-sudo bin/hwgauge --address 0.0.0.0:8080 --interval 2
+sudo ./bin/hwgauge --help
 ```
 
 ---
@@ -145,53 +196,3 @@ sudo bin/hwgauge --address 0.0.0.0:8080 --interval 2
 | `npu_voltage_volts`                    | V     | NPU 电压                 |
 
 ---
-
-## 🧩 Collector Architecture
-
-HwGauge uses a **template-based strategy pattern**:
-
-1. **Collector Wrapper (`CPUCollector<T>`, `GPUCollector<T>`)**
-
-   * Registers Prometheus `Family` / `Gauge`
-   * Manages update loop
-
-2. **Hardware Implementation (`T impl`)**
-
-   * Fetches real hardware metrics
-   * PCM, NVML, or user-defined backend
-
-No inheritance required — duck typing via templates.
-
----
-
-## 🛠️ Extend — Add Your Own Collector
-
-To support new hardware (AMD GPU, storage, etc.):
-
-### 1️⃣ Define metric + label structs
-
-Used for raw data & device identifiers.
-
-### 2️⃣ Implement class `T` with methods
-
-* `std::string name()`
-* `std::vector<LabelStruct> labels()`
-* `std::vector<MetricStruct> sample()`
-
-(`sample()` size must match `labels()`)
-
-### 3️⃣ Implement wrapper collector
-
-* inherit `Collector`
-* register Prometheus families
-* update gauges in `collect()`
-
-### 4️⃣ Register in `main.cpp`
-
-```cpp
-#ifdef HWGAUGE_USE_MYIMPL
-exposer->add_collector<
-    hwgauge::MyNewCollector<hwgauge::MyImpl>
->(hwgauge::MyImpl());
-#endif
-```
