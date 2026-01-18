@@ -2,13 +2,10 @@
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
 #include "Collector/Collector.hpp"
+#include "CPUMetrics.hpp"
 #include "CPUPrometheus.hpp"
 #include "CPUDatabase.hpp"
-
-#include <utility>
 
 namespace hwgauge
 {
@@ -16,28 +13,24 @@ namespace hwgauge
     class CPUCollector : public Collector
     {
     public:
-
-#ifdef HWGAUGE_USE_POSTGRESQL
-        explicit CPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
+        explicit CPUCollector(T impl, const CollectorConfig& cfg)
+            : impl(std::move(impl)),
             label_list(labels()),
-            dbEnable(dbEnable_)
+            outTer(cfg.outTer)
         {
-            if (dbEnable_)
-            {
-                db = std::make_unique<CPUDatabase>(dbConfig, dbTableName);
-                // 完成npu静态数据的写入
-                if(db)db->writeInfo(label_list);
-            }
-        }
+#ifdef HWGAUGE_USE_PROMETHEUS
+            pmEnable = cfg.pmEnable;
+            if (pmEnable)pm = std::make_unique<CPUPrometheus>(cfg.registry);
 #endif
-        explicit CPUCollector(std::shared_ptr<Registry> registry, T impl) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
-            label_list(labels()){}
+#ifdef HWGAUGE_USE_POSTGRESQL
+            dbEnable = cfg.dbEnable;
+            if (dbEnable)
+            {
+                db = std::make_unique<CPUDatabase>(cfg.dbConfig, cfg.dbTableName);
+                db->writeInfo(label_list);
+            }
+#endif
+        }
         
         virtual ~CPUCollector() = default;
 
@@ -47,14 +40,15 @@ namespace hwgauge
             auto metric_list = sample(label_list);
 
 			// 输出调试
-			for(int i=0;i<label_list.size();i++)
-			{
-				outCPU(label_list[i],metric_list[i]);
-			}
-
+            if(outTer)
+            {
+                for(int i=0;i<label_list.size();i++)
+                    outCPU(label_list[i],metric_list[i]);
+            }
+#ifdef HWGAUGE_USE_PROMETHEUS
             // prometheus
-            pm.write(label_list,metric_list);
-
+            if(pmEnable && pm)pm->write(label_list,metric_list);
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
             // database
             if(dbEnable && db)db->writeMetric(label_list,metric_list);
@@ -67,9 +61,12 @@ namespace hwgauge
 
     private:
         T impl;
-        CPUPrometheus pm;
-        std::vector<CPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更新
-
+        std::vector<CPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
+        bool outTer;
+#ifdef HWGAUGE_USE_PROMETHEUS
+        bool pmEnable;
+        std::unique_ptr<CPUPrometheus> pm;
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable;
         std::unique_ptr<CPUDatabase> db;

@@ -2,13 +2,10 @@
 
 #ifdef HWGAUGE_USE_NPU
 
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
 #include "Collector/Collector.hpp"
+#include "NPUMetrics.hpp"
 #include "NPUPrometheus.hpp"
 #include "NPUDatabase.hpp"
-
-#include <utility>
 
 namespace hwgauge
 {
@@ -16,28 +13,24 @@ namespace hwgauge
     class NPUCollector : public Collector
     {
     public:
-#ifdef HWGAUGE_USE_POSTGRESQL
-        explicit NPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
+        explicit NPUCollector(T impl, const CollectorConfig& cfg)
+            : impl(std::move(impl)),
             label_list(labels()),
-            dbEnable(dbEnable_)
+            outTer(cfg.outTer)
         {
-            if (dbEnable_)
-            {
-                db = std::make_unique<NPUDatabase>(dbConfig, dbTableName);
-                // 完成npu静态数据的写入
-                if(db)db->writeInfo(label_list);
-            }
-        }
+#ifdef HWGAUGE_USE_PROMETHEUS
+            pmEnable = cfg.pmEnable;
+            if (pmEnable)pm = std::make_unique<NPUPrometheus>(cfg.registry);
 #endif
-        explicit NPUCollector(std::shared_ptr<Registry> registry, T impl) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
-            label_list(labels())
-            {}
+#ifdef HWGAUGE_USE_POSTGRESQL
+            dbEnable = cfg.dbEnable;
+            if (dbEnable)
+            {
+                db = std::make_unique<NPUDatabase>(cfg.dbConfig, cfg.dbTableName);
+                db->writeInfo(label_list);
+            }
+#endif
+        }
         
         virtual ~NPUCollector() = default;
 
@@ -45,9 +38,17 @@ namespace hwgauge
         {
             // 获取标签（设备列表）和指标数据
             auto metric_list = sample(label_list);
-            // prometheus
-            pm.write(label_list,metric_list);
 
+			// 输出调试
+            if(outTer)
+            {
+                for(int i=0;i<label_list.size();i++)
+                    outNPU(label_list[i],metric_list[i]);
+            }
+#ifdef HWGAUGE_USE_PROMETHEUS
+            // prometheus
+            if(pmEnable && pm)pm->write(label_list,metric_list);
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
             // database
             if(dbEnable && db)db->writeMetric(label_list,metric_list);
@@ -60,9 +61,12 @@ namespace hwgauge
 
     private:
         T impl;
-        NPUPrometheus pm;
-        std::vector<NPULabel>label_list;
-
+        std::vector<NPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
+        bool outTer;
+#ifdef HWGAUGE_USE_PROMETHEUS
+        bool pmEnable;
+        std::unique_ptr<NPUPrometheus> pm;
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable;
         std::unique_ptr<NPUDatabase> db;

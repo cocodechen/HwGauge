@@ -3,7 +3,7 @@
 #if defined(HWGAUGE_USE_POSTGRESQL) && defined(HWGAUGE_USE_INTEL_PCM)
 
 #include "CPUMetrics.hpp"
-#include "Collector/DBConfig.hpp"
+#include "Collector/Config.hpp"
 #include "Collector/Database.hpp"
 
 namespace hwgauge

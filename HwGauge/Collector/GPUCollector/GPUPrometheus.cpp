@@ -1,10 +1,11 @@
-#ifdef HWGAUGE_USE_NVML
+#if defined(HWGAUGE_USE_NVML) && defined(HWGAUGE_USE_PROMETHEUS)
 
 #include "GPUPrometheus.hpp"
 
 namespace hwgauge
 {
-    GPUPrometheus::GPUPrometheus(std::shared_ptr<prometheus::Registry> registry)
+    GPUPrometheus::GPUPrometheus(std::shared_ptr<prometheus::Registry> registry_)
+        : Prometheus<GPULabel, GPUMetrics>(registry_)
     {
         // 创建指标族（Families）
         auto& registry_ref = *registry;

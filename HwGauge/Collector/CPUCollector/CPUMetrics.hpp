@@ -2,8 +2,8 @@
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 
-#include<string>
-#include<iostream>
+#include <string>
+#include <iostream>
 
 namespace hwgauge
 {

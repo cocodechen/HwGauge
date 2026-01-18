@@ -1,10 +1,11 @@
-#ifdef HWGAUGE_USE_INTEL_PCM
+#if defined(HWGAUGE_USE_INTEL_PCM) && defined(HWGAUGE_USE_PROMETHEUS)
 
 #include "CPUPrometheus.hpp"
 
 namespace hwgauge
 {
-    CPUPrometheus::CPUPrometheus(std::shared_ptr<prometheus::Registry> registry)
+    CPUPrometheus::CPUPrometheus(std::shared_ptr<prometheus::Registry> registry_)
+        : Prometheus<CPULabel, CPUMetrics>(registry_)
     {
         // 创建指标族（Families）
         auto& registry_ref = *registry;

@@ -1,20 +1,16 @@
 #pragma once
 
-#ifdef HWGAUGE_USE_NVML
+#if defined(HWGAUGE_USE_NVML) && defined(HWGAUGE_USE_PROMETHEUS)
 
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
+#include "Collector/Prometheus.hpp"
 #include "GPUMetrics.hpp"
-
-#include <utility>
-#include <vector>
 
 namespace hwgauge
 {
-    class GPUPrometheus
+    class GPUPrometheus:public Prometheus<GPULabel,GPUMetrics>
     {
     public:
-        explicit GPUPrometheus(std::shared_ptr<prometheus::Registry> registry);
+        explicit GPUPrometheus(std::shared_ptr<prometheus::Registry> registry_);
         
         virtual ~GPUPrometheus() = default;
 

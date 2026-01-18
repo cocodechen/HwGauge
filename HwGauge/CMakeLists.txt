@@ -146,4 +146,11 @@ target_link_libraries(HwGauge PRIVATE spdlog::spdlog)
 target_link_libraries(HwGauge PRIVATE CLI11::CLI11)
 
 # Add prometheus-cpp library
-target_link_libraries(HwGauge PRIVATE prometheus-cpp::pull)
+# target_link_libraries(HwGauge PRIVATE prometheus-cpp::pull)
+if(HWGAUGE_USE_PROMETHEUS)
+    target_link_libraries(HwGauge PRIVATE prometheus-cpp::pull)
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_PROMETHEUS=1)
+    message(STATUS "Prometheus support enabled in HwGauge")
+else()
+    message(STATUS "Prometheus support disabled in HwGauge")
+endif()

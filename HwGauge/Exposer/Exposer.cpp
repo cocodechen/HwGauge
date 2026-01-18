@@ -1,13 +1,12 @@
 #include "Exposer.hpp"
 #include "spdlog/spdlog.h"
-#include "Collector/Exception.hpp"
 
 namespace hwgauge
 {
 	void Exposer::run()
 	{
 		running.store(true, std::memory_order_release);
-		exposer.RegisterCollectable(registry);
+		//exposer.RegisterCollectable(registry);
 
 		using clock = std::chrono::steady_clock;
 

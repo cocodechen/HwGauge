@@ -6,7 +6,6 @@
 #include <iostream>
 #include <cstring>
 
-
 namespace hwgauge
 {
     NPUDatabase::NPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)

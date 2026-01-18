@@ -11,12 +11,13 @@
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe",
                 "CUDAToolkit_ROOT": "F:/NVIDIA_GPU",
-                "HWGAUGE_USE_NVML": "ON",
-                "HWGAUGE_USE_NPU": "OFF",
-                "HWGAUGE_USE_INTEL_PCM": "OFF",
+                "HWGAUGE_USE_NVML": true,
+                "HWGAUGE_USE_NPU": false,
+                "HWGAUGE_USE_INTEL_PCM": false,
 
                 "PostgreSQL_ROOT": "C:/Program Files/PostgreSQL/18",
-                "HWGAUGE_USE_POSTGRESQL": "ON"
+                "HWGAUGE_USE_POSTGRESQL": true,
+                "HWGAUGE_USE_PROMETHEUS": true
             },
             "condition": {
                 "type": "equals",

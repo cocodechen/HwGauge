@@ -1,14 +1,14 @@
 #pragma once
+
 #include <string>
 #include <memory>
 
-namespace hwgauge {
-    using Registry = prometheus::Registry;
-	class Collector {
+namespace hwgauge
+{
+	class Collector
+    {
     public:
-        explicit Collector(std::shared_ptr<Registry> registry)
-            : registry(std::move(registry)) {
-        }
+        explicit Collector(){}
 
         virtual ~Collector() = default;
         
@@ -18,6 +18,7 @@ namespace hwgauge {
         Collector(const Collector&) = delete;
         Collector& operator=(const Collector&) = delete;
     protected:
-        std::shared_ptr<Registry> registry;
 	};
+
 }
+

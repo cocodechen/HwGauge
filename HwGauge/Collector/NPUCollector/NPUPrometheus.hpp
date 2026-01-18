@@ -1,19 +1,16 @@
 #pragma once
 
-#ifdef HWGAUGE_USE_NPU
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
-#include "NPUMetrics.hpp"
+#if defined(HWGAUGE_USE_NPU) && defined(HWGAUGE_USE_PROMETHEUS)
 
-#include <utility>
-#include <vector>
+#include "Collector/Prometheus.hpp"
+#include "NPUMetrics.hpp"
 
 namespace hwgauge
 {
-    class NPUPrometheus
+    class NPUPrometheus:public Prometheus<NPULabel,NPUMetrics>
     {
     public:
-        explicit NPUPrometheus(std::shared_ptr<prometheus::Registry> registry);
+        explicit NPUPrometheus(std::shared_ptr<prometheus::Registry> registry_);
         
         virtual ~NPUPrometheus() = default;
 

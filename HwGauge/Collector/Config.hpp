@@ -1,9 +1,14 @@
 #pragma once
 
-#ifdef HWGAUGE_USE_POSTGRESQL
 #include <string>
+
+#ifdef HWGAUGE_USE_PROMETHEUS
+#include <prometheus/registry.h>
+#endif
+
 namespace hwgauge
 {
+#ifdef HWGAUGE_USE_POSTGRESQL
     /*数据库连接配置结构体*/
     struct ConnectionConfig
     {
@@ -39,5 +44,21 @@ namespace hwgauge
             connect_timeout(connect_timeout_)
         {}
     };
-}
 #endif
+
+    /*Collector配置*/
+    struct CollectorConfig
+    {
+        bool outTer=true;
+#ifdef HWGAUGE_USE_PROMETHEUS
+        bool pmEnable = false;
+        std::shared_ptr<prometheus::Registry> registry;
+#endif
+
+#ifdef HWGAUGE_USE_POSTGRESQL
+        bool dbEnable = false;
+        ConnectionConfig dbConfig;
+        std::string dbTableName;
+#endif
+    };
+}

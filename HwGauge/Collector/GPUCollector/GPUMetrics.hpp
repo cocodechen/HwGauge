@@ -37,9 +37,6 @@ namespace hwgauge
             << ", power="  << m.powerUsage
             << " }\n";
     }
-
 }
-
-
 
 #endif

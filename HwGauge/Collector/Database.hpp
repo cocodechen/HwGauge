@@ -1,8 +1,8 @@
 #pragma once
 
-//#ifdef HWGAUGE_USE_POSTGRESQL
+#ifdef HWGAUGE_USE_POSTGRESQL
 
-#include "Collector/DBConfig.hpp"
+#include "Collector/Config.hpp"
 #include "Collector/Exception.hpp"
 #include "spdlog/spdlog.h"
 
@@ -72,16 +72,17 @@ namespace hwgauge
             bool connect()
             {
                 std::string conn_info = "host=" + config.host +
-                                        " port=" + config.port +
-                                        " dbname=" + config.dbname +
-                                        " user=" + config.user +
-                                        " password=" + config.password +
-                                        " connect_timeout=" + std::to_string(config.connect_timeout);
+                        " port=" + config.port +
+                        " dbname=" + config.dbname +
+                        " user=" + config.user;
+                if (!config.password.empty())conn_info += " password=" + config.password;
+                conn_info += " connect_timeout=" + std::to_string(config.connect_timeout);
+
                 conn = PQconnectdb(conn_info.c_str());
                 if (PQstatus(conn) != CONNECTION_OK)
                 {
                     disconnect();
-                    spdlog::warn("[Database] Failed to connect to database");
+                    spdlog::warn("[Database] Failed to connect to database: {}",std::string(PQerrorMessage(conn)));
                     return false;
                 }
                 spdlog::info("[Database] Connected to database {}",config.dbname);
@@ -125,7 +126,7 @@ namespace hwgauge
                 if (!res || PQresultStatus(res) != PGRES_COMMAND_OK)
                 {
                     PQclear(res);
-                    spdlog::warn("[Database] SQL execution failed: {}", PQerrorMessage(conn));
+                    spdlog::warn("[Database] SQL execution failed: {}", std::string(PQerrorMessage(conn)));
                     return false;
                 }
                 PQclear(res);
@@ -139,8 +140,7 @@ namespace hwgauge
                 if (PQresultStatus(res) != PGRES_COMMAND_OK)
                 {
                     PQclear(res);
-                    spdlog::warn("[Database] Failed to begin transaction for static info: {}", 
-                        std::string(PQerrorMessage(conn)));
+                    spdlog::warn("[Database] Failed to begin transaction for static info: {}", std::string(PQerrorMessage(conn)));
                     return false;
                 }
                 PQclear(res);
@@ -153,8 +153,7 @@ namespace hwgauge
                 if (PQresultStatus(res) != PGRES_COMMAND_OK)
                 {
                     PQclear(res);
-                    spdlog::warn("[Database] Failed to commit transaction for static info: {}", 
-                        std::string(PQerrorMessage(conn)));
+                    spdlog::warn("[Database] Failed to commit transaction for static info: {}", std::string(PQerrorMessage(conn)));
                     return false;
                 }
                 PQclear(res);
@@ -167,8 +166,7 @@ namespace hwgauge
                 if (PQresultStatus(res) != PGRES_COMMAND_OK)
                 {
                     PQclear(res);
-                    spdlog::warn("[Database] Failed to rollback transaction for static info: {}", 
-                        std::string(PQerrorMessage(conn)));
+                    spdlog::warn("[Database] Failed to rollback transaction for static info: {}", std::string(PQerrorMessage(conn)));
                     return false;
                 }
                 PQclear(res);
@@ -208,4 +206,4 @@ namespace hwgauge
         };
 }
 
-//#endif
+#endif

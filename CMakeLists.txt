@@ -12,6 +12,7 @@ option(HWGAUGE_USE_INTEL_PCM "Enable collectors for Intel CPUs" OFF)
 option(HWGAUGE_USE_NVML "Enable collectors for Nvidia GPUs" ON)
 option(HWGAUGE_USE_NPU "Enable collectors for Ascend NPUs" OFF)
 
+option(HWGAUGE_USE_PROMETHEUS "Enable Prometheus backend" OFF)
 option(HWGAUGE_USE_POSTGRESQL "Enable PostgreSQL backend" OFF)
 
 # Project declaration
@@ -147,10 +148,21 @@ add_subdirectory(HwGauge)
 add_subdirectory(vendors/spdlog)
 add_subdirectory(vendors/CLI11)
 
-set(ENABLE_TESTING OFF CACHE BOOL "Disable prometheus-cpp testing" FORCE)
-set(ENABLE_COMPRESSION OFF CACHE BOOL "Disable prometheus-cpp compression" FORCE)
-set(ENABLE_PUSH OFF CACHE BOOL "Disable prometheus-cpp push" FORCE)
-add_subdirectory(vendors/prometheus-cpp)
+# set(ENABLE_TESTING OFF CACHE BOOL "Disable prometheus-cpp testing" FORCE)
+# set(ENABLE_COMPRESSION OFF CACHE BOOL "Disable prometheus-cpp compression" FORCE)
+# set(ENABLE_PUSH OFF CACHE BOOL "Disable prometheus-cpp push" FORCE)
+# add_subdirectory(vendors/prometheus-cpp)
+
+if(HWGAUGE_USE_PROMETHEUS)
+    # 只有启用 Prometheus 时才编译和链接 prometheus-cpp
+    set(ENABLE_TESTING OFF CACHE BOOL "Disable prometheus-cpp testing" FORCE)
+    set(ENABLE_COMPRESSION OFF CACHE BOOL "Disable prometheus-cpp compression" FORCE)
+    set(ENABLE_PUSH OFF CACHE BOOL "Disable prometheus-cpp push" FORCE)
+    add_subdirectory(vendors/prometheus-cpp)
+    message(STATUS "Prometheus support enabled")
+else()
+    message(STATUS "Prometheus support disabled")
+endif()
 
 if(HWGAUGE_USE_INTEL_PCM)
     set(PCM_BUILD_EXECUTABLES OFF CACHE BOOL "Disable Intel PCM utilities" FORCE)

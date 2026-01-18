@@ -2,13 +2,10 @@
 
 #ifdef HWGAUGE_USE_NVML
 
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
 #include "Collector/Collector.hpp"
+#include "GPUMetrics.hpp"
 #include "GPUPrometheus.hpp"
 #include "GPUDatabase.hpp"
-
-#include <utility>
 
 namespace hwgauge
 {
@@ -16,28 +13,24 @@ namespace hwgauge
     class GPUCollector : public Collector
     {
     public:
-
-#ifdef HWGAUGE_USE_POSTGRESQL
-        explicit GPUCollector(std::shared_ptr<Registry> registry, T impl, bool dbEnable_, const ConnectionConfig& dbConfig, const std::string& dbTableName) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
+        explicit GPUCollector(T impl, const CollectorConfig& cfg)
+            : impl(std::move(impl)),
             label_list(labels()),
-            dbEnable(dbEnable_)
+            outTer(cfg.outTer)
         {
-            if (dbEnable_)
-            {
-                db = std::make_unique<GPUDatabase>(dbConfig, dbTableName);
-                // 完成npu静态数据的写入
-                if(db)db->writeInfo(label_list);
-            }
-        }
+#ifdef HWGAUGE_USE_PROMETHEUS
+            pmEnable = cfg.pmEnable;
+            if (pmEnable)pm = std::make_unique<GPUPrometheus>(cfg.registry);
 #endif
-        explicit GPUCollector(std::shared_ptr<Registry> registry, T impl) :
-            Collector(registry), 
-            impl(std::move(impl)), 
-            pm(registry),
-            label_list(labels()){}
+#ifdef HWGAUGE_USE_POSTGRESQL
+            dbEnable = cfg.dbEnable;
+            if (dbEnable)
+            {
+                db = std::make_unique<GPUDatabase>(cfg.dbConfig, cfg.dbTableName);
+                db->writeInfo(label_list);
+            }
+#endif
+        }
         
         virtual ~GPUCollector() = default;
 
@@ -47,14 +40,15 @@ namespace hwgauge
             auto metric_list = sample(label_list);
 
 			// 输出调试
-			for(int i=0;i<label_list.size();i++)
-			{
-				outGPU(label_list[i],metric_list[i]);
-			}
-
+            if(outTer)
+            {
+                for(int i=0;i<label_list.size();i++)
+                    outGPU(label_list[i],metric_list[i]);
+            }
+#ifdef HWGAUGE_USE_PROMETHEUS
             // prometheus
-            pm.write(label_list,metric_list);
-
+            if(pmEnable && pm)pm->write(label_list,metric_list);
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
             // database
             if(dbEnable && db)db->writeMetric(label_list,metric_list);
@@ -67,9 +61,12 @@ namespace hwgauge
 
     private:
         T impl;
-        GPUPrometheus pm;
-        std::vector<GPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更新
-
+        std::vector<GPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
+        bool outTer;
+#ifdef HWGAUGE_USE_PROMETHEUS
+        bool pmEnable;
+        std::unique_ptr<GPUPrometheus> pm;
+#endif
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable;
         std::unique_ptr<GPUDatabase> db;

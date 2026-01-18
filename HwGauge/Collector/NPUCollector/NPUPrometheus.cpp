@@ -1,10 +1,11 @@
-#ifdef HWGAUGE_USE_NPU
+#if defined(HWGAUGE_USE_NPU) && defined(HWGAUGE_USE_PROMETHEUS)
 
 #include "NPUPrometheus.hpp"
 
 namespace hwgauge
 {
-    NPUPrometheus::NPUPrometheus(std::shared_ptr<prometheus::Registry> registry)
+    NPUPrometheus::NPUPrometheus(std::shared_ptr<prometheus::Registry> registry_)
+        : Prometheus<NPULabel, NPUMetrics>(registry_)
     {
         // 创建指标族（Families）
         auto& registry_ref = *registry;

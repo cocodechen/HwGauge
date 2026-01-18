@@ -1,20 +1,16 @@
 #pragma once
 
-#ifdef HWGAUGE_USE_INTEL_PCM
+#if defined(HWGAUGE_USE_INTEL_PCM) && defined(HWGAUGE_USE_PROMETHEUS)
 
-#include "prometheus/gauge.h"
-#include "prometheus/family.h"
+#include "Collector/Prometheus.hpp"
 #include "CPUMetrics.hpp"
-
-#include <utility>
-#include <vector>
 
 namespace hwgauge
 {
-    class CPUPrometheus
+    class CPUPrometheus:public Prometheus<CPULabel,CPUMetrics>
     {
     public:
-        explicit CPUPrometheus(std::shared_ptr<prometheus::Registry> registry);
+        explicit CPUPrometheus(std::shared_ptr<prometheus::Registry> registry_);
         
         virtual ~CPUPrometheus() = default;
 
