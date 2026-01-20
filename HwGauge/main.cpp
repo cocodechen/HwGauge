@@ -101,8 +101,6 @@ int main(int argc, char* argv[])
 
 	// Create exposer
 	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::seconds(interval_seconds));
-	std::signal(SIGINT, signal_handler);
-
 #ifdef HWGAUGE_USE_INTEL_PCM
 	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM(),cfg);
 #endif
@@ -118,6 +116,7 @@ int main(int argc, char* argv[])
 	spdlog::info("Staring exposer on \"{}\"", address);
 	spdlog::info("Press \"Ctrl+C\" to stop exposer");
 	
+	std::signal(SIGINT, signal_handler);
 	std::thread signal_watcher([&]{
 		while (!g_stop_requested.load(std::memory_order_relaxed))
 		{
@@ -128,6 +127,7 @@ int main(int argc, char* argv[])
 	});
 
 	exposer->run();
+	//g_stop_requested.store(true, std::memory_order_relaxed);
 
 	signal_watcher.join();
 	exposer.reset();

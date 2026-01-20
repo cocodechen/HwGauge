@@ -3,7 +3,10 @@
 #include "NVML.hpp"
 #include <nvml.h>
 #include <array>
+#include "spdlog/spdlog.h"
+
 #include "Collector/Exception.hpp"
+
 
 namespace hwgauge {
 	NVML::NVML()
@@ -100,36 +103,52 @@ namespace hwgauge {
 
 			// GPU / Memory Utilization
 			nvmlUtilization_t utilization;
+			double gpuUtilization,memoryUtilization;
 			status = nvmlDeviceGetUtilizationRates(handle, std::addressof(utilization));
-			if (status != NVML_SUCCESS) {
-				throw hwgauge::RecoverableError("NVML get utilizations rates failed");
+			if (status != NVML_SUCCESS)
+			{
+				gpuUtilization=-1;
+				memoryUtilization=-1;
+				spdlog::warn("[NVML] Get utilizations rates failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
-			double gpuUtilization = utilization.gpu;
-			double memoryUtilization = utilization.memory;
-
+			else
+			{
+				gpuUtilization = utilization.gpu;
+				memoryUtilization = utilization.memory;
+			}
+			
 			// GPU Frequency
 			unsigned int smClock;
+			double gpuFrequency;
 			status = nvmlDeviceGetClockInfo(handle, NVML_CLOCK_SM, std::addressof(smClock));
-			if (status != NVML_SUCCESS) {
-				throw hwgauge::RecoverableError("NVML get SM clock info failed: {}");
+			if (status != NVML_SUCCESS)
+			{
+				gpuFrequency=-1;
+				spdlog::warn("[NVML] Get SM clock info failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
-			double gpuFrequency = smClock;
+			else gpuFrequency = smClock;
 
 			// Memory Frequency
 			unsigned int memClock;
+			double memFrequency;
 			status = nvmlDeviceGetClockInfo(handle, NVML_CLOCK_MEM, std::addressof(memClock));
-			if (status != NVML_SUCCESS) {
-				throw hwgauge::RecoverableError("NVML get memory clock info failed");
+			if (status != NVML_SUCCESS)
+			{
+				memFrequency=-1;
+				spdlog::warn("[NVML] Get memory clock info failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
-			double memFrequency = memClock;
+			else memFrequency = memClock;
 
 			// Power Usage
 			unsigned int power;
+			double power_usage;
 			status = nvmlDeviceGetPowerUsage(handle, std::addressof(power));
-			if (status != NVML_SUCCESS) {
-				throw hwgauge::RecoverableError("NVML get power usage failed");
+			if (status != NVML_SUCCESS)
+			{
+				power_usage=-1;
+				spdlog::warn("[NVML] Get power usage failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
-			double power_usage = power / 1e3;  // mW -> W
+			else power_usage = power / 1e3;  // mW -> W
 
 			metrics.emplace_back(GPUMetrics{
 					gpuUtilization,

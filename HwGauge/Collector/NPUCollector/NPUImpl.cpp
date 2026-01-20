@@ -4,8 +4,8 @@
 #include <iostream>
 #include <dcmi_interface_api.h>
 #include "spdlog/spdlog.h"
-#include "Collector/Exception.hpp"
 
+#include "Collector/Exception.hpp"
 #include "NPUImpl.hpp"
 
 #define NPU_OK (0)
