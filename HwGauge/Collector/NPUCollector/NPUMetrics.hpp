@@ -67,5 +67,4 @@ namespace hwgauge
 
 }
 
-
 #endif

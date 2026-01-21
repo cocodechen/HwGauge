@@ -24,6 +24,10 @@
 #include "Collector/NPUCollector/NPUImpl.hpp"
 #endif
 
+#ifdef __linux__
+#include "Collector/SYSCollector/SYSCollector.hpp"
+#include "Collector/SYSCollector/SYSImpl.hpp"
+#endif
 
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
@@ -59,7 +63,10 @@ int main(int argc, char* argv[])
 	hwgauge::CollectorConfig cfg;
 	// Command-line arguments: outTer
 	cfg.outTer=true;
-	application.add_flag("--out-ter", cfg.outTer, "Enable to out the Collection Results to Terminal");
+	application.add_flag("--outTer", cfg.outTer, "Enable to out the Collection Results to Terminal");
+	// Command-line arguments: sysinfo
+	cfg.sysinfo=true;
+	application.add_flag("--sysInfo", cfg.sysinfo, "Enable to out the system information");
 
 #ifdef HWGAUGE_USE_PROMETHEUS
 	auto registry=std::make_shared<prometheus::Registry>();
@@ -111,6 +118,10 @@ int main(int argc, char* argv[])
 
 #ifdef HWGAUGE_USE_NPU
 	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl(),cfg);
+#endif
+
+#ifdef __linux__
+	if(cfg.sysinfo)exposer->add_collector<hwgauge::SYSCollector<hwgauge::SYSImpl>>(hwgauge::SYSImpl(),cfg);
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

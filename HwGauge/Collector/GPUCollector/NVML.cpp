@@ -1,12 +1,11 @@
 #ifdef HWGAUGE_USE_NVML
 
+#include "Collector/Exception.hpp"
 #include "NVML.hpp"
+
 #include <nvml.h>
 #include <array>
 #include "spdlog/spdlog.h"
-
-#include "Collector/Exception.hpp"
-
 
 namespace hwgauge {
 	NVML::NVML()

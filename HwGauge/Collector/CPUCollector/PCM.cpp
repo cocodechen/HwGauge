@@ -167,6 +167,8 @@ namespace hwgauge {
             m.memoryReadBandwidth = readBytes / 1e6 / elapsed;  // B/s -> MB/s
             m.memoryWriteBandwidth = writeBytes / 1e6 / elapsed;  // B/s -> MB/s 
 
+            m.temperature = (double)pcmInstance->getTemperature(s);
+
             metrics.push_back(m);
         }
 

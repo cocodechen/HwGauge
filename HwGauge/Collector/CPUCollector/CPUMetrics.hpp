@@ -23,6 +23,8 @@ namespace hwgauge
 		double memoryReadBandwidth;    // Memory read bandwidth in MB/s
 		double memoryWriteBandwidth;   // Memory write bandwidth in MB/s
 		double memoryPowerUsage;       // Memory power usage in watts
+
+        double temperature;            // temperature
 	};
 
     inline void outCPU(const CPULabel& l, const CPUMetrics& m)
@@ -31,6 +33,7 @@ namespace hwgauge
             << "CPU{ "
             << "index="     << l.index
             << ", name=" << l.name
+            << ", temp=" << m.temperature << "C"
             << ", cpuUtilization="   << m.cpuUtilization
             << ", cpuFrequency="   << m.cpuFrequency
             << ", c0Residency=" << m.c0Residency

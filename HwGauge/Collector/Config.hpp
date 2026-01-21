@@ -50,6 +50,7 @@ namespace hwgauge
     struct CollectorConfig
     {
         bool outTer=true;
+        bool sysinfo=true;
 #ifdef HWGAUGE_USE_PROMETHEUS
         bool pmEnable = false;
         std::shared_ptr<prometheus::Registry> registry;
