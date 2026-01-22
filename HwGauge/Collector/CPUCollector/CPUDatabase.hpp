@@ -19,7 +19,8 @@ namespace hwgauge
         ~CPUDatabase();
         
         /* 写入CPU监控数据 */
-        void writeMetric(const std::vector<CPULabel>& label_list, 
+        void writeMetric(const std::string& cur_time,
+                        const std::vector<CPULabel>& label_list, 
                         const std::vector<CPUMetrics>& metric_list,
                         bool useTransaction = true) override;
         

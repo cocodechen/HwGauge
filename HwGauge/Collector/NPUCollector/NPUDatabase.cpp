@@ -12,8 +12,8 @@ namespace hwgauge
         : Database<NPULabel, NPUMetrics>(config_)
     {
         // 设置表名
-        metric_table_name = table_name_prefix + "_metric";
-        info_table_name = table_name_prefix + "_info";
+        metric_table_name = table_name_prefix + "_npu_metric";
+        info_table_name = table_name_prefix + "_npu_info";
         // 创建表
         if (!createMetricTable() || !createInfoTable())throw hwgauge::FatalError("[Database] Create Table Failed");
         // 构建SQL模板
@@ -84,14 +84,14 @@ namespace hwgauge
         return true;
     }
 
-    void NPUDatabase::writeMetric(const std::vector<NPULabel>& label_list,
-                                  const std::vector<NPUMetrics>& metric_list,
-                                  bool useTransaction)
+    void NPUDatabase::writeMetric(const std::string& cur_time,
+                                const std::vector<NPULabel>& label_list,
+                                const std::vector<NPUMetrics>& metric_list,
+                                bool useTransaction)
     {
         if (!isConnected())throw hwgauge::FatalError("[NPUDatabase] The database hasn't been connected before writing");
         if (useTransaction && !startTransaction())return;
         
-        auto timestamp = getNowTime();
         int inserted = 0;
         for (size_t i = 0; i < label_list.size(); ++i)
         {
@@ -100,7 +100,7 @@ namespace hwgauge
 
             std::vector<std::string> buf(15);
             const char* params[15] = {
-                to_sql_param_string(timestamp, buf[0]),
+                to_sql_param_string(cur_time, buf[0]),
                 to_sql_param_int(label.card_id, buf[1]),
                 to_sql_param_int(label.device_id, buf[2]),
                 to_sql_param_int(metric.util_aicore, buf[3]),

@@ -12,16 +12,16 @@ namespace hwgauge
         : Database<GPULabel, GPUMetrics>(config_)
     {
         // 设置表名
-        metric_table_name = table_name_prefix + "_metric";
-        info_table_name = table_name_prefix + "_info";
+        metric_table_name = table_name_prefix + "_gpu_metric";
+        info_table_name = table_name_prefix + "_gpu_info";
         // 创建表
         if (!createMetricTable() || !createInfoTable())throw hwgauge::FatalError("[Database] Create Table Failed");
         // 构建SQL模板
         metric_insert_sql =
             "INSERT INTO " + metric_table_name +
             " (timestamp, gpu_index, gpu_utilization, memory_utilization, "
-            "gpu_frequency, memory_frequency, power_usage) "
-            "VALUES ($1, $2, $3, $4, $5, $6, $7);";
+            "gpu_frequency, memory_frequency, power_usage, temperature) "
+            "VALUES ($1, $2, $3, $4, $5, $6, $7, $8);";
 
         info_insert_sql =
             "INSERT INTO " + info_table_name +
@@ -45,7 +45,8 @@ namespace hwgauge
             "memory_utilization DOUBLE PRECISION,"      // 显存利用率(%)
             "gpu_frequency DOUBLE PRECISION,"           // GPU频率(MHz)
             "memory_frequency DOUBLE PRECISION,"        // 显存频率(MHz)
-            "power_usage DOUBLE PRECISION"              // 功耗(W)
+            "power_usage DOUBLE PRECISION,"             // 功耗(W)
+            "temperature DOUBLE PRECISION"              //温度(C)
             ");";
         if (!execSQL(sql))
         {
@@ -72,32 +73,33 @@ namespace hwgauge
         return true;
     }
 
-    void GPUDatabase::writeMetric(const std::vector<GPULabel>& label_list,
-                                  const std::vector<GPUMetrics>& metric_list,
-                                  bool useTransaction)
+    void GPUDatabase::writeMetric(const std::string& cur_time,
+                                const std::vector<GPULabel>& label_list,
+                                const std::vector<GPUMetrics>& metric_list,
+                                bool useTransaction)
     {
         if (!isConnected())throw hwgauge::FatalError("[GPUDatabase] The database hasn't been connected before writing");
         if (useTransaction && !startTransaction())return;
         
-        auto timestamp = getNowTime();
         int inserted = 0;
         for (size_t i = 0; i < label_list.size(); ++i)
         {
             const GPULabel& label = label_list[i];
             const GPUMetrics& metric = metric_list[i];
 
-            std::vector<std::string> buf(7);
-            const char* params[7] = {
-                to_sql_param_string(timestamp, buf[0]),
+            std::vector<std::string> buf(8);
+            const char* params[8] = {
+                to_sql_param_string(cur_time, buf[0]),
                 to_sql_param_int(label.index, buf[1]),
                 to_sql_param_double(metric.gpuUtilization, buf[2]),
                 to_sql_param_double(metric.memoryUtilization, buf[3]),
                 to_sql_param_double(metric.gpuFrequency, buf[4]),
                 to_sql_param_double(metric.memoryFrequency, buf[5]),
                 to_sql_param_double(metric.powerUsage, buf[6]),
+                to_sql_param_double(metric.temperature,buf[7]),
             };
 
-            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params +7)))
+            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params +8)))
             {
                 if(useTransaction) rollbackTransaction();
                 return;

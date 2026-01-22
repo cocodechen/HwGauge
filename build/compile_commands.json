@@ -1,212 +1,392 @@
 [
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/CPUCollector/PCM.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/CPUCollector/CPUDatabase.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/CPUCollector/CPUDatabase.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/CPUCollector/CPUDatabase.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/CPUCollector/CPUDatabase.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/CPUCollector/CPUPrometheus.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/CPUCollector/CPUPrometheus.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/CPUCollector/CPUPrometheus.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/CPUCollector/CPUPrometheus.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/CPUCollector/PCM.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/CPUCollector/PCM.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/CPUCollector/PCM.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/GPUCollector/NVML.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/GPUCollector/GPUDatabase.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/GPUCollector/GPUDatabase.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/GPUCollector/GPUDatabase.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/GPUCollector/GPUDatabase.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/GPUCollector/GPUPrometheus.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/GPUCollector/GPUPrometheus.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/GPUCollector/GPUPrometheus.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/GPUCollector/GPUPrometheus.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/GPUCollector/NVML.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/GPUCollector/NVML.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/GPUCollector/NVML.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUDatabase.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUDatabase.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUDatabase.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUDatabase.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUImpl.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o -c /mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o -c /mnt/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSDatabase.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSDatabase.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSImpl.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSImpl.cpp",
+  "output": "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o -c /users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/HwGauge",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/HwGauge -I/mnt/xc/HwGauge/vendors/spdlog/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -isystem /mnt/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/main.cpp.o -c /mnt/xc/HwGauge/HwGauge/main.cpp",
-  "file": "/mnt/xc/HwGauge/HwGauge/main.cpp",
+  "directory": "/users/xc/HwGauge/build/HwGauge",
+  "command": "/usr/bin/c++ -DHWGAUGE_USE_INTEL_PCM=1 -DHWGAUGE_USE_NVML=1 -DHWGAUGE_USE_POSTGRESQL=1 -DSPDLOG_COMPILED_LIB -I/users/xc/HwGauge/HwGauge -I/users/xc/HwGauge/HwGauge/../vendors/pcm/src -I/usr/include/postgresql -I/users/xc/HwGauge/vendors/spdlog/include -isystem /usr/local/cuda-12.2/include -isystem /users/xc/HwGauge/vendors/CLI11/include -O3 -DNDEBUG -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/HwGauge.dir/main.cpp.o -c /users/xc/HwGauge/HwGauge/main.cpp",
+  "file": "/users/xc/HwGauge/HwGauge/main.cpp",
   "output": "HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/spdlog.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/spdlog.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/spdlog.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/spdlog.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/stdout_sinks.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/color_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/color_sinks.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/color_sinks.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/color_sinks.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/file_sinks.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/file_sinks.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/file_sinks.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/file_sinks.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/async.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/async.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/async.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/async.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/async.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/async.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/async.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/cfg.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/cfg.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/cfg.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/cfg.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/spdlog",
-  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/mnt/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o -c /mnt/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
+  "directory": "/users/xc/HwGauge/build/vendors/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -DSPDLOG_FWRITE_UNLOCKED -I/users/xc/HwGauge/vendors/spdlog/include -O3 -DNDEBUG -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o -c /users/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
+  "file": "/users/xc/HwGauge/vendors/spdlog/src/bundled_fmtlib_format.cpp",
   "output": "vendors/spdlog/CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/check_names.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/check_names.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/check_names.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/check_names.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/bw.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/bw.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/bw.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/bw.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/counter.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/counter.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/counter.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/counter.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/cpucounters.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/cpucounters.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/cpucounters.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/cpucounters.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/builder.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/builder.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/builder.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/builder.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/dashboard.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/dashboard.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/dashboard.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/dashboard.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/ckms_quantiles.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/ckms_quantiles.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/ckms_quantiles.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/ckms_quantiles.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/debug.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/debug.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/debug.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/debug.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/time_window_quantiles.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/time_window_quantiles.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/time_window_quantiles.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/time_window_quantiles.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/lspci.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/lspci.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/lspci.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/lspci.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/detail/utils.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/utils.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/detail/utils.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/detail/utils.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/mmio.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/mmio.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/mmio.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/mmio.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/family.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/family.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/family.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/family.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/msr.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/msr.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/msr.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/msr.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/gauge.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/gauge.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/gauge.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/gauge.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pci.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pci.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pci.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pci.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/histogram.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/histogram.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/histogram.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/histogram.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pcm-accel-common.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-accel-common.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-accel-common.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pcm-accel-common.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/info.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/info.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/info.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/info.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pcm-iio-pmu.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-iio-pmu.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-iio-pmu.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pcm-iio-pmu.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/registry.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/registry.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/registry.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/registry.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pcm-iio-topology.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-iio-topology.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-iio-topology.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pcm-iio-topology.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/serializer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/serializer.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/serializer.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/serializer.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pmt.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pmt.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pmt.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pmt.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/summary.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/summary.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/summary.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/summary.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/pugixml/src/pugixml.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pugixml/src/pugixml.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pugixml/src/pugixml.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/pugixml/src/pugixml.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/core.dir/src/text_serializer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/text_serializer.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/core/src/text_serializer.cc",
-  "output": "vendors/prometheus-cpp/core/CMakeFiles/core.dir/src/text_serializer.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/threadpool.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/threadpool.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/threadpool.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/threadpool.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++ -DCIVETWEB_API=\"\" -DNDEBUG -DNO_CACHING -DNO_CGI -DNO_FILES -DNO_SSL -DSOCKET_TIMEOUT_QUANTUM=200 -DUSE_IPV6 -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -w -o CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/CivetServer.cpp.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/CivetServer.cpp",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/CivetServer.cpp",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/CivetServer.cpp.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/topology.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/topology.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/topology.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/topology.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/cc -DCIVETWEB_API=\"\" -DNDEBUG -DNO_CACHING -DNO_CGI -DNO_FILES -DNO_SSL -DSOCKET_TIMEOUT_QUANTUM=200 -DUSE_IPV6 -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -O3 -DNDEBUG -std=c17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -w -o CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/civetweb.c.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/civetweb.c",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/src/civetweb.c",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/__/3rdparty/civetweb/src/civetweb.c.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/tpmi.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/tpmi.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/tpmi.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/tpmi.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/basic_auth.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/basic_auth.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/basic_auth.cc",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/basic_auth.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/uncore_pmu_discovery.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/uncore_pmu_discovery.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/uncore_pmu_discovery.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/uncore_pmu_discovery.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/endpoint.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/endpoint.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/endpoint.cc",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/endpoint.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/utils.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/utils.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/utils.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/utils.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/exposer.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/exposer.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/exposer.cc",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/exposer.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC.dir/resctrl.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/resctrl.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/resctrl.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/resctrl.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/handler.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/handler.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/handler.cc",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/handler.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/bw.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/bw.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/bw.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/bw.cpp.o"
 },
 {
-  "directory": "/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull",
-  "command": "/usr/bin/c++  -I/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/pull/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/3rdparty/civetweb/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/build/vendors/prometheus-cpp/core/include -I/mnt/xc/HwGauge/vendors/prometheus-cpp/util/include -O3 -DNDEBUG -std=c++11 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -o CMakeFiles/pull.dir/src/metrics_collector.cc.o -c /mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/metrics_collector.cc",
-  "file": "/mnt/xc/HwGauge/vendors/prometheus-cpp/pull/src/metrics_collector.cc",
-  "output": "vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/src/metrics_collector.cc.o"
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/cpucounters.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/cpucounters.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/cpucounters.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/cpucounters.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/dashboard.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/dashboard.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/dashboard.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/dashboard.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/debug.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/debug.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/debug.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/debug.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/lspci.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/lspci.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/lspci.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/lspci.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/mmio.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/mmio.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/mmio.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/mmio.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/msr.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/msr.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/msr.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/msr.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pci.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pci.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pci.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pci.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pcm-accel-common.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-accel-common.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-accel-common.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pcm-accel-common.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pcm-iio-pmu.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-iio-pmu.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-iio-pmu.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pcm-iio-pmu.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pcm-iio-topology.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-iio-topology.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-iio-topology.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pcm-iio-topology.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pmt.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pmt.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pmt.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pmt.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/pugixml/src/pugixml.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pugixml/src/pugixml.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pugixml/src/pugixml.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/pugixml/src/pugixml.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/threadpool.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/threadpool.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/threadpool.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/threadpool.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/topology.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/topology.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/topology.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/topology.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/tpmi.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/tpmi.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/tpmi.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/tpmi.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/uncore_pmu_discovery.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/uncore_pmu_discovery.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/uncore_pmu_discovery.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/uncore_pmu_discovery.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/utils.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/utils.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/utils.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/utils.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/PCM_STATIC_SILENT.dir/resctrl.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/resctrl.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/resctrl.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_STATIC_SILENT.dir/resctrl.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++ -DPCM_SHARED_EXPORTS -DPCM_SILENT   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIC -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -DPCM_SHARED_LIBRARY=1 -o CMakeFiles/PCM_SHARED.dir/pcm-core.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/pcm-core.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/pcm-core.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/PCM_SHARED.dir/pcm-core.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/daemon.dir/daemon/daemon.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/daemon/daemon.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/daemon/daemon.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/daemon.dir/daemon/daemon.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/daemon.dir/daemon/main.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/daemon/main.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/daemon/main.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/daemon.dir/daemon/main.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/client.dir/client/client.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/client/client.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/client/client.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/client.dir/client/client.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/src",
+  "command": "/usr/bin/c++    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=c++17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/client.dir/client/main.cpp.o -c /users/xc/HwGauge/vendors/pcm/src/client/main.cpp",
+  "file": "/users/xc/HwGauge/vendors/pcm/src/client/main.cpp",
+  "output": "vendors/pcm/src/CMakeFiles/client.dir/client/main.cpp.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/examples",
+  "command": "/usr/bin/cc -DPCM_DYNAMIC_LIB   -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=gnu17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/c_example.dir/c_example.c.o -c /users/xc/HwGauge/vendors/pcm/examples/c_example.c",
+  "file": "/users/xc/HwGauge/vendors/pcm/examples/c_example.c",
+  "output": "vendors/pcm/examples/CMakeFiles/c_example.dir/c_example.c.o"
+},
+{
+  "directory": "/users/xc/HwGauge/build/vendors/pcm/examples",
+  "command": "/usr/bin/cc    -Wno-unknown-pragmas -DCMAKE_INSTALL_PREFIX=\"/usr/local\" -Wextra -DPCM_USE_PERF -Wl,-z,now -Wall -O3 -rdynamic -fstack-protector -D_FORTIFY_SOURCE=2 -ftrapv  -fwrapv -fno-delete-null-pointer-checks -fno-strict-overflow -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -std=gnu17 -fPIE -Wall -Wextra -Wpedantic -O3 -march=native -DNDEBUG -flto -fuse-linker-plugin -pthread -DPCM_PUGIXML_AVAILABLE -o CMakeFiles/c_example_shlib.dir/c_example.c.o -c /users/xc/HwGauge/vendors/pcm/examples/c_example.c",
+  "file": "/users/xc/HwGauge/vendors/pcm/examples/c_example.c",
+  "output": "vendors/pcm/examples/CMakeFiles/c_example_shlib.dir/c_example.c.o"
 }
 ]

@@ -11,22 +11,18 @@
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 #include "Collector/CPUCollector/CPUCollector.hpp"
-#include "Collector/CPUCollector/PCM.hpp"
 #endif
 
 #ifdef HWGAUGE_USE_NVML
 #include "Collector/GPUCollector/GPUCollector.hpp"
-#include "Collector/GPUCollector/NVML.hpp"
 #endif
 
 #ifdef HWGAUGE_USE_NPU
 #include "Collector/NPUCollector/NPUCollector.hpp"
-#include "Collector/NPUCollector/NPUImpl.hpp"
 #endif
 
 #ifdef __linux__
 #include "Collector/SYSCollector/SYSCollector.hpp"
-#include "Collector/SYSCollector/SYSImpl.hpp"
 #endif
 
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
@@ -48,7 +44,7 @@ int main(int argc, char* argv[])
 	argv = application.ensure_utf8(argv);
 
 	// Command-line arguments: interval
-	constexpr int default_interval = 1;
+	constexpr int default_interval = 5;
 	int interval_seconds = default_interval;
 	application.add_option("-i,--interval", interval_seconds, "Collection interval in seconds")
 		->default_val(default_interval)
@@ -109,19 +105,19 @@ int main(int argc, char* argv[])
 	// Create exposer
 	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::seconds(interval_seconds));
 #ifdef HWGAUGE_USE_INTEL_PCM
-	exposer->add_collector<hwgauge::CPUCollector<hwgauge::PCM>>(hwgauge::PCM(),cfg);
+	exposer->add_collector<hwgauge::CPUCollector>(cfg);
 #endif
 
 #ifdef HWGAUGE_USE_NVML
-	exposer->add_collector<hwgauge::GPUCollector<hwgauge::NVML>>(hwgauge::NVML(),cfg);
+	exposer->add_collector<hwgauge::GPUCollector>(cfg);
 #endif
 
 #ifdef HWGAUGE_USE_NPU
-	exposer->add_collector<hwgauge::NPUCollector<hwgauge::NPUImpl>>(hwgauge::NPUImpl(),cfg);
+	exposer->add_collector<hwgauge::NPUCollector>(cfg);
 #endif
 
 #ifdef __linux__
-	if(cfg.sysinfo)exposer->add_collector<hwgauge::SYSCollector<hwgauge::SYSImpl>>(hwgauge::SYSImpl(),cfg);
+	if(cfg.sysinfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);

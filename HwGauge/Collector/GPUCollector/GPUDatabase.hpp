@@ -19,7 +19,8 @@ namespace hwgauge
         ~GPUDatabase();
         
         /* 写入GPU监控数据 */
-        void writeMetric(const std::vector<GPULabel>& label_list, 
+        void writeMetric(const std::string& cur_time,
+                        const std::vector<GPULabel>& label_list, 
                         const std::vector<GPUMetrics>& metric_list,
                         bool useTransaction = true) override;
         

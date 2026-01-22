@@ -31,7 +31,7 @@ namespace hwgauge
         // 功耗
         double systemPowerWatts;  // 整机功耗 (W)
 
-        SystemMetrics() 
+        SYSMetrics() 
             : memTotalGB(-1.0), memUsedGB(-1.0), memUtilizationPercent(-1.0),
               diskReadMBps(-1.0), diskWriteMBps(-1.0), maxDiskUtilPercent(-1.0),
               netDownloadMBps(-1.0), netUploadMBps(-1.0),
@@ -39,9 +39,10 @@ namespace hwgauge
         {}
     };
 
-    inline void outSystem(const SYSLabel& l, const SYSMetrics& m)
+    inline void outSYS(const SYSLabel& l, const SYSMetrics& m)
     {
         std::cout << "SYS{ "
+            << "Machine: "<<l.name<<", "
             << "Mem: " << m.memUsedGB << "/" << m.memTotalGB << "GB (" << m.memUtilizationPercent << "%), "
             << "Disk: R=" << m.diskReadMBps << " W=" << m.diskWriteMBps << " MB/s (MaxUtil: " << m.maxDiskUtilPercent << "%), "
             << "Net: In=" << m.netDownloadMBps << " Out=" << m.netUploadMBps << " MB/s, "

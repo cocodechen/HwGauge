@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/xc/HwGauge/HwGauge
+# Install script for directory: /users/xc/HwGauge/HwGauge
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

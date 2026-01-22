@@ -1,29 +1,54 @@
 #ifdef __linux__
 
-#include "Exceptions.hpp"
+#include "Collector/Exception.hpp"
 #include "SYSImpl.hpp"
 
 #include "spdlog/spdlog.h"
-#include <fstream>
 #include <sstream>
 #include <iostream>
 #include <cstdio>
 #include <memory>
 #include <array>
-#include <thread>
+#include <sys/time.h> 
+#include <sys/resource.h>
+#include <unistd.h>
+#include <sys/syscall.h>
 
 namespace hwgauge
 {
-    SYSImpl::SYSImpl()
+    SYSImpl::SYSImpl(): cachedPowerWatts_(-1.0), stopThread_(false)
     {
         // 初始化时间
         lastTime = std::chrono::steady_clock::now();
+
+        // --- 优化 : 预先打开文件 ---
+        // /proc 文件一旦打开，其实是指向了内核的一个 handle。
+        // 即使内容变了，只要不关闭，用 seekg(0) 就能重读最新数据。
+        fileMem_.open("/proc/meminfo");
+        fileDisk_.open("/proc/diskstats");
+        fileNet_.open("/proc/net/dev");
+
+        if (!fileMem_ || !fileDisk_ || !fileNet_)throw hwgauge::FatalError("[SYSImpl] Failed to keep open /proc files.");
+
+        // --- 核心：初始化探测命令 ---
+        initPowerCmd();
         
         // 初始化基准数据 (为了避免第一次采集出现巨大的速率尖峰)
         // 我们手动构造一个 label 跑一次流程，填充 lastDiskStates 和 lastNetStates
         // 这里的日志可能会在启动时打印一次，是可以接受的
-        std::vector<SystemLabel> dummy = labels();
+        std::vector<SYSLabel> dummy = labels();
         sample(dummy); 
+
+        // 启动后台线程
+        powerThread_ = std::thread(&SYSImpl::powerWorker, this);
+    }
+
+    SYSImpl::~SYSImpl()
+    {
+        // 关闭文件流
+        if (fileMem_.is_open()) fileMem_.close();
+        if (fileDisk_.is_open()) fileDisk_.close();
+        if (fileNet_.is_open()) fileNet_.close();
     }
 
     std::vector<SYSLabel> SYSImpl::labels()
@@ -42,11 +67,10 @@ namespace hwgauge
         if (dt <= 0) dt = 0.0001;
         lastTime = now;
 
-        // 3. 循环 Labels (保持语义正确)
+        // 循环 Labels (保持语义正确)
         for (const auto& label : labels)
         {
             SYSMetrics m; // 构造函数已默认初始化为 -1
-            // 这里的逻辑变得非常干净，错误处理下放到具体函数
             readMemory(m);
             readDisk(m, dt);
             readNetwork(m, dt);
@@ -56,18 +80,114 @@ namespace hwgauge
         return results;
     }
 
+    // --- 功耗命令探测函数 ---
+    void SYSImpl::initPowerCmd()
+    {
+        spdlog::info("[SYSImpl] Detecting power monitoring command...");
+        // 1. 优先尝试 DCMI (标准命令)
+        std::string cmd = "sudo nice -n -10 ipmitool dcmi power reading 2>&1";
+        spdlog::info("[SYSImpl] Detecting power by using cmd :{}",cmd);
+        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
+        if (pipe)
+        {
+            std::array<char, 256> buffer;
+            std::string output;
+            while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                output += buffer.data();
+            }
+            // 检查是否包含关键字
+            if (output.find("Instantaneous power reading") != std::string::npos && 
+                output.find("Watts") != std::string::npos)
+            {
+                powerCmd_ = cmd;
+                powerParseType_ = PowerParseType::DCMI;
+                spdlog::info("[SYSImpl] Selected DCMI command: {}", powerCmd_);
+                return; // 找到即停止
+            }
+        }
+
+        // 2. 尝试传感器列表 (使用 -c CSV 格式加速解析)
+        const std::vector<std::string> sensorNames = {
+            "POWER_USAGE",      // Cisco
+            "Pwr Consumption",  // Dell
+            "System Power",     // Supermicro
+            "System Level",     // HP
+            "Total Power"       // Lenovo
+        };
+        for (const auto& name : sensorNames)
+        {
+            // 构造 CSV 查询命令
+            std::string cmd = "sudo nice -n -10 ipmitool sensor reading \"" + name + "\" -c 2>&1";
+            spdlog::info("[SYSImpl] Detecting power by using cmd :{}",cmd);
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
+            if (pipe)
+            {
+                std::array<char, 256> buffer;
+                if (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr)
+                {
+                    std::string output = buffer.data();
+                    // CSV 格式通常是: Name,Value,Watts,...
+                    auto pos = output.find(',');
+                    if (pos == std::string::npos)continue;
+                    std::string value = output.substr(pos + 1);
+                    // 去掉换行
+                    value.erase(std::remove(value.begin(), value.end(), '\n'), value.end());
+                    value.erase(std::remove(value.begin(), value.end(), '\r'), value.end());
+                    //排除na
+                    if (value == "na" || value.empty())continue;
+                    //排除非数字
+                    char* end = nullptr;
+                    std::strtod(value.c_str(), &end);
+                    if (end == value.c_str() || *end != '\0')continue;
+
+                    powerParseType_ = PowerParseType::Sensor;
+                    powerCmd_ = cmd;
+                    spdlog::info("[SYSImpl] Selected Sensor command: {}", powerCmd_);
+                    return; // 找到即停止
+                }
+            }
+        }
+        powerCmd_="";
+        powerParseType_ = PowerParseType::None;
+        // 3. 都失败了
+        throw FatalError("[SYSImpl] No supported power monitoring method found.");
+    }
+
+    // --- 判断是否为物理磁盘---
+    bool SYSImpl::isPhysicalDisk(const std::string& name)
+    {
+        // 1. 过滤 loop (回环), ram (内存盘), sr (光驱)
+        if (name.find("loop") == 0 || name.find("ram") == 0 || name.find("sr") == 0) return false;
+        // 2. 过滤虚拟设备 (dm-*)，视情况而定，LVM 通常看 dm，这里为了简单只看物理硬件
+        if (name.find("dm-") == 0) return false;
+        // 3. 区分 SATA/SAS 盘 (sda, sdb...) vs 分区 (sda1, sdb2...)
+        if (name.find("sd") == 0 || name.find("vd") == 0)
+        {
+            // 如果最后一位是数字，通常是分区 (sda1)，如果不是数字，是盘 (sda)
+            char last = name.back();
+            if (isdigit(last)) return false; 
+        }
+        // 4. 区分 NVMe 盘 (nvme0n1) vs 分区 (nvme0n1p1)
+        if (name.find("nvme") == 0) {
+            // 如果包含 'p' 且 p 后面跟数字，通常是分区
+            if (name.find('p') != std::string::npos) return false; 
+        }
+        return true;
+    }
+
     // --- 内存读取 (/proc/meminfo) ---
     void SYSImpl::readMemory(SYSMetrics& m)
     {
-        std::ifstream file("/proc/meminfo");
-        if (!file.is_open()){
-            throw RecoverableError("[SYSImpl] Cannot open /proc/meminfo");
-        }
+        if (!fileMem_.is_open())throw FatalError("[SYSImpl] Cannot open /proc/meminfo");
+        // 重置文件流状态和指针
+        fileMem_.clear();
+        fileMem_.seekg(0);
+
         std::string line, key;
         long long value;
         long long total = -1, available = -1;
 
-        while (std::getline(file, line)) {
+        while (std::getline(fileMem_, line)) {
             std::istringstream iss(line);
             iss >> key >> value;
             if (key == "MemTotal:") total = value;
@@ -91,39 +211,14 @@ namespace hwgauge
         }
     }
 
-     // --- 辅助函数：判断是否为物理磁盘（避免统计 sda1 这种分区导致吞吐量双倍）---
-    bool isPhysicalDisk(const std::string& name)
-    {
-        // 1. 过滤 loop (回环), ram (内存盘), sr (光驱)
-        if (name.find("loop") == 0 || name.find("ram") == 0 || name.find("sr") == 0) return false;
-
-        // 2. 过滤虚拟设备 (dm-*)，视情况而定，LVM 通常看 dm，这里为了简单只看物理硬件
-        if (name.find("dm-") == 0) return false;
-
-        // 3. 区分 SATA/SAS 盘 (sda, sdb...) vs 分区 (sda1, sdb2...)
-        if (name.find("sd") == 0 || name.find("vd") == 0) {
-            // 如果最后一位是数字，通常是分区 (sda1)，如果不是数字，是盘 (sda)
-            char last = name.back();
-            if (isdigit(last)) return false; 
-        }
-
-        // 4. 区分 NVMe 盘 (nvme0n1) vs 分区 (nvme0n1p1)
-        if (name.find("nvme") == 0) {
-            // 如果包含 'p' 且 p 后面跟数字，通常是分区
-            if (name.find('p') != std::string::npos) return false; 
-        }
-        return true;
-    }
-
     // --- 磁盘读取 (/proc/diskstats) ---
     void SYSImpl::readDisk(SYSMetrics& m, double dt)
     {
-        std::ifstream file("/proc/diskstats");
-         if (!file.is_open()) {
-            throw RecoverableError("[SYSImpl] Cannot open /proc/diskstats");
-        }
+         if (!fileDisk_.is_open())throw FatalError("[SYSImpl] Cannot open /proc/diskstats");
+        fileDisk_.clear();
+        fileDisk_.seekg(0);
+
         std::string line;
-        
         double totalReadBytes = 0;
         double totalWriteBytes = 0;
         double maxUtil = 0;
@@ -131,7 +226,7 @@ namespace hwgauge
         // 当前时刻的临时 map
         std::map<std::string, DiskState> currentStates;
 
-        while (std::getline(file, line))
+        while (std::getline(fileDisk_, line))
         {
             std::istringstream iss(line);
             int major, minor;
@@ -183,21 +278,20 @@ namespace hwgauge
     // --- 网络读取 (/proc/net/dev) ---
     void SYSImpl::readNetwork(SYSMetrics& m, double dt)
     {
-        std::ifstream file("/proc/net/dev");
-        if (!file.is_open()) {
-            throw RecoverableError("[SYSImpl] Cannot open /proc/net/dev");
-        }
+        if (!fileNet_.is_open())throw FatalError("[SYSImpl] Cannot open /proc/net/dev");
+        fileNet_.clear();
+        fileNet_.seekg(0);
+
         std::string line;
-        
         double totalRx = 0;
         double totalTx = 0;
         std::map<std::string, NetState> currentStates;
 
         // 跳过前两行表头
-        std::getline(file, line);
-        std::getline(file, line);
+        std::getline(fileNet_, line);
+        std::getline(fileNet_, line);
 
-        while (std::getline(file, line)) {
+        while (std::getline(fileNet_, line)) {
             // 处理格式: "  eth0: 1234 56 ..."
             size_t colonPos = line.find(':');
             if (colonPos == std::string::npos) continue;
@@ -234,123 +328,103 @@ namespace hwgauge
         m.netUploadMBps = totalTx / 1024.0 / 1024.0 / dt;
     }
 
-    // --- 功耗读取 (IPMI 调用) ---
-    // void SYSImpl::readPower(SYSMetrics& m)
-    // {
-    //     // 注意：这需要配置 sudo 免密，或者当前用户是 root
-    //     // 且需要安装 ipmitool
-    //     // 命令：sudo ipmitool dcmi power reading
-        
-    //     std::array<char, 128> buffer;
-    //     std::string result;`
-    //     // 使用 popen 执行命令
-    //     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("ipmitool dcmi power reading 2>/dev/null", "r"), pclose);
-        
-    //     if (!pipe) {
-    //         m.systemPowerWatts = -1.0; // 失败标记
-    //         return;
-    //     }
-
-    //     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-    //         result += buffer.data();
-    //     }
-
-    //     // 检查结果中是否包含权限错误
-    //     if (result.find("Permission denied") != std::string::npos || 
-    //         result.find("password") != std::string::npos){
-    //         throw std::RecoverableError("Permission denied (sudo required)");
-    //     }
-        
-    //     if (result.find("Could not open device") != std::string::npos) {
-    //          throw std::RecoverableError("Cannot access IPMI device (driver not loaded?)");
-    //     }
-
-    //     // 解析: "Instantaneous power reading: 145 Watts"
-    //     std::string key = "Instantaneous power reading:";
-    //     size_t pos = result.find(key);
-    //     if (pos != std::string::npos) {
-    //         // 找到数字位置
-    //         size_t numStart = pos + key.length();
-    //         try {
-    //             // 简单解析后面的数字
-    //             m.systemPowerWatts = std::stod(result.substr(numStart));
-    //         } catch (...) {
-    //             m.systemPowerWatts = 0.0;
-    //         }
-    //     } else {
-    //         m.systemPowerWatts = -1.0; // 未找到，可能机器不支持
-    //     }
-    // }
-
-    // --- 功耗读取 (增强版：支持 DCMI 和 SDR 两种模式) ---
-    void SystemCollector::readPower(SystemMetrics& m)
+    // --- 主线程调用的功耗读取函数 (极速) ---
+    void SYSImpl::readPower(SYSMetrics& m)
     {
-        // 1. 尝试使用 DCMI 标准命令
-        try {
-            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("sudo ipmitool dcmi power reading 2>&1", "r"), pclose);
-            if (pipe) {
-                std::array<char, 128> buffer;
-                std::string result;
-                while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-                    result += buffer.data();
-                }
+        // 主线程只做一件事：读原子变量
+        // 无论系统负载多高，这里永不卡顿
+        m.systemPowerWatts = cachedPowerWatts_.load();
+    }
 
-                // 如果成功获取到 Instantaneous power reading
+    // --- 后台线程函数 (即使卡顿也没关系) ---
+    void SYSImpl::powerWorker()
+    {
+        // 设置高优先级: 简单 nice (推荐)
+        // 既然整个程序已经是 sudo 运行的，直接设 nice 即可
+        // 0 是默认，-20 是最高。设个 -10 足够抢占 CPU 了。
+        id_t tid = syscall(SYS_gettid); 
+        setpriority(PRIO_PROCESS, tid, -10); 
+        while (!stopThread_)
+        {
+            // 1. 执行耗时的硬件采集
+            double watts = fetchPowerFromHardware();
+            // 2. 如果采集成功，更新缓存
+            if (watts > 0) {
+                cachedPowerWatts_.store(watts);
+            }
+            // 3. 休眠等待下一次采集
+            // 使用小步休眠，以便能及时响应 stopThread_
+            // 假设我们希望功耗数据每 5 秒刷新一次
+            for (int i = 0; i < 50; ++i) { // 50 * 100ms = 5s
+                if (stopThread_) return;
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }
+    }
+
+    // --- 功耗读取函数 ---
+    double SYSImpl::fetchPowerFromHardware()
+    {
+        if (powerCmd_.empty())throw FatalError("[SYSImpl] No supported power monitoring method found.");
+        try
+        {
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(powerCmd_.c_str(), "r"), pclose);
+            if (!pipe)
+            {
+                spdlog::warn("[SYSImpl] Failed to get machine power");
+                return -1.0;
+            }
+            std::array<char, 256> buffer;
+            std::string result;
+            // DCMI 可能输出多行，Sensor 输出单行。读取所有输出比较稳妥。
+            while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                result += buffer.data();
+            }
+            // --- 根据探测阶段确定的策略进行解析 ---
+            if (powerParseType_ == PowerParseType::DCMI)
+            {
+                // 解析: "Instantaneous power reading: 123 Watts"
                 std::string key = "Instantaneous power reading:";
                 size_t pos = result.find(key);
-                if (pos != std::string::npos) {
-                    try {
-                        m.systemPowerWatts = std::stod(result.substr(pos + key.length()));
-                        return; // 成功！直接返回
-                    } catch (...) {}
+                if (pos != std::string::npos)
+                {
+                    double res = std::stod(result.substr(pos + key.length()));
+                    return res;
                 }
             }
-        } catch (...) {
-            // DCMI 失败，忽略异常，继续尝试下面的方法
-        }
-
-        // 2. 尝试解析具体传感器 (针对不支持 DCMI 的机器)
-        // 命令：ipmitool sdr elist | grep "POWER_USAGE"
-        // 你的机器上这一行是: "POWER_USAGE      | CCh | ok  |  7.1 | 216 Watts"
-        try {
-            // 使用 grep 快速定位，提升效率
-            // 注意：不同机器可能名字不同，常见有 "Pwr Consumption", "System Power", "POWER_USAGE"
-            // 这里我们用一个包含常见关键词的 grep
-            const char* cmd = "sudo ipmitool sdr elist | grep -E 'POWER_USAGE|Pwr Consumption|System Level|Total Power' | grep Watts | head -n 1";
-            
-            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-            if (!pipe) throw RecoverableError("popen failed for sdr elist");
-
-            std::array<char, 128> buffer;
-            std::string line;
-            if (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-                line = buffer.data();
-            }
-
-            // 解析逻辑：找到 "Watts" 前面的数字
-            // 典型格式： ... | 216 Watts
-            size_t wattPos = line.find("Watts");
-            if (wattPos != std::string::npos) {
-                // 从 Watts 的位置往前找，找到 `|` 分隔符
-                size_t pipePos = line.rfind('|', wattPos);
-                if (pipePos != std::string::npos) {
-                    std::string numStr = line.substr(pipePos + 1, wattPos - pipePos - 1);
-                    try {
-                        m.systemPowerWatts = std::stod(numStr);
-                        return; // 成功！
-                    } catch (...) {
-                        spdlog::warn("[SYSImpl] Found power sensor but failed to parse number: {}", line);
+            else if (powerParseType_ == PowerParseType::Sensor)
+            {
+                // 解析 CSV: "Name,123,Watts,OK" 或 "Name,123"
+                size_t firstComma = result.find(',');
+                if (firstComma != std::string::npos)
+                {
+                    std::string numStr;
+                    // 找第二个逗号
+                    size_t secondComma = result.find(',', firstComma + 1);
+                    if (secondComma != std::string::npos){
+                        // 情况 A: 标准格式 "Name,123,..." -> 取中间
+                        numStr = result.substr(firstComma + 1, secondComma - firstComma - 1);
+                    }else{
+                        // 情况 B: 短格式 "Name,123" -> 取到末尾
+                        numStr = result.substr(firstComma + 1);
+                    }
+                    // 关键步骤：去除可能的换行符 (\n) 和首尾空格
+                    // 因为 fgets 读进来的 line 可能末尾带 \n
+                    numStr.erase(0, numStr.find_first_not_of(" \t\n\r"));
+                    numStr.erase(numStr.find_last_not_of(" \t\n\r") + 1);
+                    if (!numStr.empty())
+                    {
+                        //std::cout << "Parsed Power String: [" << numStr << "]" << std::endl; // 调试用
+                        double res = std::stod(numStr);
+                        return res;
                     }
                 }
             }
-        } catch (const std::exception& e) {
-             spdlog::warn("[SYSImpl] Power sensor fallback failed: {}", e.what());
+        } catch (...) {
+            // 忽略读取过程中的异常
         }
-
-        // 3. 如果还是失败
-        m.systemPowerWatts = -1.0;
-        // 只有当两次尝试都失败时才记录警告，避免刷屏
-        // spdlog::warn("[System] Could not read power usage via DCMI or SDR");
+        spdlog::warn("[SYSImpl] Failed to get machine power");
+        return -1.0;
     }
 }
 

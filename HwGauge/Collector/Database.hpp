@@ -9,7 +9,6 @@
 #include <libpq-fe.h>
 #include <vector>
 #include <chrono>
-#include <ctime>
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -52,7 +51,8 @@ namespace hwgauge
             }
             
             /* 写入指标数据 - 纯虚函数，子类必须实现 */
-            virtual void writeMetric(const std::vector<LabelType>& label_list,
+            virtual void writeMetric(const std::string&cur_time,
+                                    const std::vector<LabelType>& label_list,
                                     const std::vector<MetricsType>& metric_list,
                                     bool useTransaction = true) = 0;
             
@@ -191,17 +191,6 @@ namespace hwgauge
                 if (value.empty()) return nullptr;
                 buf = value;
                 return buf.c_str();
-            }
-            
-            /* 获取当前时间戳 */
-            inline std::string getNowTime()
-            {
-                auto now = std::chrono::system_clock::now();
-                std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-                std::tm now_tm = *std::localtime(&now_time);
-                std::ostringstream timestamp_ss;
-                timestamp_ss << std::put_time(&now_tm, "%Y-%m-%d %H:%M:%S");
-                return timestamp_ss.str();
             }
         };
 }

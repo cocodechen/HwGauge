@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/xc/HwGauge/vendors/CLI11/single-include
+# Install script for directory: /users/xc/HwGauge/vendors/CLI11/single-include
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

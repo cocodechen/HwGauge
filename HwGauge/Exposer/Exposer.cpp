@@ -1,8 +1,25 @@
 #include "Exposer.hpp"
 #include "spdlog/spdlog.h"
 
+#include <chrono>     // std::chrono::system_clock
+#include <ctime>      // std::time_t, std::localtime, std::tm
+#include <sstream>    // std::ostringstream
+#include <iomanip>    // std::put_time
+#include <string>     // std::string
+
 namespace hwgauge
 {
+	/* 获取当前时间戳 */
+	inline std::string getNowTime()
+	{
+		auto now = std::chrono::system_clock::now();
+		std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+		std::tm now_tm = *std::localtime(&now_time);
+		std::ostringstream timestamp_ss;
+		timestamp_ss << std::put_time(&now_tm, "%Y-%m-%d %H:%M:%S");
+		return timestamp_ss.str();
+	}
+	
 	void Exposer::run()
 	{
 		running.store(true, std::memory_order_release);
@@ -35,7 +52,8 @@ namespace hwgauge
 			std::string name = collector->name();
 			try
 			{
-				collector->collect();
+				auto cur_time=getNowTime();
+				collector->collect(cur_time);
 				spdlog::trace("Retrieve metrics from {} successfully", name);
 			}
 			catch (const hwgauge::RecoverableError& e)

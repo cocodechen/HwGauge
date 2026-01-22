@@ -106,8 +106,8 @@ namespace hwgauge {
 			status = nvmlDeviceGetUtilizationRates(handle, std::addressof(utilization));
 			if (status != NVML_SUCCESS)
 			{
-				gpuUtilization=-1;
-				memoryUtilization=-1;
+				gpuUtilization=-1.0;
+				memoryUtilization=-1.0;
 				spdlog::warn("[NVML] Get utilizations rates failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
 			else
@@ -122,7 +122,7 @@ namespace hwgauge {
 			status = nvmlDeviceGetClockInfo(handle, NVML_CLOCK_SM, std::addressof(smClock));
 			if (status != NVML_SUCCESS)
 			{
-				gpuFrequency=-1;
+				gpuFrequency=-1.0;
 				spdlog::warn("[NVML] Get SM clock info failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
 			else gpuFrequency = smClock;
@@ -133,7 +133,7 @@ namespace hwgauge {
 			status = nvmlDeviceGetClockInfo(handle, NVML_CLOCK_MEM, std::addressof(memClock));
 			if (status != NVML_SUCCESS)
 			{
-				memFrequency=-1;
+				memFrequency=-1.0;
 				spdlog::warn("[NVML] Get memory clock info failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
 			else memFrequency = memClock;
@@ -144,17 +144,30 @@ namespace hwgauge {
 			status = nvmlDeviceGetPowerUsage(handle, std::addressof(power));
 			if (status != NVML_SUCCESS)
 			{
-				power_usage=-1;
+				power_usage=-1.0;
 				spdlog::warn("[NVML] Get power usage failed: {}, {}",nvmlErrorString(status),static_cast<int>(status));
 			}
 			else power_usage = power / 1e3;  // mW -> W
+
+			// GPU Temperature
+			unsigned int temperature; // NVML 返回的温度是无符号整数，单位是摄氏度
+			double tempDouble;
+			// 第二个参数 NVML_TEMPERATURE_GPU 代表读取核心温度
+			status = nvmlDeviceGetTemperature(handle, NVML_TEMPERATURE_GPU, &temperature);
+			if (status != NVML_SUCCESS)
+			{
+				tempDouble = -1.0; 
+				spdlog::warn("[NVML] Get temperature failed: {}, {}", nvmlErrorString(status), static_cast<int>(status));
+			}
+			else tempDouble = static_cast<double>(temperature);
 
 			metrics.emplace_back(GPUMetrics{
 					gpuUtilization,
 					memoryUtilization,
 					gpuFrequency,
 					memFrequency,
-					power_usage
+					power_usage,
+					tempDouble
 				});
 		}
 

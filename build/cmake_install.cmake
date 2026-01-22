@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/xc/HwGauge
+# Install script for directory: /users/xc/HwGauge
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,22 +44,22 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/HwGauge/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/HwGauge/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/spdlog/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/spdlog/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/CLI11/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/CLI11/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/prometheus-cpp/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/pcm/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -70,5 +70,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/xc/HwGauge/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/users/xc/HwGauge/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

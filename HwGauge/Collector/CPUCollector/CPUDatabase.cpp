@@ -12,8 +12,8 @@ namespace hwgauge
         : Database<CPULabel, CPUMetrics>(config_)
     {
         // 设置表名
-        metric_table_name = table_name_prefix + "_metric";
-        info_table_name = table_name_prefix + "_info";
+        metric_table_name = table_name_prefix + "_cpu_metric";
+        info_table_name = table_name_prefix + "_cpu_info";
         // 创建表
         if (!createMetricTable() || !createInfoTable())throw hwgauge::FatalError("[Database] Create Table Failed");
         // 构建SQL模板
@@ -21,8 +21,8 @@ namespace hwgauge
             "INSERT INTO " + metric_table_name +
             " (timestamp, cpu_index, cpu_utilization, cpu_frequency, "
             "c0_residency, c6_residency, power_usage, "
-            "memory_read_bandwidth, memory_write_bandwidth, memory_power_usage) "
-            "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);";
+            "memory_read_bandwidth, memory_write_bandwidth, memory_power_usage, temperature) "
+            "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);";
 
         info_insert_sql =
             "INSERT INTO " + info_table_name +
@@ -49,7 +49,8 @@ namespace hwgauge
             "power_usage DOUBLE PRECISION,"           // 功耗(W)
             "memory_read_bandwidth DOUBLE PRECISION," // 内存读带宽(MB/s)
             "memory_write_bandwidth DOUBLE PRECISION,"// 内存写带宽(MB/s)
-            "memory_power_usage DOUBLE PRECISION"     // 内存功耗(W)
+            "memory_power_usage DOUBLE PRECISION,"    // 内存功耗(W)
+            "temperature DOUBLE PRECISION"            // 温度(C)
             ");";
 
         if (!execSQL(sql))
@@ -77,23 +78,23 @@ namespace hwgauge
         return true;
     }
 
-    void CPUDatabase::writeMetric(const std::vector<CPULabel>& label_list,
-                                  const std::vector<CPUMetrics>& metric_list,
-                                  bool useTransaction)
+    void CPUDatabase::writeMetric(const std::string& cur_time,
+                                const std::vector<CPULabel>& label_list,
+                                const std::vector<CPUMetrics>& metric_list,
+                                bool useTransaction)
     {
         if (!isConnected())throw hwgauge::FatalError("[CPUDatabase] The database hasn't been connected before writing");
         if (useTransaction && !startTransaction())return;
         
-        auto timestamp = getNowTime();
         int inserted = 0;
         for (size_t i = 0; i < label_list.size(); ++i)
         {
             const CPULabel& label = label_list[i];
             const CPUMetrics& metric = metric_list[i];
 
-            std::vector<std::string> buf(10);
-            const char* params[10] = {
-                to_sql_param_string(timestamp, buf[0]),
+            std::vector<std::string> buf(11);
+            const char* params[11] = {
+                to_sql_param_string(cur_time, buf[0]),
                 to_sql_param_int(label.index, buf[1]),
                 to_sql_param_double(metric.cpuUtilization, buf[2]),
                 to_sql_param_double(metric.cpuFrequency, buf[3]),
@@ -103,9 +104,10 @@ namespace hwgauge
                 to_sql_param_double(metric.memoryReadBandwidth, buf[7]),
                 to_sql_param_double(metric.memoryWriteBandwidth, buf[8]),
                 to_sql_param_double(metric.memoryPowerUsage, buf[9]),
+                to_sql_param_double(metric.temperature, buf[10]),
             };
 
-            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 10)))
+            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 11)))
             {
                 if(useTransaction) rollbackTransaction();
                 return;

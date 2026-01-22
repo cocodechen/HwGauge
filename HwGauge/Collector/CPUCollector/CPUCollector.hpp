@@ -4,17 +4,17 @@
 
 #include "Collector/Collector.hpp"
 #include "CPUMetrics.hpp"
+#include "PCM.hpp"
 #include "CPUPrometheus.hpp"
 #include "CPUDatabase.hpp"
 
 namespace hwgauge
 {
-    template<typename T>
     class CPUCollector : public Collector
     {
     public:
-        explicit CPUCollector(T impl, const CollectorConfig& cfg)
-            : impl(std::move(impl)),
+        explicit CPUCollector(const CollectorConfig& cfg)
+            : impl(std::make_unique<PCM>()),
             label_list(labels()),
             outTer(cfg.outTer)
         {
@@ -34,7 +34,7 @@ namespace hwgauge
         
         virtual ~CPUCollector() = default;
 
-        void collect() override
+        void collect(const std::string& cur_time) override
         {
             // 获取标签（设备列表）和指标数据
             auto metric_list = sample(label_list);
@@ -42,6 +42,7 @@ namespace hwgauge
 			// 输出调试
             if(outTer)
             {
+                std::cout<<"["<<cur_time<<"]"<<std::endl;
                 for(int i=0;i<label_list.size();i++)
                     outCPU(label_list[i],metric_list[i]);
             }
@@ -51,16 +52,16 @@ namespace hwgauge
 #endif
 #ifdef HWGAUGE_USE_POSTGRESQL
             // database
-            if(dbEnable && db)db->writeMetric(label_list,metric_list);
+            if(dbEnable && db)db->writeMetric(cur_time,label_list,metric_list);
 #endif
         }
 
-        std::string name() override { return impl.name(); }
-        std::vector<CPULabel> labels() { return impl.labels(); }
-        std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels) { return impl.sample(labels); }
+        std::string name() override { return impl->name(); }
+        std::vector<CPULabel> labels() { return impl->labels(); }
+        std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels) { return impl->sample(labels); }
 
     private:
-        T impl;
+        std::unique_ptr<PCM> impl;
         std::vector<CPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
         bool outTer;
 #ifdef HWGAUGE_USE_PROMETHEUS

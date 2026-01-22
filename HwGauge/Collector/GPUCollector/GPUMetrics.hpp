@@ -20,6 +20,8 @@ namespace hwgauge
         double gpuFrequency;
         double memoryFrequency;
         double powerUsage;
+
+        double temperature;
     };
 
     //#pragma once 只防止单个编译单元内部重复展开，不防止多个译单元各自展开
@@ -35,6 +37,7 @@ namespace hwgauge
             << ", gpuFreq="<< m.gpuFrequency
             << ", memFreq="<< m.memoryFrequency
             << ", power="  << m.powerUsage
+            << ", temp="   << m.temperature<<"C"
             << " }\n";
     }
 }

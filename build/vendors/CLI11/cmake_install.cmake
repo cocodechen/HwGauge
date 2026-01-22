@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/xc/HwGauge/vendors/CLI11
+# Install script for directory: /users/xc/HwGauge/vendors/CLI11
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,16 +44,16 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/CLI11/fuzz/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/CLI11/fuzz/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/CLI11/src/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/CLI11/src/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/mnt/xc/HwGauge/build/vendors/CLI11/single-include/cmake_install.cmake")
+  include("/users/xc/HwGauge/build/vendors/CLI11/single-include/cmake_install.cmake")
 endif()
 

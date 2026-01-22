@@ -18,7 +18,8 @@ namespace hwgauge
         ~NPUDatabase();
         
         /* 写入NPU监控数据 */
-        void writeMetric(const std::vector<NPULabel>& label_list, 
+        void writeMetric(const std::string& cur_time,
+                        const std::vector<NPULabel>& label_list, 
                         const std::vector<NPUMetrics>& metric_list,
                         bool useTransaction = true) override;
         

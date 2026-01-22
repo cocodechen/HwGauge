@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/xc/HwGauge/vendors/spdlog
+# Install script for directory: /users/xc/HwGauge/vendors/spdlog
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
