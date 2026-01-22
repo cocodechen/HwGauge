@@ -235,51 +235,122 @@ namespace hwgauge
     }
 
     // --- 功耗读取 (IPMI 调用) ---
-    void SYSImpl::readPower(SYSMetrics& m)
+    // void SYSImpl::readPower(SYSMetrics& m)
+    // {
+    //     // 注意：这需要配置 sudo 免密，或者当前用户是 root
+    //     // 且需要安装 ipmitool
+    //     // 命令：sudo ipmitool dcmi power reading
+        
+    //     std::array<char, 128> buffer;
+    //     std::string result;`
+    //     // 使用 popen 执行命令
+    //     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("ipmitool dcmi power reading 2>/dev/null", "r"), pclose);
+        
+    //     if (!pipe) {
+    //         m.systemPowerWatts = -1.0; // 失败标记
+    //         return;
+    //     }
+
+    //     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+    //         result += buffer.data();
+    //     }
+
+    //     // 检查结果中是否包含权限错误
+    //     if (result.find("Permission denied") != std::string::npos || 
+    //         result.find("password") != std::string::npos){
+    //         throw std::RecoverableError("Permission denied (sudo required)");
+    //     }
+        
+    //     if (result.find("Could not open device") != std::string::npos) {
+    //          throw std::RecoverableError("Cannot access IPMI device (driver not loaded?)");
+    //     }
+
+    //     // 解析: "Instantaneous power reading: 145 Watts"
+    //     std::string key = "Instantaneous power reading:";
+    //     size_t pos = result.find(key);
+    //     if (pos != std::string::npos) {
+    //         // 找到数字位置
+    //         size_t numStart = pos + key.length();
+    //         try {
+    //             // 简单解析后面的数字
+    //             m.systemPowerWatts = std::stod(result.substr(numStart));
+    //         } catch (...) {
+    //             m.systemPowerWatts = 0.0;
+    //         }
+    //     } else {
+    //         m.systemPowerWatts = -1.0; // 未找到，可能机器不支持
+    //     }
+    // }
+
+    // --- 功耗读取 (增强版：支持 DCMI 和 SDR 两种模式) ---
+    void SystemCollector::readPower(SystemMetrics& m)
     {
-        // 注意：这需要配置 sudo 免密，或者当前用户是 root
-        // 且需要安装 ipmitool
-        // 命令：sudo ipmitool dcmi power reading
-        
-        std::array<char, 128> buffer;
-        std::string result;`
-        // 使用 popen 执行命令
-        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("ipmitool dcmi power reading 2>/dev/null", "r"), pclose);
-        
-        if (!pipe) {
-            m.systemPowerWatts = -1.0; // 失败标记
-            return;
-        }
+        // 1. 尝试使用 DCMI 标准命令
+        try {
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("sudo ipmitool dcmi power reading 2>&1", "r"), pclose);
+            if (pipe) {
+                std::array<char, 128> buffer;
+                std::string result;
+                while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                    result += buffer.data();
+                }
 
-        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-            result += buffer.data();
-        }
-
-        // 检查结果中是否包含权限错误
-        if (result.find("Permission denied") != std::string::npos || 
-            result.find("password") != std::string::npos){
-            throw std::RecoverableError("Permission denied (sudo required)");
-        }
-        
-        if (result.find("Could not open device") != std::string::npos) {
-             throw std::RecoverableError("Cannot access IPMI device (driver not loaded?)");
-        }
-
-        // 解析: "Instantaneous power reading: 145 Watts"
-        std::string key = "Instantaneous power reading:";
-        size_t pos = result.find(key);
-        if (pos != std::string::npos) {
-            // 找到数字位置
-            size_t numStart = pos + key.length();
-            try {
-                // 简单解析后面的数字
-                m.systemPowerWatts = std::stod(result.substr(numStart));
-            } catch (...) {
-                m.systemPowerWatts = 0.0;
+                // 如果成功获取到 Instantaneous power reading
+                std::string key = "Instantaneous power reading:";
+                size_t pos = result.find(key);
+                if (pos != std::string::npos) {
+                    try {
+                        m.systemPowerWatts = std::stod(result.substr(pos + key.length()));
+                        return; // 成功！直接返回
+                    } catch (...) {}
+                }
             }
-        } else {
-            m.systemPowerWatts = -1.0; // 未找到，可能机器不支持
+        } catch (...) {
+            // DCMI 失败，忽略异常，继续尝试下面的方法
         }
+
+        // 2. 尝试解析具体传感器 (针对不支持 DCMI 的机器)
+        // 命令：ipmitool sdr elist | grep "POWER_USAGE"
+        // 你的机器上这一行是: "POWER_USAGE      | CCh | ok  |  7.1 | 216 Watts"
+        try {
+            // 使用 grep 快速定位，提升效率
+            // 注意：不同机器可能名字不同，常见有 "Pwr Consumption", "System Power", "POWER_USAGE"
+            // 这里我们用一个包含常见关键词的 grep
+            const char* cmd = "sudo ipmitool sdr elist | grep -E 'POWER_USAGE|Pwr Consumption|System Level|Total Power' | grep Watts | head -n 1";
+            
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+            if (!pipe) throw RecoverableError("popen failed for sdr elist");
+
+            std::array<char, 128> buffer;
+            std::string line;
+            if (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                line = buffer.data();
+            }
+
+            // 解析逻辑：找到 "Watts" 前面的数字
+            // 典型格式： ... | 216 Watts
+            size_t wattPos = line.find("Watts");
+            if (wattPos != std::string::npos) {
+                // 从 Watts 的位置往前找，找到 `|` 分隔符
+                size_t pipePos = line.rfind('|', wattPos);
+                if (pipePos != std::string::npos) {
+                    std::string numStr = line.substr(pipePos + 1, wattPos - pipePos - 1);
+                    try {
+                        m.systemPowerWatts = std::stod(numStr);
+                        return; // 成功！
+                    } catch (...) {
+                        spdlog::warn("[SYSImpl] Found power sensor but failed to parse number: {}", line);
+                    }
+                }
+            }
+        } catch (const std::exception& e) {
+             spdlog::warn("[SYSImpl] Power sensor fallback failed: {}", e.what());
+        }
+
+        // 3. 如果还是失败
+        m.systemPowerWatts = -1.0;
+        // 只有当两次尝试都失败时才记录警告，避免刷屏
+        // spdlog::warn("[System] Could not read power usage via DCMI or SDR");
     }
 }
 

@@ -167,7 +167,25 @@ namespace hwgauge {
             m.memoryReadBandwidth = readBytes / 1e6 / elapsed;  // B/s -> MB/s
             m.memoryWriteBandwidth = writeBytes / 1e6 / elapsed;  // B/s -> MB/s 
 
-            m.temperature = (double)pcmInstance->getTemperature(s);
+            try
+            {
+                unsigned int tjmax = pcmInstance->getTjMax(s); // 或者 pcmInstance->GetTjMax(s);
+                unsigned int headroom = pcmInstance->getThermalHeadroom(s); // 或者 pcmInstance->GetThermalHeadroom(s);
+                
+                if (tjmax > 0 && headroom < tjmax) { // 确保 headroom 是有效的
+                    m.temperature = static_cast<double>(tjmax - headroom);
+                } else {
+                    // 如果 TjMax 或 headroom 获取失败，或者 headroom 无效，记录一个警告
+                    spdlog::warn("[PCM] Could not get valid temperature for socket {}. TjMax: {}, Headroom: {}", s, tjmax, headroom);
+                    m.temperature = -1.0; // 标记为未知
+                }
+            } catch (const std::exception& e) {
+                // 如果 PCM 库抛出异常（比如 MSR 读写失败）
+                spdlog::warn("[PCM] Exception getting temperature for socket {}: {}", s, e.what());
+                m.temperature = -1.0; // 标记为未知
+            }
+
+            //m.temperature = (double)pcmInstance->getTemperature(s);
 
             metrics.push_back(m);
         }
