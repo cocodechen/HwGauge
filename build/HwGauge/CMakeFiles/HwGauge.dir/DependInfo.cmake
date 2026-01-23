@@ -19,6 +19,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/users/xc/HwGauge/HwGauge/Collector/NPUCollector/NPUPrometheus.cpp" "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o.d"
   "/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSDatabase.cpp" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o.d"
   "/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSImpl.cpp" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o.d"
+  "/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o.d"
   "/users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp" "HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o.d"
   "/users/xc/HwGauge/HwGauge/main.cpp" "HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o" "gcc" "HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o.d"
   )

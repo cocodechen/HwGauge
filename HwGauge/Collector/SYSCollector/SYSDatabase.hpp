@@ -1,5 +1,5 @@
 #pragma once
-#ifdef HWGAUGE_USE_POSTGRESQL
+#if defined(HWGAUGE_USE_POSTGRESQL) && defined(__linux__)
 
 #include "SYSMetrics.hpp"
 #include "Collector/Config.hpp"

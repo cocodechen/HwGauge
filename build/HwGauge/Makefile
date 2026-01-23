@@ -459,6 +459,30 @@ Collector/SYSCollector/SYSImpl.cpp.s:
 	cd /users/xc/HwGauge/build && $(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.s
 .PHONY : Collector/SYSCollector/SYSImpl.cpp.s
 
+Collector/SYSCollector/SYSPrometheus.o: Collector/SYSCollector/SYSPrometheus.cpp.o
+.PHONY : Collector/SYSCollector/SYSPrometheus.o
+
+# target to build an object file
+Collector/SYSCollector/SYSPrometheus.cpp.o:
+	cd /users/xc/HwGauge/build && $(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o
+.PHONY : Collector/SYSCollector/SYSPrometheus.cpp.o
+
+Collector/SYSCollector/SYSPrometheus.i: Collector/SYSCollector/SYSPrometheus.cpp.i
+.PHONY : Collector/SYSCollector/SYSPrometheus.i
+
+# target to preprocess a source file
+Collector/SYSCollector/SYSPrometheus.cpp.i:
+	cd /users/xc/HwGauge/build && $(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.i
+.PHONY : Collector/SYSCollector/SYSPrometheus.cpp.i
+
+Collector/SYSCollector/SYSPrometheus.s: Collector/SYSCollector/SYSPrometheus.cpp.s
+.PHONY : Collector/SYSCollector/SYSPrometheus.s
+
+# target to generate assembly for a file
+Collector/SYSCollector/SYSPrometheus.cpp.s:
+	cd /users/xc/HwGauge/build && $(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.s
+.PHONY : Collector/SYSCollector/SYSPrometheus.cpp.s
+
 Exposer/Exposer.o: Exposer/Exposer.cpp.o
 .PHONY : Exposer/Exposer.o
 
@@ -555,6 +579,9 @@ help:
 	@echo "... Collector/SYSCollector/SYSImpl.o"
 	@echo "... Collector/SYSCollector/SYSImpl.i"
 	@echo "... Collector/SYSCollector/SYSImpl.s"
+	@echo "... Collector/SYSCollector/SYSPrometheus.o"
+	@echo "... Collector/SYSCollector/SYSPrometheus.i"
+	@echo "... Collector/SYSCollector/SYSPrometheus.s"
 	@echo "... Exposer/Exposer.o"
 	@echo "... Exposer/Exposer.i"
 	@echo "... Exposer/Exposer.s"

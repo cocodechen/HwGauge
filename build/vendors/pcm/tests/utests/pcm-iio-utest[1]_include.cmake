@@ -1,5 +1,0 @@
-if(EXISTS "/users/xc/HwGauge/build/vendors/pcm/tests/utests/pcm-iio-utest[1]_tests.cmake")
-  include("/users/xc/HwGauge/build/vendors/pcm/tests/utests/pcm-iio-utest[1]_tests.cmake")
-else()
-  add_test(pcm-iio-utest_NOT_BUILT pcm-iio-utest_NOT_BUILT)
-endif()

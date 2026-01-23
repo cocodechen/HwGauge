@@ -23,6 +23,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o.d"
   "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o"
   "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o.d"
+  "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o"
+  "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o.d"
   "CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o"
   "CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o.d"
   "CMakeFiles/HwGauge.dir/main.cpp.o"

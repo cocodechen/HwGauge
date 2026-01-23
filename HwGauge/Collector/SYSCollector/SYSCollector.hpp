@@ -5,7 +5,7 @@
 #include "Collector/Collector.hpp"
 #include "SYSMetrics.hpp"
 #include "SYSImpl.hpp"
-// #include "SYSPrometheus.hpp"
+#include "SYSPrometheus.hpp"
 #include "SYSDatabase.hpp"
 
 namespace hwgauge
@@ -61,8 +61,8 @@ namespace hwgauge
         std::vector<SYSMetrics> sample(std::vector<SYSLabel>&labels) { return impl->sample(labels); }
 
     private:
-        std::unique_ptr<SYSImpl> impl;     //由于类中存在原子变量，因此不能移动，故在此构造
-        std::vector<SYSLabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
+        std::unique_ptr<SYSImpl> impl;      //由于类中存在原子变量，因此不能移动，故在此构造
+        std::vector<SYSLabel>label_list;    //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更新
         bool outTer;
 #ifdef HWGAUGE_USE_PROMETHEUS
         bool pmEnable;

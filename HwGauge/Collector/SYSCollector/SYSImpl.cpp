@@ -388,8 +388,13 @@ namespace hwgauge
                 size_t pos = result.find(key);
                 if (pos != std::string::npos)
                 {
-                    double res = std::stod(result.substr(pos + key.length()));
-                    return res;
+                    // 1. 截取关键字之后的所有内容
+                    std::string sub = result.substr(pos + key.length());
+                    
+                    // 2. 使用 stringstream 自动跳过空格并解析出第一个数值
+                    std::stringstream ss(sub);
+                    double res = -1.0;
+                    if (ss >> res)return res;
                 }
             }
             else if (powerParseType_ == PowerParseType::Sensor)

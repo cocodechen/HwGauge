@@ -223,10 +223,24 @@ HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.s"
 	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSImpl.cpp -o CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.s
 
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/flags.make
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o: /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o"
+	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o -MF CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o.d -o CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o -c /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp
+
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.i"
+	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp > CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.i
+
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.s"
+	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp -o CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.s
+
 HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/flags.make
 HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o: /users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp
 HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o"
 	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o -MF CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o.d -o CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o -c /users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp
 
 HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.i: cmake_force
@@ -240,7 +254,7 @@ HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.s: cmake_force
 HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/flags.make
 HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: /users/xc/HwGauge/HwGauge/main.cpp
 HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: HwGauge/CMakeFiles/HwGauge.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o"
 	cd /users/xc/HwGauge/build/HwGauge && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o -MF CMakeFiles/HwGauge.dir/main.cpp.o.d -o CMakeFiles/HwGauge.dir/main.cpp.o -c /users/xc/HwGauge/HwGauge/main.cpp
 
 HwGauge/CMakeFiles/HwGauge.dir/main.cpp.i: cmake_force
@@ -264,6 +278,7 @@ HwGauge_OBJECTS = \
 "CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o" \
 "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o" \
 "CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o" \
+"CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o" \
 "CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o" \
 "CMakeFiles/HwGauge.dir/main.cpp.o"
 
@@ -281,15 +296,17 @@ bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUImpl.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/NPUCollector/NPUPrometheus.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSDatabase.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o
+bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/build.make
-bin/hwgauge: /usr/lib/x86_64-linux-gnu/libnvidia-ml.so
 bin/hwgauge: lib/libpcm.a
 bin/hwgauge: /usr/lib/x86_64-linux-gnu/libpq.so
 bin/hwgauge: lib/libspdlog.a
+bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-pull.a
+bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-core.a
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable ../bin/hwgauge"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable ../bin/hwgauge"
 	cd /users/xc/HwGauge/build/HwGauge && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/HwGauge.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

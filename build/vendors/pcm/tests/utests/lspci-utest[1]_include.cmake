@@ -1,5 +1,0 @@
-if(EXISTS "/users/xc/HwGauge/build/vendors/pcm/tests/utests/lspci-utest[1]_tests.cmake")
-  include("/users/xc/HwGauge/build/vendors/pcm/tests/utests/lspci-utest[1]_tests.cmake")
-else()
-  add_test(lspci-utest_NOT_BUILT lspci-utest_NOT_BUILT)
-endif()

@@ -14,8 +14,8 @@
 # EXTERNAL cache entries
 ########################
 
-//Builds the googlemock subproject
-BUILD_GMOCK:BOOL=ON
+//Build libraries as shared ones
+BUILD_SHARED_LIBS:BOOL=OFF
 
 //Value Computed by CMake
 CLI11_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/CLI11
@@ -319,235 +319,20 @@ CPACK_SOURCE_TZ:BOOL=ON
 //Enable to build ZIP source packages
 CPACK_SOURCE_ZIP:BOOL=OFF
 
-CUDAToolkit_BIN_DIR:PATH=/usr/local/cuda-12.2/bin
+//Enable gzip compression
+ENABLE_COMPRESSION:BOOL=OFF
 
-//Path to a file.
-CUDAToolkit_CUPTI_INCLUDE_DIR:PATH=/usr/local/cuda-12.2/extras/CUPTI/include
+//Build prometheus-cpp pull library
+ENABLE_PULL:BOOL=ON
 
-//Path to a program.
-CUDAToolkit_NVCC_EXECUTABLE:FILEPATH=/usr/local/cuda-12.2/bin/nvcc
-
-//Path to a file.
-CUDAToolkit_SENTINEL_FILE:FILEPATH=CUDAToolkit_SENTINEL_FILE-NOTFOUND
-
-//Path to a library.
-CUDAToolkit_rt_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.a
-
-//Path to a library.
-CUDA_CUDART:FILEPATH=/usr/local/cuda-12.2/lib64/libcudart.so
-
-//Path to a library.
-CUDA_OpenCL_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libOpenCL.so
-
-//Path to a library.
-CUDA_cuFile_LIBRARY:FILEPATH=CUDA_cuFile_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_cuFile_rdma_LIBRARY:FILEPATH=CUDA_cuFile_rdma_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_cuFile_rdma_static_LIBRARY:FILEPATH=CUDA_cuFile_rdma_static_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_cuFile_static_LIBRARY:FILEPATH=CUDA_cuFile_static_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_cublasLt_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcublasLt.so
-
-//Path to a library.
-CUDA_cublasLt_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcublasLt_static.a
-
-//Path to a library.
-CUDA_cublas_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcublas.so
-
-//Path to a library.
-CUDA_cublas_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcublas_static.a
-
-//Path to a library.
-CUDA_cuda_driver_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libcuda.so
-
-//Path to a library.
-CUDA_cudart_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcudart.so
-
-//Path to a library.
-CUDA_cudart_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcudart_static.a
-
-//Path to a library.
-CUDA_cudla_LIBRARY:FILEPATH=CUDA_cudla_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_cufft_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcufft.so
-
-//Path to a library.
-CUDA_cufft_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcufft_static.a
-
-//Path to a library.
-CUDA_cufft_static_nocallback_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcufft_static_nocallback.a
-
-//Path to a library.
-CUDA_cufftw_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcufftw.so
-
-//Path to a library.
-CUDA_cufftw_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcufftw_static.a
-
-//Path to a library.
-CUDA_culibos_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libculibos.a
-
-//Path to a library.
-CUDA_cupti_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libcupti.so
-
-//Path to a library.
-CUDA_cupti_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libcupti_static.a
-
-//Path to a library.
-CUDA_curand_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcurand.so
-
-//Path to a library.
-CUDA_curand_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcurand_static.a
-
-//Path to a library.
-CUDA_cusolver_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusolver.so
-
-//Path to a library.
-CUDA_cusolver_lapack_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusolver_lapack_static.a
-
-//Path to a library.
-CUDA_cusolver_metis_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusolver_metis_static.a
-
-//Path to a library.
-CUDA_cusolver_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusolver_static.a
-
-//Path to a library.
-CUDA_cusparse_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusparse.so
-
-//Path to a library.
-CUDA_cusparse_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcusparse_static.a
-
-//Path to a library.
-CUDA_nppc_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppc.so
-
-//Path to a library.
-CUDA_nppc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppc_static.a
-
-//Path to a library.
-CUDA_nppial_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppial.so
-
-//Path to a library.
-CUDA_nppial_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppial_static.a
-
-//Path to a library.
-CUDA_nppicc_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppicc.so
-
-//Path to a library.
-CUDA_nppicc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppicc_static.a
-
-//Path to a library.
-CUDA_nppicom_LIBRARY:FILEPATH=CUDA_nppicom_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_nppicom_static_LIBRARY:FILEPATH=CUDA_nppicom_static_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_nppidei_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppidei.so
-
-//Path to a library.
-CUDA_nppidei_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppidei_static.a
-
-//Path to a library.
-CUDA_nppif_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppif.so
-
-//Path to a library.
-CUDA_nppif_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppif_static.a
-
-//Path to a library.
-CUDA_nppig_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppig.so
-
-//Path to a library.
-CUDA_nppig_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppig_static.a
-
-//Path to a library.
-CUDA_nppim_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppim.so
-
-//Path to a library.
-CUDA_nppim_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppim_static.a
-
-//Path to a library.
-CUDA_nppist_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppist.so
-
-//Path to a library.
-CUDA_nppist_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppist_static.a
-
-//Path to a library.
-CUDA_nppisu_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppisu.so
-
-//Path to a library.
-CUDA_nppisu_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppisu_static.a
-
-//Path to a library.
-CUDA_nppitc_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppitc.so
-
-//Path to a library.
-CUDA_nppitc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnppitc_static.a
-
-//Path to a library.
-CUDA_npps_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnpps.so
-
-//Path to a library.
-CUDA_npps_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnpps_static.a
-
-//Path to a library.
-CUDA_nvJitLink_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvJitLink.so
-
-//Path to a library.
-CUDA_nvJitLink_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvJitLink_static.a
-
-//Path to a library.
-CUDA_nvToolsExt_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvToolsExt.so
-
-//Path to a library.
-CUDA_nvgraph_LIBRARY:FILEPATH=CUDA_nvgraph_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_nvgraph_static_LIBRARY:FILEPATH=CUDA_nvgraph_static_LIBRARY-NOTFOUND
-
-//Path to a library.
-CUDA_nvjpeg_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvjpeg.so
-
-//Path to a library.
-CUDA_nvjpeg_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvjpeg_static.a
-
-//Path to a library.
-CUDA_nvml_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libnvidia-ml.so
-
-//Path to a library.
-CUDA_nvperf_host_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libnvperf_host.so
-
-//Path to a library.
-CUDA_nvperf_host_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libnvperf_host_static.a
-
-//Path to a library.
-CUDA_nvperf_target_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libnvperf_target.so
-
-//Path to a library.
-CUDA_nvptxcompiler_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvptxcompiler_static.a
-
-//Path to a library.
-CUDA_nvrtc_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvrtc.so
-
-//Path to a library.
-CUDA_nvrtc_builtins_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvrtc-builtins.so
-
-//Path to a library.
-CUDA_nvrtc_builtins_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvrtc-builtins_static.a
-
-//Path to a library.
-CUDA_nvrtc_static_LIBRARY:FILEPATH=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvrtc_static.a
-
-//Path to a library.
-CUDA_pcsamplingutil_LIBRARY:FILEPATH=/usr/local/cuda-12.2/extras/CUPTI/lib64/libpcsamplingutil.so
+//Build prometheus-cpp push library
+ENABLE_PUSH:BOOL=OFF
 
 //Enable address and undefined behavior sanitizers in Debug mode
 ENABLE_SANITIZERS:BOOL=OFF
+
+//Build tests
+ENABLE_TESTING:BOOL=OFF
 
 //Directory under which to collect all populated content
 FETCHCONTENT_BASE_DIR:PATH=/users/xc/HwGauge/build/_deps
@@ -562,9 +347,8 @@ FETCHCONTENT_QUIET:BOOL=ON
 //Enables UPDATE_DISCONNECTED behavior for all content population
 FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 
-//Use Abseil and RE2. Requires Abseil and RE2 to be separately
-// added to the build.
-GTEST_HAS_ABSL:BOOL=OFF
+//Generate and install pkg-config files
+GENERATE_PKGCONFIG:BOOL=ON
 
 //Enable collectors for Intel CPUs
 HWGAUGE_USE_INTEL_PCM:BOOL=ON
@@ -573,13 +357,13 @@ HWGAUGE_USE_INTEL_PCM:BOOL=ON
 HWGAUGE_USE_NPU:BOOL=OFF
 
 //Enable collectors for Nvidia GPUs
-HWGAUGE_USE_NVML:BOOL=ON
+HWGAUGE_USE_NVML:BOOL=OFF
 
 //Enable PostgreSQL backend
 HWGAUGE_USE_POSTGRESQL:BOOL=ON
 
 //Enable Prometheus backend
-HWGAUGE_USE_PROMETHEUS:BOOL=OFF
+HWGAUGE_USE_PROMETHEUS:BOOL=ON
 
 //Value Computed by CMake
 HwGauge_BINARY_DIR:STATIC=/users/xc/HwGauge/build
@@ -590,10 +374,6 @@ HwGauge_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 HwGauge_SOURCE_DIR:STATIC=/users/xc/HwGauge
 
-//Enable installation of googletest. (Projects embedding googletest
-// may want to turn this OFF.)
-INSTALL_GTEST:BOOL=ON
-
 //Path to a library.
 OPENSSL_CRYPTO_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libcrypto.so
 
@@ -602,6 +382,10 @@ OPENSSL_INCLUDE_DIR:PATH=/usr/include
 
 //Path to a library.
 OPENSSL_SSL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libssl.so
+
+//Force building with -std=c++11 even if the CXXFLAGS are configured
+// differently
+OVERRIDE_CXX_STANDARD_FLAGS:BOOL=ON
 
 //Value Computed by CMake
 PCM_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/pcm
@@ -631,7 +415,7 @@ PCM_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/pcm
 PKG_CONFIG_ARGN:STRING=
 
 //pkg-config executable
-PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
+PKG_CONFIG_EXECUTABLE:FILEPATH=PKG_CONFIG_EXECUTABLE-NOTFOUND
 
 //The Set the PostgreSQL_INCLUDE_DIR cmake cache entry to the top-level
 // directory containing the PostgreSQL include directories. E.g
@@ -650,6 +434,9 @@ PostgreSQL_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libpq.so
 // directory containing the PostgreSQL include directories. E.g
 // /usr/local/include/PostgreSQL/8.4 or C:/Program Files/PostgreSQL/8.4/include
 PostgreSQL_TYPE_INCLUDE_DIR:PATH=PostgreSQL_TYPE_INCLUDE_DIR-NOTFOUND
+
+//Run include-what-you-use
+RUN_IWYU:BOOL=OFF
 
 //Build all artifacts
 SPDLOG_BUILD_ALL:BOOL=OFF
@@ -749,66 +536,23 @@ SPDLOG_WCHAR_FILENAMES:BOOL=OFF
 //non supported option
 SPDLOG_WCHAR_SUPPORT:BOOL=OFF
 
-//Value Computed by CMake
-gmock_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/pcm/tests/googletest/googlemock
+//Enable SSL support for embedded civetweb source code
+THIRDPARTY_CIVETWEB_WITH_SSL:BOOL=OFF
+
+//Use 3rdParty submodules
+USE_THIRDPARTY_LIBRARIES:BOOL=ON
+
+//The directory containing a CMake configuration file for civetweb-3rdparty.
+civetweb-3rdparty_DIR:PATH=/users/xc/HwGauge/vendors/prometheus-cpp/cmake
 
 //Value Computed by CMake
-gmock_IS_TOP_LEVEL:STATIC=OFF
+prometheus-cpp_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/prometheus-cpp
 
 //Value Computed by CMake
-gmock_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/pcm/tests/googletest/googlemock
-
-//Build all of Google Mock's own tests.
-gmock_build_tests:BOOL=OFF
+prometheus-cpp_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-googletest-distribution_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/pcm/tests/googletest
-
-//Value Computed by CMake
-googletest-distribution_IS_TOP_LEVEL:STATIC=OFF
-
-//Value Computed by CMake
-googletest-distribution_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/pcm/tests/googletest
-
-//Value Computed by CMake
-gtest_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/pcm/tests/googletest/googletest
-
-//Value Computed by CMake
-gtest_IS_TOP_LEVEL:STATIC=OFF
-
-//Value Computed by CMake
-gtest_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/pcm/tests/googletest/googletest
-
-//Build gtest's sample programs.
-gtest_build_samples:BOOL=OFF
-
-//Build all of gtest's own tests.
-gtest_build_tests:BOOL=OFF
-
-//Disable uses of pthreads in gtest.
-gtest_disable_pthreads:BOOL=OFF
-
-//Use shared (DLL) run-time lib even when Google Test is built
-// as static lib.
-gtest_force_shared_crt:BOOL=OFF
-
-//Build gtest with internal symbols hidden in shared libraries.
-gtest_hide_internal_symbols:BOOL=OFF
-
-//Value Computed by CMake
-pcm_utests_BINARY_DIR:STATIC=/users/xc/HwGauge/build/vendors/pcm/tests/utests
-
-//Value Computed by CMake
-pcm_utests_IS_TOP_LEVEL:STATIC=OFF
-
-//Value Computed by CMake
-pcm_utests_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/pcm/tests/utests
-
-//Path to a library.
-pkgcfg_lib__OPENSSL_crypto:FILEPATH=/usr/lib/x86_64-linux-gnu/libcrypto.so
-
-//Path to a library.
-pkgcfg_lib__OPENSSL_ssl:FILEPATH=/usr/lib/x86_64-linux-gnu/libssl.so
+prometheus-cpp_SOURCE_DIR:STATIC=/users/xc/HwGauge/vendors/prometheus-cpp
 
 //The directory containing a CMake configuration file for simdjson.
 simdjson_DIR:PATH=simdjson_DIR-NOTFOUND
@@ -965,7 +709,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=10
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=14
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -1010,6 +754,14 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Compiler support for a deprecated attribute
+COMPILER_HAS_DEPRECATED:INTERNAL=1
+//Test COMPILER_HAS_DEPRECATED_ATTR
+COMPILER_HAS_DEPRECATED_ATTR:INTERNAL=1
+//Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY
+COMPILER_HAS_HIDDEN_INLINE_VISIBILITY:INTERNAL=1
+//Test COMPILER_HAS_HIDDEN_VISIBILITY
+COMPILER_HAS_HIDDEN_VISIBILITY:INTERNAL=1
 //ADVANCED property for variable: CPACK_SOURCE_RPM
 CPACK_SOURCE_RPM-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CPACK_SOURCE_TBZ2
@@ -1022,166 +774,14 @@ CPACK_SOURCE_TXZ-ADVANCED:INTERNAL=1
 CPACK_SOURCE_TZ-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CPACK_SOURCE_ZIP
 CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDAToolkit_BIN_DIR
-CUDAToolkit_BIN_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDAToolkit_CUPTI_INCLUDE_DIR
-CUDAToolkit_CUPTI_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDAToolkit_NVCC_EXECUTABLE
-CUDAToolkit_NVCC_EXECUTABLE-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDAToolkit_SENTINEL_FILE
-CUDAToolkit_SENTINEL_FILE-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDAToolkit_rt_LIBRARY
-CUDAToolkit_rt_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_CUDART
-CUDA_CUDART-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_OpenCL_LIBRARY
-CUDA_OpenCL_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cuFile_LIBRARY
-CUDA_cuFile_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cuFile_rdma_LIBRARY
-CUDA_cuFile_rdma_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cuFile_rdma_static_LIBRARY
-CUDA_cuFile_rdma_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cuFile_static_LIBRARY
-CUDA_cuFile_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cublasLt_LIBRARY
-CUDA_cublasLt_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cublasLt_static_LIBRARY
-CUDA_cublasLt_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cublas_LIBRARY
-CUDA_cublas_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cublas_static_LIBRARY
-CUDA_cublas_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cuda_driver_LIBRARY
-CUDA_cuda_driver_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cudart_LIBRARY
-CUDA_cudart_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cudart_static_LIBRARY
-CUDA_cudart_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cudla_LIBRARY
-CUDA_cudla_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cufft_LIBRARY
-CUDA_cufft_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cufft_static_LIBRARY
-CUDA_cufft_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cufft_static_nocallback_LIBRARY
-CUDA_cufft_static_nocallback_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cufftw_LIBRARY
-CUDA_cufftw_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cufftw_static_LIBRARY
-CUDA_cufftw_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_culibos_LIBRARY
-CUDA_culibos_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cupti_LIBRARY
-CUDA_cupti_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cupti_static_LIBRARY
-CUDA_cupti_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_curand_LIBRARY
-CUDA_curand_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_curand_static_LIBRARY
-CUDA_curand_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusolver_LIBRARY
-CUDA_cusolver_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusolver_lapack_static_LIBRARY
-CUDA_cusolver_lapack_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusolver_metis_static_LIBRARY
-CUDA_cusolver_metis_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusolver_static_LIBRARY
-CUDA_cusolver_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusparse_LIBRARY
-CUDA_cusparse_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_cusparse_static_LIBRARY
-CUDA_cusparse_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppc_LIBRARY
-CUDA_nppc_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppc_static_LIBRARY
-CUDA_nppc_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppial_LIBRARY
-CUDA_nppial_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppial_static_LIBRARY
-CUDA_nppial_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppicc_LIBRARY
-CUDA_nppicc_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppicc_static_LIBRARY
-CUDA_nppicc_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppicom_LIBRARY
-CUDA_nppicom_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppicom_static_LIBRARY
-CUDA_nppicom_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppidei_LIBRARY
-CUDA_nppidei_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppidei_static_LIBRARY
-CUDA_nppidei_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppif_LIBRARY
-CUDA_nppif_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppif_static_LIBRARY
-CUDA_nppif_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppig_LIBRARY
-CUDA_nppig_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppig_static_LIBRARY
-CUDA_nppig_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppim_LIBRARY
-CUDA_nppim_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppim_static_LIBRARY
-CUDA_nppim_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppist_LIBRARY
-CUDA_nppist_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppist_static_LIBRARY
-CUDA_nppist_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppisu_LIBRARY
-CUDA_nppisu_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppisu_static_LIBRARY
-CUDA_nppisu_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppitc_LIBRARY
-CUDA_nppitc_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nppitc_static_LIBRARY
-CUDA_nppitc_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_npps_LIBRARY
-CUDA_npps_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_npps_static_LIBRARY
-CUDA_npps_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvJitLink_LIBRARY
-CUDA_nvJitLink_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvJitLink_static_LIBRARY
-CUDA_nvJitLink_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvToolsExt_LIBRARY
-CUDA_nvToolsExt_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvgraph_LIBRARY
-CUDA_nvgraph_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvgraph_static_LIBRARY
-CUDA_nvgraph_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvjpeg_LIBRARY
-CUDA_nvjpeg_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvjpeg_static_LIBRARY
-CUDA_nvjpeg_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvml_LIBRARY
-CUDA_nvml_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvperf_host_LIBRARY
-CUDA_nvperf_host_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvperf_host_static_LIBRARY
-CUDA_nvperf_host_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvperf_target_LIBRARY
-CUDA_nvperf_target_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvptxcompiler_static_LIBRARY
-CUDA_nvptxcompiler_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvrtc_LIBRARY
-CUDA_nvrtc_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvrtc_builtins_LIBRARY
-CUDA_nvrtc_builtins_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvrtc_builtins_static_LIBRARY
-CUDA_nvrtc_builtins_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_nvrtc_static_LIBRARY
-CUDA_nvrtc_static_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CUDA_pcsamplingutil_LIBRARY
-CUDA_pcsamplingutil_LIBRARY-ADVANCED:INTERNAL=1
-//Details about finding CUDAToolkit
-FIND_PACKAGE_MESSAGE_DETAILS_CUDAToolkit:INTERNAL=[/usr/local/cuda-12.2/include][/usr/local/cuda-12.2/lib64/libcudart.so][/usr/local/cuda-12.2/bin][v12.2.140()]
 //Details about finding OpenSSL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libcrypto.so][/usr/include][c ][v3.0.2()]
 //Details about finding PostgreSQL
 FIND_PACKAGE_MESSAGE_DETAILS_PostgreSQL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libpq.so][/usr/include/postgresql][c ][v14.20()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//Test HAVE_CXX_ATOMICS_WITHOUT_LIB
+HAVE_CXX_ATOMICS_WITHOUT_LIB:INTERNAL=1
 //Have symbol fwrite_unlocked
 HAVE_FWRITE_UNLOCKED:INTERNAL=1
 //ADVANCED property for variable: OPENSSL_CRYPTO_LIBRARY
@@ -1209,58 +809,23 @@ _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/usr/local
 _OPENSSL_CFLAGS:INTERNAL=
 _OPENSSL_CFLAGS_I:INTERNAL=
 _OPENSSL_CFLAGS_OTHER:INTERNAL=
-_OPENSSL_FOUND:INTERNAL=1
-_OPENSSL_INCLUDEDIR:INTERNAL=/usr/include
-_OPENSSL_INCLUDE_DIRS:INTERNAL=
-_OPENSSL_LDFLAGS:INTERNAL=-L/usr/lib/x86_64-linux-gnu;-lssl;-lcrypto
-_OPENSSL_LDFLAGS_OTHER:INTERNAL=
-_OPENSSL_LIBDIR:INTERNAL=/usr/lib/x86_64-linux-gnu
-_OPENSSL_LIBRARIES:INTERNAL=ssl;crypto
-_OPENSSL_LIBRARY_DIRS:INTERNAL=/usr/lib/x86_64-linux-gnu
+_OPENSSL_FOUND:INTERNAL=
+_OPENSSL_INCLUDEDIR:INTERNAL=
+_OPENSSL_LIBDIR:INTERNAL=
 _OPENSSL_LIBS:INTERNAL=
 _OPENSSL_LIBS_L:INTERNAL=
 _OPENSSL_LIBS_OTHER:INTERNAL=
 _OPENSSL_LIBS_PATHS:INTERNAL=
-_OPENSSL_MODULE_NAME:INTERNAL=openssl
-_OPENSSL_PREFIX:INTERNAL=/usr
+_OPENSSL_MODULE_NAME:INTERNAL=
+_OPENSSL_PREFIX:INTERNAL=
 _OPENSSL_STATIC_CFLAGS:INTERNAL=
 _OPENSSL_STATIC_CFLAGS_I:INTERNAL=
 _OPENSSL_STATIC_CFLAGS_OTHER:INTERNAL=
-_OPENSSL_STATIC_INCLUDE_DIRS:INTERNAL=
-_OPENSSL_STATIC_LDFLAGS:INTERNAL=-L/usr/lib/x86_64-linux-gnu;-lssl;-lcrypto;-ldl;-pthread
-_OPENSSL_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread
 _OPENSSL_STATIC_LIBDIR:INTERNAL=
-_OPENSSL_STATIC_LIBRARIES:INTERNAL=ssl;crypto;dl
-_OPENSSL_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib/x86_64-linux-gnu
 _OPENSSL_STATIC_LIBS:INTERNAL=
 _OPENSSL_STATIC_LIBS_L:INTERNAL=
 _OPENSSL_STATIC_LIBS_OTHER:INTERNAL=
 _OPENSSL_STATIC_LIBS_PATHS:INTERNAL=
-_OPENSSL_VERSION:INTERNAL=3.0.2
-_OPENSSL_openssl_INCLUDEDIR:INTERNAL=
-_OPENSSL_openssl_LIBDIR:INTERNAL=
-_OPENSSL_openssl_PREFIX:INTERNAL=
-_OPENSSL_openssl_VERSION:INTERNAL=
-__pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl
+_OPENSSL_VERSION:INTERNAL=
 __pkg_config_checked__OPENSSL:INTERNAL=1
-cmake_package_name:INTERNAL=GTest
-generated_dir:INTERNAL=/users/xc/HwGauge/build/vendors/pcm/tests/googletest/googletest/generated
-//ADVANCED property for variable: gmock_build_tests
-gmock_build_tests-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: gtest_build_samples
-gtest_build_samples-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: gtest_build_tests
-gtest_build_tests-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: gtest_disable_pthreads
-gtest_disable_pthreads-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: gtest_force_shared_crt
-gtest_force_shared_crt-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: gtest_hide_internal_symbols
-gtest_hide_internal_symbols-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib__OPENSSL_crypto
-pkgcfg_lib__OPENSSL_crypto-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib__OPENSSL_ssl
-pkgcfg_lib__OPENSSL_ssl-ADVANCED:INTERNAL=1
-prefix_result:INTERNAL=/usr/lib/x86_64-linux-gnu
-targets_export_name:INTERNAL=GTestTargets
 

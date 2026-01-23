@@ -108,3 +108,33 @@ CREATE TABLE IF NOT EXISTS hwgauge_npu_chip_metrics (
     FOREIGN KEY (card_id, device_id) REFERENCES hwgauge_npu_chip_info(card_id, device_id)
 );
 ```
+
+#### 4. 系统整体监控表
+
+**说明：系统级指标为全局信息，不需要独立的静态信息表。**
+
+**系统动态监测表**:
+```sql
+CREATE TABLE IF NOT EXISTS hwgauge_system_metrics (
+    timestamp TIMESTAMP NOT NULL,              -- 采样时间戳
+    
+    -- 内存指标
+    mem_total_gb DOUBLE PRECISION,             -- 物理内存总量(GB)
+    mem_used_gb DOUBLE PRECISION,              -- 已用物理内存(GB)
+    mem_util_percent DOUBLE PRECISION,         -- 内存利用率(%)
+    
+    -- 磁盘IO指标 (汇总)
+    disk_read_mbps DOUBLE PRECISION,           -- 磁盘读吞吐量(MB/s)
+    disk_write_mbps DOUBLE PRECISION,          -- 磁盘写吞吐量(MB/s)
+    max_disk_util_percent DOUBLE PRECISION,    -- 最忙碌磁盘利用率(%) - 标识系统IO瓶颈
+    
+    -- 网络指标 (汇总)
+    net_download_mbps DOUBLE PRECISION,        -- 网络下载带宽(MB/s)
+    net_upload_mbps DOUBLE PRECISION,          -- 网络上传带宽(MB/s)
+    
+    -- 整机功耗
+    system_power_watts DOUBLE PRECISION,       -- 系统整机功耗(W)
+    
+    PRIMARY KEY (timestamp)
+);
+```

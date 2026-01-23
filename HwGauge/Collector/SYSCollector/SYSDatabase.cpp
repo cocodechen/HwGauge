@@ -1,4 +1,4 @@
-#ifdef HWGAUGE_USE_POSTGRESQL
+#if defined(HWGAUGE_USE_POSTGRESQL) && defined(__linux__)
 
 #include "SYSDatabase.hpp"
 

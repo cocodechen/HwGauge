@@ -1,5 +1,0 @@
-if(EXISTS "/users/xc/HwGauge/build/vendors/pcm/tests/utests/read-number-utest[1]_tests.cmake")
-  include("/users/xc/HwGauge/build/vendors/pcm/tests/utests/read-number-utest[1]_tests.cmake")
-else()
-  add_test(read-number-utest_NOT_BUILT read-number-utest_NOT_BUILT)
-endif()
