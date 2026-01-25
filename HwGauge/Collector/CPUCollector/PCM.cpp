@@ -99,6 +99,8 @@ namespace hwgauge
         // Prime baseline snapshot
         snapshot(beforeState);
         beforeTime = std::chrono::steady_clock::now();
+
+        zeroBandwidthCounter=0;
     }
 
     void PCM::cleanupPCM()
@@ -108,6 +110,27 @@ namespace hwgauge
 
         pcmInstance = nullptr;
         initialized = false;
+    }
+
+    // 辅助函数：尝试重置 PCM
+    void PCM::resetPCM()
+    {
+        spdlog::warn("[PCM] Detected hung PMU counters (Bandwidth 0), attempting reset...");
+        if (pcmInstance) {
+            pcmInstance->cleanup();
+            // 稍微等待一下让硬件状态稳定
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            auto status = pcmInstance->program();
+            if (status != pcm::PCM::Success) {
+                spdlog::error("[PCM] Reset failed with status: {}", static_cast<int>(status));
+            } else {
+                // 重置成功后，必须重新校准 beforeState，否则下一次计算会因为计数器归零产生巨大的错误尖峰
+                snapshot(beforeState); 
+                beforeTime = std::chrono::steady_clock::now();
+                zeroBandwidthCounter = 0;
+                spdlog::info("[PCM] Reset successful.");
+            }
+        }
     }
 
     void PCM::initTempSensors()
@@ -212,6 +235,10 @@ namespace hwgauge
 
         std::vector<CPUMetrics> metrics;
         //auto numSockets = pcmInstance->getNumSockets();
+        // 用于检测当前系统是否活跃
+        bool isSystemActive = false; 
+        // 用于检测是否所有 Socket 的带宽都为 0
+        bool allBandwidthZero = true; 
 
          for (const auto& label : labels)
         {
@@ -249,6 +276,28 @@ namespace hwgauge
             //m.temperature = (double)pcmInstance->getTemperature(s);
 
             metrics.push_back(m);
+
+            // 如果 CPU 利用率 > 1%，认为系统是活的
+            if (m.cpuUtilization > 1.0) isSystemActive = true; 
+            // 检查带宽数据
+            if (readBytes > 0.0 || writeBytes > 0.0)allBandwidthZero = false;
+        }
+
+        // --- 自愈逻辑开始 ---
+        // 如果 CPU 在工作 (利用率 > 1%)，但所有 Socket 的内存读写全都是 0，说明 PMU 可能挂了
+        if (isSystemActive && allBandwidthZero)
+        {
+            zeroBandwidthCounter++;
+            if (zeroBandwidthCounter >= 50)
+            {
+                resetPCM();
+                return metrics; 
+            }
+        }
+        else
+        {
+            // 如果数据正常，计数器归零
+            zeroBandwidthCounter = 0;
         }
 
         beforeState.swap(afterState);
