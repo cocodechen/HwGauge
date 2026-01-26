@@ -113,7 +113,7 @@ namespace hwgauge
         }
         //CtrlCPU
         unsigned int freq_ctrlcpu=0;
-        ret= dcmi_get_device_frequency(card,device,2, &freq_ctrlcpu);
+        ret= dcmi_get_device_frequency(card,device,(enum dcmi_freq_type)2, &freq_ctrlcpu);
         if (ret== NPU_OK)metric.freq_ctrlcpu = freq_ctrlcpu;
         else
         {
