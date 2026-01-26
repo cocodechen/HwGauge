@@ -1406,6 +1406,9 @@ HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSImpl.cpp.o: /users/xc/H
   /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h \
   /usr/lib/gcc/x86_64-linux-gnu/11/include/syslimits.h
 
+HwGauge/CMakeFiles/HwGauge.dir/Collector/SYSCollector/SYSPrometheus.cpp.o: /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp \
+  /usr/include/stdc-predef.h
+
 HwGauge/CMakeFiles/HwGauge.dir/Exposer/Exposer.cpp.o: /users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp \
   /users/xc/HwGauge/HwGauge/Collector/Collector.hpp \
   /users/xc/HwGauge/HwGauge/Collector/Exception.hpp \
@@ -1734,6 +1737,7 @@ HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: /users/xc/HwGauge/HwGauge/main.cpp \
   /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSDatabase.hpp \
   /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSImpl.hpp \
   /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSMetrics.hpp \
+  /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.hpp \
   /users/xc/HwGauge/HwGauge/Exposer/Exposer.hpp \
   /users/xc/HwGauge/vendors/CLI11/include/CLI/App.hpp \
   /users/xc/HwGauge/vendors/CLI11/include/CLI/Argv.hpp \
@@ -2177,6 +2181,8 @@ HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: /users/xc/HwGauge/HwGauge/main.cpp \
 
 /users/xc/HwGauge/vendors/CLI11/include/CLI/App.hpp:
 
+/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.hpp:
+
 /users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSCollector.hpp:
 
 /users/xc/HwGauge/HwGauge/Collector/CPUCollector/CPUPrometheus.hpp:
@@ -2188,6 +2194,8 @@ HwGauge/CMakeFiles/HwGauge.dir/main.cpp.o: /users/xc/HwGauge/HwGauge/main.cpp \
 /users/xc/HwGauge/HwGauge/Collector/Collector.hpp:
 
 /users/xc/HwGauge/HwGauge/Exposer/Exposer.cpp:
+
+/users/xc/HwGauge/HwGauge/Collector/SYSCollector/SYSPrometheus.cpp:
 
 /usr/include/x86_64-linux-gnu/sys/time.h:
 

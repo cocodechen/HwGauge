@@ -48,6 +48,9 @@ namespace hwgauge {
         void initializePCM();
         void cleanupPCM();
 
+        int zeroBandwidthCounter;
+        void resetPCM();
+
         void snapshot(std::vector<pcm::SocketCounterState>& out);
 
         // ===== 新增：温度相关 =====

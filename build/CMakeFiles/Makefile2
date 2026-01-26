@@ -66,7 +66,6 @@ CMAKE_BINARY_DIR = /users/xc/HwGauge/build
 all: HwGauge/all
 all: vendors/spdlog/all
 all: vendors/CLI11/all
-all: vendors/prometheus-cpp/all
 all: vendors/pcm/all
 .PHONY : all
 
@@ -74,7 +73,6 @@ all: vendors/pcm/all
 preinstall: HwGauge/preinstall
 preinstall: vendors/spdlog/preinstall
 preinstall: vendors/CLI11/preinstall
-preinstall: vendors/prometheus-cpp/preinstall
 preinstall: vendors/pcm/preinstall
 .PHONY : preinstall
 
@@ -82,7 +80,6 @@ preinstall: vendors/pcm/preinstall
 clean: HwGauge/clean
 clean: vendors/spdlog/clean
 clean: vendors/CLI11/clean
-clean: vendors/prometheus-cpp/clean
 clean: vendors/pcm/clean
 .PHONY : clean
 
@@ -226,74 +223,6 @@ vendors/pcm/src/clean: vendors/pcm/src/CMakeFiles/client.dir/clean
 .PHONY : vendors/pcm/src/clean
 
 #=============================================================================
-# Directory level rules for directory vendors/prometheus-cpp
-
-# Recursive "all" directory target.
-vendors/prometheus-cpp/all: vendors/prometheus-cpp/core/all
-vendors/prometheus-cpp/all: vendors/prometheus-cpp/util/all
-vendors/prometheus-cpp/all: vendors/prometheus-cpp/pull/all
-.PHONY : vendors/prometheus-cpp/all
-
-# Recursive "preinstall" directory target.
-vendors/prometheus-cpp/preinstall: vendors/prometheus-cpp/core/preinstall
-vendors/prometheus-cpp/preinstall: vendors/prometheus-cpp/util/preinstall
-vendors/prometheus-cpp/preinstall: vendors/prometheus-cpp/pull/preinstall
-.PHONY : vendors/prometheus-cpp/preinstall
-
-# Recursive "clean" directory target.
-vendors/prometheus-cpp/clean: vendors/prometheus-cpp/core/clean
-vendors/prometheus-cpp/clean: vendors/prometheus-cpp/util/clean
-vendors/prometheus-cpp/clean: vendors/prometheus-cpp/pull/clean
-.PHONY : vendors/prometheus-cpp/clean
-
-#=============================================================================
-# Directory level rules for directory vendors/prometheus-cpp/core
-
-# Recursive "all" directory target.
-vendors/prometheus-cpp/core/all: vendors/prometheus-cpp/core/CMakeFiles/core.dir/all
-.PHONY : vendors/prometheus-cpp/core/all
-
-# Recursive "preinstall" directory target.
-vendors/prometheus-cpp/core/preinstall:
-.PHONY : vendors/prometheus-cpp/core/preinstall
-
-# Recursive "clean" directory target.
-vendors/prometheus-cpp/core/clean: vendors/prometheus-cpp/core/CMakeFiles/core.dir/clean
-.PHONY : vendors/prometheus-cpp/core/clean
-
-#=============================================================================
-# Directory level rules for directory vendors/prometheus-cpp/pull
-
-# Recursive "all" directory target.
-vendors/prometheus-cpp/pull/all: vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all
-vendors/prometheus-cpp/pull/all: vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all
-.PHONY : vendors/prometheus-cpp/pull/all
-
-# Recursive "preinstall" directory target.
-vendors/prometheus-cpp/pull/preinstall:
-.PHONY : vendors/prometheus-cpp/pull/preinstall
-
-# Recursive "clean" directory target.
-vendors/prometheus-cpp/pull/clean: vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/clean
-vendors/prometheus-cpp/pull/clean: vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/clean
-.PHONY : vendors/prometheus-cpp/pull/clean
-
-#=============================================================================
-# Directory level rules for directory vendors/prometheus-cpp/util
-
-# Recursive "all" directory target.
-vendors/prometheus-cpp/util/all:
-.PHONY : vendors/prometheus-cpp/util/all
-
-# Recursive "preinstall" directory target.
-vendors/prometheus-cpp/util/preinstall:
-.PHONY : vendors/prometheus-cpp/util/preinstall
-
-# Recursive "clean" directory target.
-vendors/prometheus-cpp/util/clean:
-.PHONY : vendors/prometheus-cpp/util/clean
-
-#=============================================================================
 # Directory level rules for directory vendors/spdlog
 
 # Recursive "all" directory target.
@@ -314,9 +243,6 @@ vendors/spdlog/clean: vendors/spdlog/CMakeFiles/spdlog.dir/clean
 # All Build rule for target.
 HwGauge/CMakeFiles/HwGauge.dir/all: vendors/spdlog/CMakeFiles/spdlog.dir/all
 HwGauge/CMakeFiles/HwGauge.dir/all: vendors/CLI11/src/CMakeFiles/CLI11.dir/all
-HwGauge/CMakeFiles/HwGauge.dir/all: vendors/prometheus-cpp/core/CMakeFiles/core.dir/all
-HwGauge/CMakeFiles/HwGauge.dir/all: vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all
-HwGauge/CMakeFiles/HwGauge.dir/all: vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all
 HwGauge/CMakeFiles/HwGauge.dir/all: vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/all
 	$(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/depend
 	$(MAKE) $(MAKESILENT) -f HwGauge/CMakeFiles/HwGauge.dir/build.make HwGauge/CMakeFiles/HwGauge.dir/build
@@ -325,7 +251,7 @@ HwGauge/CMakeFiles/HwGauge.dir/all: vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/al
 
 # Build rule for subdir invocation for target.
 HwGauge/CMakeFiles/HwGauge.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 66
+	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 43
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 HwGauge/CMakeFiles/HwGauge.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 0
 .PHONY : HwGauge/CMakeFiles/HwGauge.dir/rule
@@ -346,7 +272,7 @@ HwGauge/CMakeFiles/HwGauge.dir/clean:
 vendors/spdlog/CMakeFiles/spdlog.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendors/spdlog/CMakeFiles/spdlog.dir/build.make vendors/spdlog/CMakeFiles/spdlog.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendors/spdlog/CMakeFiles/spdlog.dir/build.make vendors/spdlog/CMakeFiles/spdlog.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=91,92,93,94,95,96,97,98 "Built target spdlog"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=68,69,70,71,72,73,74,75 "Built target spdlog"
 .PHONY : vendors/spdlog/CMakeFiles/spdlog.dir/all
 
 # Build rule for subdir invocation for target.
@@ -390,85 +316,6 @@ CLI11: vendors/CLI11/src/CMakeFiles/CLI11.dir/rule
 vendors/CLI11/src/CMakeFiles/CLI11.dir/clean:
 	$(MAKE) $(MAKESILENT) -f vendors/CLI11/src/CMakeFiles/CLI11.dir/build.make vendors/CLI11/src/CMakeFiles/CLI11.dir/clean
 .PHONY : vendors/CLI11/src/CMakeFiles/CLI11.dir/clean
-
-#=============================================================================
-# Target rules for target vendors/prometheus-cpp/core/CMakeFiles/core.dir
-
-# All Build rule for target.
-vendors/prometheus-cpp/core/CMakeFiles/core.dir/all:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/core/CMakeFiles/core.dir/build.make vendors/prometheus-cpp/core/CMakeFiles/core.dir/depend
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/core/CMakeFiles/core.dir/build.make vendors/prometheus-cpp/core/CMakeFiles/core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=67,68,69,70,71,72,73,74,75,76,77,78,79,80,81 "Built target core"
-.PHONY : vendors/prometheus-cpp/core/CMakeFiles/core.dir/all
-
-# Build rule for subdir invocation for target.
-vendors/prometheus-cpp/core/CMakeFiles/core.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 15
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendors/prometheus-cpp/core/CMakeFiles/core.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 0
-.PHONY : vendors/prometheus-cpp/core/CMakeFiles/core.dir/rule
-
-# Convenience name for target.
-core: vendors/prometheus-cpp/core/CMakeFiles/core.dir/rule
-.PHONY : core
-
-# clean rule for target.
-vendors/prometheus-cpp/core/CMakeFiles/core.dir/clean:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/core/CMakeFiles/core.dir/build.make vendors/prometheus-cpp/core/CMakeFiles/core.dir/clean
-.PHONY : vendors/prometheus-cpp/core/CMakeFiles/core.dir/clean
-
-#=============================================================================
-# Target rules for target vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir
-
-# All Build rule for target.
-vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/depend
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=62,63 "Built target civetweb"
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all
-
-# Build rule for subdir invocation for target.
-vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 0
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/rule
-
-# Convenience name for target.
-civetweb: vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/rule
-.PHONY : civetweb
-
-# clean rule for target.
-vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/clean:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/clean
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/clean
-
-#=============================================================================
-# Target rules for target vendors/prometheus-cpp/pull/CMakeFiles/pull.dir
-
-# All Build rule for target.
-vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all: vendors/prometheus-cpp/core/CMakeFiles/core.dir/all
-vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all: vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/all
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/depend
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=85,86,87,88,89,90 "Built target pull"
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all
-
-# Build rule for subdir invocation for target.
-vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 23
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwGauge/build/CMakeFiles 0
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/rule
-
-# Convenience name for target.
-pull: vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/rule
-.PHONY : pull
-
-# clean rule for target.
-vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/clean:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/clean
-.PHONY : vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/clean
 
 #=============================================================================
 # Target rules for target vendors/pcm/src/CMakeFiles/PCM_STATIC.dir
@@ -555,7 +402,7 @@ vendors/pcm/src/CMakeFiles/PCM_SHARED.dir/clean:
 vendors/pcm/src/CMakeFiles/daemon.dir/all: vendors/pcm/src/CMakeFiles/PCM_STATIC.dir/all
 	$(MAKE) $(MAKESILENT) -f vendors/pcm/src/CMakeFiles/daemon.dir/build.make vendors/pcm/src/CMakeFiles/daemon.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendors/pcm/src/CMakeFiles/daemon.dir/build.make vendors/pcm/src/CMakeFiles/daemon.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=82,83,84 "Built target daemon"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=65,66,67 "Built target daemon"
 .PHONY : vendors/pcm/src/CMakeFiles/daemon.dir/all
 
 # Build rule for subdir invocation for target.
@@ -581,7 +428,7 @@ vendors/pcm/src/CMakeFiles/daemon.dir/clean:
 vendors/pcm/src/CMakeFiles/client.dir/all:
 	$(MAKE) $(MAKESILENT) -f vendors/pcm/src/CMakeFiles/client.dir/build.make vendors/pcm/src/CMakeFiles/client.dir/depend
 	$(MAKE) $(MAKESILENT) -f vendors/pcm/src/CMakeFiles/client.dir/build.make vendors/pcm/src/CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=64,65,66 "Built target client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=62,63,64 "Built target client"
 .PHONY : vendors/pcm/src/CMakeFiles/client.dir/all
 
 # Build rule for subdir invocation for target.

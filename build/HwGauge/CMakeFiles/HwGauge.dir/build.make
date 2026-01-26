@@ -303,8 +303,6 @@ bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/build.make
 bin/hwgauge: lib/libpcm.a
 bin/hwgauge: /usr/lib/x86_64-linux-gnu/libpq.so
 bin/hwgauge: lib/libspdlog.a
-bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-pull.a
-bin/hwgauge: vendors/prometheus-cpp/lib/libprometheus-cpp-core.a
 bin/hwgauge: HwGauge/CMakeFiles/HwGauge.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/users/xc/HwGauge/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable ../bin/hwgauge"
 	cd /users/xc/HwGauge/build/HwGauge && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/HwGauge.dir/link.txt --verbose=$(VERBOSE)

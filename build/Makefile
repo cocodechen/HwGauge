@@ -221,45 +221,6 @@ CLI11/fast:
 .PHONY : CLI11/fast
 
 #=============================================================================
-# Target rules for targets named core
-
-# Build rule for target.
-core: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 core
-.PHONY : core
-
-# fast build rule for target.
-core/fast:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/core/CMakeFiles/core.dir/build.make vendors/prometheus-cpp/core/CMakeFiles/core.dir/build
-.PHONY : core/fast
-
-#=============================================================================
-# Target rules for targets named civetweb
-
-# Build rule for target.
-civetweb: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 civetweb
-.PHONY : civetweb
-
-# fast build rule for target.
-civetweb/fast:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/civetweb.dir/build
-.PHONY : civetweb/fast
-
-#=============================================================================
-# Target rules for targets named pull
-
-# Build rule for target.
-pull: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pull
-.PHONY : pull
-
-# fast build rule for target.
-pull/fast:
-	$(MAKE) $(MAKESILENT) -f vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build.make vendors/prometheus-cpp/pull/CMakeFiles/pull.dir/build
-.PHONY : pull/fast
-
-#=============================================================================
 # Target rules for targets named PCM_STATIC
 
 # Build rule for target.
@@ -371,11 +332,8 @@ help:
 	@echo "... PCM_STATIC_SILENT"
 	@echo "... c_example"
 	@echo "... c_example_shlib"
-	@echo "... civetweb"
 	@echo "... client"
-	@echo "... core"
 	@echo "... daemon"
-	@echo "... pull"
 	@echo "... spdlog"
 .PHONY : help
 

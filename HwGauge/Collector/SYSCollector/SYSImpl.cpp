@@ -150,7 +150,8 @@ namespace hwgauge
         powerCmd_="";
         powerParseType_ = PowerParseType::None;
         // 3. 都失败了
-        throw FatalError("[SYSImpl] No supported power monitoring method found.");
+        // throw FatalError("[SYSImpl] No supported power monitoring method found.");
+        spdlog::warn("[SYSImpl] No supported power monitoring method found.");
     }
 
     // --- 判断是否为物理磁盘---
@@ -365,7 +366,7 @@ namespace hwgauge
     // --- 功耗读取函数 ---
     double SYSImpl::fetchPowerFromHardware()
     {
-        if (powerCmd_.empty())throw FatalError("[SYSImpl] No supported power monitoring method found.");
+        //if (powerCmd_.empty())throw FatalError("[SYSImpl] No supported power monitoring method found.");
         try
         {
             std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(powerCmd_.c_str(), "r"), pclose);
