@@ -179,6 +179,12 @@ namespace hwgauge
                 if (value == -1) return nullptr;  // SQL NULL
                 buf = std::to_string(value);
                 return buf.c_str();
+            } 
+            inline const char* to_sql_param_long(long long value, std::string& buf)
+            {
+                if (value == -1) return nullptr;  // SQL NULL
+                buf = std::to_string(value);
+                return buf.c_str();
             }  
             inline const char* to_sql_param_double(double value, std::string& buf)
             {

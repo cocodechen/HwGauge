@@ -16,14 +16,15 @@ namespace hwgauge
 
         void write(const std::vector<NPULabel>& label_list,const std::vector<NPUMetrics>& metric_list);
     private:
-        // Prometheus指标 - 使用Family<prometheus::Gauge>类型
-       // 1. 频率指标
+        // 1. 频率指标
         prometheus::Family<prometheus::Gauge>* aicore_freq_gauge_;
         prometheus::Family<prometheus::Gauge>* aicpu_freq_gauge_;
+        prometheus::Family<prometheus::Gauge>* ctrlcpu_freq_gauge_;  // 新增
         
         // 2. 算力负载指标
         prometheus::Family<prometheus::Gauge>* aicore_util_gauge_;
         prometheus::Family<prometheus::Gauge>* aicpu_util_gauge_;
+        prometheus::Family<prometheus::Gauge>* ctrlcpu_util_gauge_;  // 新增
         prometheus::Family<prometheus::Gauge>* vec_util_gauge_;
         
         // 3. 存储资源指标
@@ -31,10 +32,10 @@ namespace hwgauge
         prometheus::Family<prometheus::Gauge>* mem_usage_gauge_;
         prometheus::Family<prometheus::Gauge>* mem_util_gauge_;
         prometheus::Family<prometheus::Gauge>* membw_util_gauge_;
+        prometheus::Family<prometheus::Gauge>* mem_freq_gauge_;  // 新增
         
         // 4. 功耗指标
         prometheus::Family<prometheus::Gauge>* chip_power_gauge_;
-        prometheus::Family<prometheus::Gauge>* mcu_power_gauge_;
         
         // 5. 环境指标
         prometheus::Family<prometheus::Gauge>* health_gauge_;

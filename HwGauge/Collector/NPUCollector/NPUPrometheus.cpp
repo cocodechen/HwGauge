@@ -21,6 +21,11 @@ namespace hwgauge
             .Help("NPU AI CPU frequency in MHz")
             .Register(registry_ref);
             
+        ctrlcpu_freq_gauge_ = &prometheus::BuildGauge()  // 新增
+            .Name("npu_ctrlcpu_frequency_mhz")
+            .Help("NPU Ctrl CPU frequency in MHz")
+            .Register(registry_ref);
+
         // 2. 算力负载指标
         aicore_util_gauge_ = &prometheus::BuildGauge()
             .Name("npu_aicore_utilization_percent")
@@ -30,6 +35,11 @@ namespace hwgauge
         aicpu_util_gauge_ = &prometheus::BuildGauge()
             .Name("npu_aicpu_utilization_percent")
             .Help("NPU AI CPU utilization percentage")
+            .Register(registry_ref);
+            
+        ctrlcpu_util_gauge_ = &prometheus::BuildGauge()  // 新增
+            .Name("npu_ctrlcpu_utilization_percent")
+            .Help("NPU Ctrl CPU utilization percentage")
             .Register(registry_ref);
             
         vec_util_gauge_ = &prometheus::BuildGauge()
@@ -57,16 +67,16 @@ namespace hwgauge
             .Name("npu_memory_bandwidth_utilization_percent")
             .Help("NPU memory bandwidth utilization percentage")
             .Register(registry_ref);
+            
+        mem_freq_gauge_ = &prometheus::BuildGauge()  // 新增
+            .Name("npu_memory_frequency_mhz")
+            .Help("NPU memory frequency in MHz")
+            .Register(registry_ref);
 
         // 4. 功耗指标
         chip_power_gauge_ = &prometheus::BuildGauge()
             .Name("npu_chip_power_watts")
             .Help("NPU chip power consumption in watts")
-            .Register(registry_ref);
-            
-        mcu_power_gauge_ = &prometheus::BuildGauge()
-            .Name("npu_mcu_power_watts")
-            .Help("NPU MCU power consumption in watts")
             .Register(registry_ref);
 
         // 5. 环境指标
@@ -104,10 +114,12 @@ namespace hwgauge
             // 1. 更新频率指标
             aicore_freq_gauge_->Add(labels).Set(metric.freq_aicore);
             aicpu_freq_gauge_->Add(labels).Set(metric.freq_aicpu);
+            ctrlcpu_freq_gauge_->Add(labels).Set(metric.freq_ctrlcpu);  // 新增
             
             // 2. 更新算力负载指标
             aicore_util_gauge_->Add(labels).Set(metric.util_aicore);
             aicpu_util_gauge_->Add(labels).Set(metric.util_aicpu);
+            ctrlcpu_util_gauge_->Add(labels).Set(metric.util_ctrlcpu);  // 新增
             vec_util_gauge_->Add(labels).Set(metric.util_vec);
             
             // 3. 更新存储资源指标
@@ -115,10 +127,10 @@ namespace hwgauge
             mem_usage_gauge_->Add(labels).Set(metric.mem_usage_mb);
             mem_util_gauge_->Add(labels).Set(metric.util_mem);
             membw_util_gauge_->Add(labels).Set(metric.util_membw);
+            mem_freq_gauge_->Add(labels).Set(metric.freq_mem);  // 新增
             
             // 4. 更新功耗指标
             chip_power_gauge_->Add(labels).Set(metric.chip_power);
-            mcu_power_gauge_->Add(labels).Set(metric.mcu_power);
             
             // 5. 更新环境指标
             health_gauge_->Add(labels).Set(metric.health);
