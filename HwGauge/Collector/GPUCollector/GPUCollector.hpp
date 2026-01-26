@@ -42,7 +42,7 @@ namespace hwgauge
 			// 输出调试
             if(outTer)
             {
-                std::cout<<"["<<cur_time<<"]"<<std::endl;
+                //std::cout<<"["<<cur_time<<"]"<<std::endl;
                 for(int i=0;i<label_list.size();i++)
                     outGPU(label_list[i],metric_list[i]);
             }
