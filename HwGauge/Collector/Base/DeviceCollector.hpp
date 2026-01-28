@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collector/Collector.hpp"
+#include "Collector/Base/Collector.hpp"
 #include <memory>
 #include <vector>
 #include <iostream>

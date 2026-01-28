@@ -2,8 +2,8 @@
 #if defined(HWGAUGE_USE_POSTGRESQL) && defined(__linux__)
 
 #include "SYSMetrics.hpp"
-#include "Collector/Config.hpp"
-#include "Collector/Database.hpp"
+#include "Collector/Common/Config.hpp"
+#include "Collector/Base/Database.hpp"
 
 namespace hwgauge
 {

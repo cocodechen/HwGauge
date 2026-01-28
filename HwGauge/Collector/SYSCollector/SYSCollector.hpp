@@ -2,7 +2,7 @@
 
 #ifdef __linux__
 
-#include "Collector/DeviceCollector.hpp"
+#include "Collector/Base/DeviceCollector.hpp"
 #include "SYSImpl.hpp"
 #include "SYSDatabase.hpp"
 #include "SYSCsvLogger.hpp"

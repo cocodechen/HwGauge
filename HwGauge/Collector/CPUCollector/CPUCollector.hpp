@@ -2,7 +2,7 @@
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 
-#include "Collector/DeviceCollector.hpp"
+#include "Collector/Base/DeviceCollector.hpp"
 #include "PCM.hpp"
 #include "CPUDatabase.hpp"
 #include "CPUCsvLogger.hpp"

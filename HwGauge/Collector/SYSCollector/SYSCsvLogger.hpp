@@ -1,7 +1,7 @@
 #pragma once
 #ifdef __linux__
 
-#include "Collector/CsvLogger.hpp"
+#include "Collector/Base/CsvLogger.hpp"
 #include "SYSMetrics.hpp"
 
 namespace hwgauge {

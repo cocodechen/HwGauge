@@ -2,7 +2,7 @@
 
 #ifdef HWGAUGE_USE_NVML
 
-#include "Collector/Csvlogger.hpp"
+#include "Collector/Base/CsvLogger.hpp"
 #include "GPUMetrics.hpp"
 
 namespace hwgauge

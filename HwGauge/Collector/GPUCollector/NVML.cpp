@@ -1,6 +1,6 @@
 #ifdef HWGAUGE_USE_NVML
 
-#include "Collector/Exception.hpp"
+#include "Collector/Common/Exception.hpp"
 #include "NVML.hpp"
 
 #include <nvml.h>

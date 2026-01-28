@@ -1,6 +1,6 @@
 #ifdef HWGAUGE_USE_INTEL_PCM
 #include "PCM.hpp"
-#include "Collector/Exception.hpp"
+#include "Collector/Common/Exception.hpp"
 
 #include "spdlog/spdlog.h"
 #include "cpucounters.h"

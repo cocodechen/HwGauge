@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Collector/Collector.hpp"
-#include "Collector/Exception.hpp"
+#include "Collector/Base/Collector.hpp"
+#include "Collector/Common/Exception.hpp"
 
 #include <vector>
 #include <memory>

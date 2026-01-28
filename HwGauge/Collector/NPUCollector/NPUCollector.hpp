@@ -2,7 +2,7 @@
 
 #ifdef HWGAUGE_USE_NPU
 
-#include "Collector/DeviceCollector.hpp"
+#include "Collector/Base/DeviceCollector.hpp"
 #include "NPUImpl.hpp"
 #include "NPUDatabase.hpp"
 #include "NPUCsvLogger.hpp"

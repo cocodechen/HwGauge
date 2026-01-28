@@ -2,8 +2,8 @@
 
 #ifdef HWGAUGE_USE_POSTGRESQL
 
-#include "Collector/Config.hpp"
-#include "Collector/Exception.hpp"
+#include "Collector/Common/Config.hpp"
+#include "Collector/Common/Exception.hpp"
 #include "spdlog/spdlog.h"
 
 #include <libpq-fe.h>

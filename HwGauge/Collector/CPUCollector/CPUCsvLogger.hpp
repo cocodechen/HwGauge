@@ -1,7 +1,7 @@
 #pragma once
 #ifdef HWGAUGE_USE_INTEL_PCM
 
-#include "Collector/CsvLogger.hpp"
+#include "Collector/Base/CsvLogger.hpp"
 #include "CPUMetrics.hpp"
 
 namespace hwgauge

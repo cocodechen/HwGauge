@@ -1,7 +1,7 @@
 #pragma once
 #ifdef HWGAUGE_USE_NPU
 
-#include "Collector/CsvLogger.hpp"
+#include "Collector/Base/CsvLogger.hpp"
 #include "NPUMetrics.hpp"
 
 namespace hwgauge {

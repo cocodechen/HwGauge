@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Collector/Exception.hpp"
+#include "Collector/Common/Exception.hpp"
 #include "spdlog/spdlog.h"
 
 #include <string>

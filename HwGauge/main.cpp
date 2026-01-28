@@ -7,7 +7,7 @@
 #include <atomic>
 
 #include "Exposer/Exposer.hpp"
-#include "Collector/Config.hpp"
+#include "Collector/Common/Config.hpp"
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 #include "Collector/CPUCollector/CPUCollector.hpp"

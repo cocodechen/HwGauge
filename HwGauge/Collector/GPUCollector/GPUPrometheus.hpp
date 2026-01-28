@@ -2,7 +2,7 @@
 
 #if defined(HWGAUGE_USE_NVML) && defined(HWGAUGE_USE_PROMETHEUS)
 
-#include "Collector/Prometheus.hpp"
+#include "Collector/Base/Prometheus.hpp"
 #include "GPUMetrics.hpp"
 
 namespace hwgauge

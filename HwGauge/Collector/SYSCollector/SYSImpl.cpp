@@ -1,6 +1,6 @@
 #ifdef __linux__
 
-#include "Collector/Exception.hpp"
+#include "Collector/Common/Exception.hpp"
 #include "SYSImpl.hpp"
 
 #include "spdlog/spdlog.h"

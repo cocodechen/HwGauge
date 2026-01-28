@@ -2,7 +2,7 @@
 
 #if defined(HWGAUGE_USE_PROMETHEUS) && defined(__linux__)
 
-#include "Collector/Prometheus.hpp"
+#include "Collector/Base/Prometheus.hpp"
 #include "SYSMetrics.hpp"
 
 namespace hwgauge

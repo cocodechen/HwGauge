@@ -2,7 +2,7 @@
 
 #ifdef HWGAUGE_USE_NVML
 
-#include "Collector/DeviceCollector.hpp"
+#include "Collector/Base/DeviceCollector.hpp"
 #include "NVML.hpp"
 #include "GPUDatabase.hpp"
 #include "GPUCsvLogger.hpp"
