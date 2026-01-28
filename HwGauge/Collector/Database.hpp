@@ -39,6 +39,11 @@ namespace hwgauge
             Database(const Database&) = delete;
             Database& operator=(const Database&) = delete;
             
+            void init(const std::vector<LabelType>& label_list)
+            {
+                writeInfo(label_list);
+            }
+
             /* 检查是否已连接 */
             bool isConnected() const
             {

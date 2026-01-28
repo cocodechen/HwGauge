@@ -3,7 +3,6 @@
 #ifdef HWGAUGE_USE_NPU
 
 #include <string>
-#include <iostream>
 
 namespace hwgauge
 {
@@ -46,38 +45,6 @@ namespace hwgauge
         //电压（V）
         double voltage;
     };
-
-    inline void outNPU(const NPULabel& l, const NPUMetrics& m)
-    {
-        std::cout
-            << "NPU{ "
-            << "card="     << l.card_id
-            << ", device=" << l.device_id
-            << ", type="   << l.chip_type
-            << ", name="   << l.chip_name
-
-            << ", freqAICore=" << m.freq_aicore
-            << ", freqAICPU="  << m.freq_aicpu
-            << ", freqCtrlCPU="  << m.freq_ctrlcpu
-
-            << ", utilAICore=" << m.util_aicore
-            << ", utilAICPU="  << m.util_aicpu
-            << ", utilCtrlCPU="  << m.util_ctrlcpu
-            << ", utilVec="    << m.util_vec
-
-            << ", memTotalMb=" <<m.mem_total_mb
-            << ", memUsageMb="  <<m.mem_usage_mb
-            << ", utilMem="      << m.util_mem
-            << ", utilMemBW="    << m.util_membw
-            << ", freqMem="  << m.freq_mem
-
-            << ", chip_power="   << m.chip_power
-
-            << ", temp="       << m.temperature
-            << ", voltage="    << m.voltage
-            << ", health="     << m.health
-            << " }\n";
-    }
 
 }
 

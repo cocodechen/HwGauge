@@ -50,12 +50,12 @@ namespace hwgauge
     struct CollectorConfig
     {
         bool outTer=true;
-        bool sysinfo=true;
+        bool outFile=false;
+        std::string filepath;
 #ifdef HWGAUGE_USE_PROMETHEUS
         bool pmEnable = false;
         std::shared_ptr<prometheus::Registry> registry;
 #endif
-
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable = false;
         ConnectionConfig dbConfig;

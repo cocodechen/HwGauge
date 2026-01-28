@@ -2,77 +2,54 @@
 
 #ifdef HWGAUGE_USE_NPU
 
-#include "Collector/Collector.hpp"
-#include "NPUMetrics.hpp"
+#include "Collector/DeviceCollector.hpp"
 #include "NPUImpl.hpp"
-#include "NPUPrometheus.hpp"
 #include "NPUDatabase.hpp"
+#include "NPUCsvLogger.hpp"
+#include "NPUPrometheus.hpp"
+
+#include <iostream>
 
 namespace hwgauge
 {
-    class NPUCollector : public Collector
+    // 定义别名
+    using NPUCollector = DeviceCollector<
+        NPULabel, NPUMetrics, NPUImpl, NPUDatabase, NPUCsvLogger, NPUPrometheus
+    >;
+    
+    // 定义特定的打印函数
+    template<>
+    inline void printMetric(const NPULabel& l, const NPUMetrics& m)
     {
-    public:
-        explicit NPUCollector(const CollectorConfig& cfg)
-            : impl(std::make_unique<NPUImpl>()),
-            label_list(labels()),
-            outTer(cfg.outTer)
-        {
-#ifdef HWGAUGE_USE_PROMETHEUS
-            pmEnable = cfg.pmEnable;
-            if (pmEnable)pm = std::make_unique<NPUPrometheus>(cfg.registry);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            dbEnable = cfg.dbEnable;
-            if (dbEnable)
-            {
-                db = std::make_unique<NPUDatabase>(cfg.dbConfig, cfg.dbTableName);
-                db->writeInfo(label_list);
-            }
-#endif
-        }
-        
-        virtual ~NPUCollector() = default;
+        std::cout
+            << "NPU{ "
+            << "card="     << l.card_id
+            << ", device=" << l.device_id
+            << ", type="   << l.chip_type
+            << ", name="   << l.chip_name
 
-        void collect(const std::string& cur_time) override
-        {
-            // 获取标签（设备列表）和指标数据
-            auto metric_list = sample(label_list);
+            << ", freqAICore=" << m.freq_aicore
+            << ", freqAICPU="  << m.freq_aicpu
+            << ", freqCtrlCPU="  << m.freq_ctrlcpu
 
-			// 输出调试
-            if(outTer)
-            {
-                //std::cout<<"["<<cur_time<<"]"<<std::endl;
-                for(int i=0;i<label_list.size();i++)
-                    outNPU(label_list[i],metric_list[i]);
-            }
-#ifdef HWGAUGE_USE_PROMETHEUS
-            // prometheus
-            if(pmEnable && pm)pm->write(label_list,metric_list);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            // database
-            if(dbEnable && db)db->writeMetric(cur_time,label_list,metric_list);
-#endif
-        }
+            << ", utilAICore=" << m.util_aicore
+            << ", utilAICPU="  << m.util_aicpu
+            << ", utilCtrlCPU="  << m.util_ctrlcpu
+            << ", utilVec="    << m.util_vec
 
-        std::string name() override { return impl->name(); }
-        std::vector<NPULabel> labels() { return impl->labels(); }
-        std::vector<NPUMetrics> sample(std::vector<NPULabel>&labels) { return impl->sample(labels); }
+            << ", memTotalMb=" <<m.mem_total_mb
+            << ", memUsageMb="  <<m.mem_usage_mb
+            << ", utilMem="      << m.util_mem
+            << ", utilMemBW="    << m.util_membw
+            << ", freqMem="  << m.freq_mem
 
-    private:
-        std::unique_ptr<NPUImpl> impl;
-        std::vector<NPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
-        bool outTer;
-#ifdef HWGAUGE_USE_PROMETHEUS
-        bool pmEnable;
-        std::unique_ptr<NPUPrometheus> pm;
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-        bool dbEnable;
-        std::unique_ptr<NPUDatabase> db;
-#endif
-    };
+            << ", chip_power="   << m.chip_power
+
+            << ", temp="       << m.temperature
+            << ", voltage="    << m.voltage
+            << ", health="     << m.health
+            << " }\n";
+    }
 }
 
 #endif

@@ -27,23 +27,6 @@ namespace hwgauge
         double temperature;            // temperature
 	};
 
-    inline void outCPU(const CPULabel& l, const CPUMetrics& m)
-    {
-        std::cout
-            << "CPU{ "
-            << "index="     << l.index
-            << ", name=" << l.name
-            << ", temp=" << m.temperature << "C"
-            << ", cpuUtilization="   << m.cpuUtilization
-            << ", cpuFrequency="   << m.cpuFrequency
-            << ", c0Residency=" << m.c0Residency
-            << ", c6Residency="  << m.c6Residency
-            << ", powerUsage="    << m.powerUsage
-            << ", memoryReadBandwidth="  << m.memoryReadBandwidth
-            << ", memoryWriteBandwidth="    << m.memoryWriteBandwidth
-            << ", memoryPowerUsage=" << m.memoryPowerUsage
-            << " }\n";
-    }
 }
 
 #endif

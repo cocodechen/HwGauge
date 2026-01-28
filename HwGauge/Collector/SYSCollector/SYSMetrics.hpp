@@ -3,7 +3,6 @@
 #ifdef __linux__
 
 #include <string>
-#include <iostream>
 
 namespace hwgauge
 {
@@ -38,17 +37,6 @@ namespace hwgauge
               systemPowerWatts(-1.0) 
         {}
     };
-
-    inline void outSYS(const SYSLabel& l, const SYSMetrics& m)
-    {
-        std::cout << "SYS{ "
-            << "Machine: "<<l.name<<", "
-            << "Mem: " << m.memUsedGB << "/" << m.memTotalGB << "GB (" << m.memUtilizationPercent << "%), "
-            << "Disk: R=" << m.diskReadMBps << " W=" << m.diskWriteMBps << " MB/s (MaxUtil: " << m.maxDiskUtilPercent << "%), "
-            << "Net: In=" << m.netDownloadMBps << " Out=" << m.netUploadMBps << " MB/s, "
-            << "Power: " << m.systemPowerWatts << " W"
-            << " }\n";
-    }
 }
 
 #endif

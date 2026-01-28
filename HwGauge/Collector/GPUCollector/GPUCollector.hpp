@@ -2,77 +2,37 @@
 
 #ifdef HWGAUGE_USE_NVML
 
-#include "Collector/Collector.hpp"
-#include "GPUMetrics.hpp"
+#include "Collector/DeviceCollector.hpp"
 #include "NVML.hpp"
-#include "GPUPrometheus.hpp"
 #include "GPUDatabase.hpp"
+#include "GPUCsvLogger.hpp"
+#include "GPUPrometheus.hpp"
+
+#include <iostream>
 
 namespace hwgauge
 {
-    class GPUCollector : public Collector
+    // 定义别名
+    using GPUCollector = DeviceCollector<
+        GPULabel, GPUMetrics, NVML, GPUDatabase, GPUCsvLogger, GPUPrometheus
+    >;
+    
+    // 定义特定的打印函数
+    template<>
+    inline void printMetric(const GPULabel& l, const GPUMetrics& m)
     {
-    public:
-        explicit GPUCollector(const CollectorConfig& cfg)
-            : impl(std::make_unique<NVML>()),
-            label_list(labels()),
-            outTer(cfg.outTer)
-        {
-#ifdef HWGAUGE_USE_PROMETHEUS
-            pmEnable = cfg.pmEnable;
-            if (pmEnable)pm = std::make_unique<GPUPrometheus>(cfg.registry);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            dbEnable = cfg.dbEnable;
-            if (dbEnable)
-            {
-                db = std::make_unique<GPUDatabase>(cfg.dbConfig, cfg.dbTableName);
-                db->writeInfo(label_list);
-            }
-#endif
-        }
-        
-        virtual ~GPUCollector() = default;
-
-        void collect(const std::string& cur_time) override
-        {
-            // 获取标签（设备列表）和指标数据
-            auto metric_list = sample(label_list);
-
-			// 输出调试
-            if(outTer)
-            {
-                //std::cout<<"["<<cur_time<<"]"<<std::endl;
-                for(int i=0;i<label_list.size();i++)
-                    outGPU(label_list[i],metric_list[i]);
-            }
-#ifdef HWGAUGE_USE_PROMETHEUS
-            // prometheus
-            if(pmEnable && pm)pm->write(label_list,metric_list);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            // database
-            if(dbEnable && db)db->writeMetric(cur_time,label_list,metric_list);
-#endif
-        }
-
-        std::string name() override { return impl->name(); }
-        std::vector<GPULabel> labels() { return impl->labels(); }
-        std::vector<GPUMetrics> sample(std::vector<GPULabel>&labels) { return impl->sample(labels); }
-
-    private:
-        std::unique_ptr<NVML> impl;
-        std::vector<GPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
-        bool outTer;
-#ifdef HWGAUGE_USE_PROMETHEUS
-        bool pmEnable;
-        std::unique_ptr<GPUPrometheus> pm;
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-        bool dbEnable;
-        std::unique_ptr<GPUDatabase> db;
-#endif
-    };
+        std::cout
+            << "GPU{ "
+            << "index="    << l.index
+            << ", name="   << l.name
+            << ", util="   << m.gpuUtilization
+            << ", memUtil="<< m.memoryUtilization
+            << ", gpuFreq="<< m.gpuFrequency
+            << ", memFreq="<< m.memoryFrequency
+            << ", power="  << m.powerUsage
+            << ", temp="   << m.temperature<<"C"
+            << " }\n";
+    }
 }
 
 #endif

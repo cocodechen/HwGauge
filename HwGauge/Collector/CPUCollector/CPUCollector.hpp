@@ -2,77 +2,40 @@
 
 #ifdef HWGAUGE_USE_INTEL_PCM
 
-#include "Collector/Collector.hpp"
-#include "CPUMetrics.hpp"
+#include "Collector/DeviceCollector.hpp"
 #include "PCM.hpp"
-#include "CPUPrometheus.hpp"
 #include "CPUDatabase.hpp"
+#include "CPUCsvLogger.hpp"
+#include "CPUPrometheus.hpp"
+
+#include <iostream>
 
 namespace hwgauge
 {
-    class CPUCollector : public Collector
+    // 定义别名
+    using CPUCollector = DeviceCollector<
+        CPULabel, CPUMetrics, PCM, CPUDatabase, CPUCsvLogger, CPUPrometheus
+    >;
+    
+    // 定义特定的打印函数
+    template<>
+    inline void printMetric(const CPULabel& l, const CPUMetrics& m)
     {
-    public:
-        explicit CPUCollector(const CollectorConfig& cfg)
-            : impl(std::make_unique<PCM>()),
-            label_list(labels()),
-            outTer(cfg.outTer)
-        {
-#ifdef HWGAUGE_USE_PROMETHEUS
-            pmEnable = cfg.pmEnable;
-            if (pmEnable)pm = std::make_unique<CPUPrometheus>(cfg.registry);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            dbEnable = cfg.dbEnable;
-            if (dbEnable)
-            {
-                db = std::make_unique<CPUDatabase>(cfg.dbConfig, cfg.dbTableName);
-                db->writeInfo(label_list);
-            }
-#endif
-        }
-        
-        virtual ~CPUCollector() = default;
-
-        void collect(const std::string& cur_time) override
-        {
-            // 获取标签（设备列表）和指标数据
-            auto metric_list = sample(label_list);
-
-			// 输出调试
-            if(outTer)
-            {
-                //std::cout<<"["<<cur_time<<"]"<<std::endl;
-                for(int i=0;i<label_list.size();i++)
-                    outCPU(label_list[i],metric_list[i]);
-            }
-#ifdef HWGAUGE_USE_PROMETHEUS
-            // prometheus
-            if(pmEnable && pm)pm->write(label_list,metric_list);
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-            // database
-            if(dbEnable && db)db->writeMetric(cur_time,label_list,metric_list);
-#endif
-        }
-
-        std::string name() override { return impl->name(); }
-        std::vector<CPULabel> labels() { return impl->labels(); }
-        std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels) { return impl->sample(labels); }
-
-    private:
-        std::unique_ptr<PCM> impl;
-        std::vector<CPULabel>label_list; //标签，此处只在构造时初始化一次，当然也可以每次采集周期都更
-        bool outTer;
-#ifdef HWGAUGE_USE_PROMETHEUS
-        bool pmEnable;
-        std::unique_ptr<CPUPrometheus> pm;
-#endif
-#ifdef HWGAUGE_USE_POSTGRESQL
-        bool dbEnable;
-        std::unique_ptr<CPUDatabase> db;
-#endif
-    };
+        std::cout
+            << "CPU{ "
+            << "index="     << l.index
+            << ", name=" << l.name
+            << ", temp=" << m.temperature << "C"
+            << ", cpuUtilization="   << m.cpuUtilization
+            << ", cpuFrequency="   << m.cpuFrequency
+            << ", c0Residency=" << m.c0Residency
+            << ", c6Residency="  << m.c6Residency
+            << ", powerUsage="    << m.powerUsage
+            << ", memoryReadBandwidth="  << m.memoryReadBandwidth
+            << ", memoryWriteBandwidth="    << m.memoryWriteBandwidth
+            << ", memoryPowerUsage=" << m.memoryPowerUsage
+            << " }\n";
+    }
 }
 
 #endif

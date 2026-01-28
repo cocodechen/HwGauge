@@ -43,6 +43,11 @@ int main(int argc, char* argv[])
 	};
 	argv = application.ensure_utf8(argv);
 
+	// Initialize spdlog logger
+	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [tid %t] %v");
+	spdlog::set_level(spdlog::level::info); 
+	spdlog::info("Spdlog initialized successfully");
+
 	// Command-line arguments: interval
 	constexpr int default_interval = 5;
 	int interval_seconds = default_interval;
@@ -53,16 +58,19 @@ int main(int argc, char* argv[])
 	// Command-line arguments: address
 	constexpr char default_address[] = "127.0.0.1:8000";
 	std::string address = default_address;
-	application.add_option("-a,--address", address, "Address to start exposer")
-		->default_val(default_address);
+	application.add_option("-a,--address", address, "Address to start exposer")->default_val(default_address);
+
+	// Command-line arguments: sysinfo
+	bool sysinfo=false;
+	application.add_flag("--sysInfo", sysinfo, "Enable to out the system information");
 
 	hwgauge::CollectorConfig cfg;
 	// Command-line arguments: outTer
-	cfg.outTer=true;
-	application.add_flag("--outTer", cfg.outTer, "Enable to out the Collection Results to Terminal");
-	// Command-line arguments: sysinfo
-	cfg.sysinfo=true;
-	application.add_flag("--sysInfo", cfg.sysinfo, "Enable to out the system information");
+	application.add_flag("--outTer", cfg.outTer, "Enable to out the Collection Results to Terminal")->default_val(true);
+
+	// Command-line arguments: outFile
+	application.add_flag("--outFile", cfg.outFile, "Enable to out the Collection Results to File")->default_val(false);
+	application.add_option("--filepath", cfg.filepath, "Out filename")->default_val("metric.csv");
 
 #ifdef HWGAUGE_USE_PROMETHEUS
 	auto registry=std::make_shared<prometheus::Registry>();
@@ -76,31 +84,17 @@ int main(int argc, char* argv[])
 
 #ifdef HWGAUGE_USE_POSTGRESQL
 	// Command-line arguments: database
-	cfg.dbEnable = false;
-	application.add_flag("--db-enable", cfg.dbEnable, "Enable database storage for NPU metrics");
-
-	application.add_option("--db-host", cfg.dbConfig.host, "Database host")
-		->default_val("localhost");
-	application.add_option("--db-port", cfg.dbConfig.port, "Database port")
-		->default_val("5432");
-	application.add_option("--db-name", cfg.dbConfig.dbname, "Database name")
-		->default_val("postgres");
-	application.add_option("--db-user", cfg.dbConfig.user, "Database user")
-		->default_val("postgres");
-	application.add_option("--db-password", cfg.dbConfig.password, "Database password")
-		->default_val("123456");
+	application.add_flag("--db-enable", cfg.dbEnable, "Enable database storage for NPU metrics")->default_val(false);
+	application.add_option("--db-host", cfg.dbConfig.host, "Database host")->default_val("localhost");
+	application.add_option("--db-port", cfg.dbConfig.port, "Database port")->default_val("5432");
+	application.add_option("--db-name", cfg.dbConfig.dbname, "Database name")->default_val("postgres");
+	application.add_option("--db-user", cfg.dbConfig.user, "Database user")->default_val("postgres");
+	application.add_option("--db-password", cfg.dbConfig.password, "Database password")->default_val("123456");
 
 	// Command-line arguments: table_name
-	cfg.dbTableName = "test";
-	application.add_option("--db-table", cfg.dbTableName, "Database table name for device metrics")
-		->default_val("test");
+	application.add_option("--db-table", cfg.dbTableName, "Database table name for device metrics")->default_val("test");
 #endif
 	CLI11_PARSE(application, argc, argv);
-
-	// Initialize spdlog logger
-	spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [tid %t] %v");
-	spdlog::set_level(spdlog::level::info); 
-	spdlog::info("Spdlog initialized successfully");
 
 	// Create exposer
 	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::seconds(interval_seconds));
@@ -117,7 +111,7 @@ int main(int argc, char* argv[])
 #endif
 
 #ifdef __linux__
-	if(cfg.sysinfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
+	if(sysinfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);
