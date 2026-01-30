@@ -19,20 +19,21 @@ CREATE TABLE IF NOT EXISTS hwgauge_cpu_info (
 **CPU动态监测表**:
 ```sql
 CREATE TABLE IF NOT EXISTS hwgauge_cpu_metrics (
-    timestamp TIMESTAMP NOT NULL,              -- 采样时间戳
-    cpu_index INTEGER NOT NULL,                -- CPU/socket索引
+    timestamp TIMESTAMP NOT NULL,              -- Sampling timestamp
+    cpu_index INTEGER NOT NULL,                -- CPU/socket index
     
-    cpu_utilization DOUBLE PRECISION,          -- CPU利用率(%)
-    cpu_frequency DOUBLE PRECISION,            -- CPU频率(MHz)
-    c0_residency DOUBLE PRECISION,             -- C0状态占比(%)
-    c6_residency DOUBLE PRECISION,             -- C6状态占比(%)
-    power_usage DOUBLE PRECISION,              -- 功耗(W)
+    cpu_utilization DOUBLE PRECISION,          -- CPU utilization (%)
+    cpu_frequency DOUBLE PRECISION,            -- CPU frequency (MHz)
+    c0_residency DOUBLE PRECISION,             -- C0 state residency (%)
+    c6_residency DOUBLE PRECISION,             -- C6 state residency (%)
+    power_usage DOUBLE PRECISION,              -- Power usage (W)
+    temperature DOUBLE PRECISION,              -- Temperature (℃) [NEW]
     
-    memory_read_bandwidth DOUBLE PRECISION,    -- 内存读带宽(MB/s)
-    memory_write_bandwidth DOUBLE PRECISION,   -- 内存写带宽(MB/s)
-    memory_power_usage DOUBLE PRECISION,       -- 内存功耗(W)
+    memory_read_bandwidth DOUBLE PRECISION,    -- Memory read bandwidth (MB/s)
+    memory_write_bandwidth DOUBLE PRECISION,   -- Memory write bandwidth (MB/s)
+    memory_power_usage DOUBLE PRECISION,       -- Memory power usage (W)
     
-    PRIMARY KEY (timestamp, cpu_index),
+    PRIMARY KEY (timestamp, cpu_index)
 );
 ```
 
@@ -51,16 +52,17 @@ CREATE TABLE IF NOT EXISTS hwgauge_gpu_info (
 
 ```sql
 CREATE TABLE IF NOT EXISTS hwgauge_gpu_metrics (
-    timestamp TIMESTAMP NOT NULL,              -- 采样时间戳
-    gpu_index INTEGER NOT NULL,                -- GPU索引
+    timestamp TIMESTAMP NOT NULL,              -- Sampling timestamp
+    gpu_index INTEGER NOT NULL,                -- GPU index
     
-    gpu_utilization DOUBLE PRECISION,          -- GPU利用率(%)
-    memory_utilization DOUBLE PRECISION,       -- 显存利用率(%)
-    gpu_frequency DOUBLE PRECISION,            -- GPU频率(MHz)
-    memory_frequency DOUBLE PRECISION,         -- 显存频率(MHz)
-    power_usage DOUBLE PRECISION,              -- 功耗(W)
+    gpu_utilization DOUBLE PRECISION,          -- GPU core utilization (%)
+    memory_utilization DOUBLE PRECISION,       -- VRAM utilization (%)
+    gpu_frequency DOUBLE PRECISION,            -- Core frequency (MHz)
+    memory_frequency DOUBLE PRECISION,         -- Memory frequency (MHz)
+    power_usage DOUBLE PRECISION,              -- Power usage (W)
+    temperature DOUBLE PRECISION,              -- Temperature (℃) [NEW]
     
-    PRIMARY KEY (timestamp, gpu_index),
+    PRIMARY KEY (timestamp, gpu_index)
 );
 ```
 
@@ -82,27 +84,33 @@ CREATE TABLE IF NOT EXISTS hwgauge_npu_chip_info (
 **NPU芯片动态监测表**:
 ```sql
 CREATE TABLE IF NOT EXISTS hwgauge_npu_chip_metrics (
-    timestamp TIMESTAMP NOT NULL,      -- 采样时间戳
-    card_id   INTEGER NOT NULL,        -- 设备中的卡编号
-    device_id INTEGER NOT NULL,        -- 卡上的芯片编号
+    timestamp TIMESTAMP NOT NULL,      -- Sampling timestamp
+    card_id   INTEGER NOT NULL,        -- Card ID
+    device_id INTEGER NOT NULL,        -- Chip ID
     
-    -- 利用率指标 (%)
-    util_aicore  INTEGER,              -- AI核心利用率
-    util_aicpu   INTEGER,              -- AI CPU利用率
-    util_mem     INTEGER,              -- 内存利用率
-    util_membw   INTEGER,              -- 内存带宽利用率
-    util_vec     INTEGER,              -- 矢量单元利用率
+    -- Utilization Metrics (%)
+    util_aicore  INTEGER,              -- AI Core Utilization
+    util_aicpu   INTEGER,              -- AI CPU Utilization
+    util_ctrlcpu INTEGER,              -- Control CPU Utilization [NEW]
+    util_vec     INTEGER,              -- Vector Core Utilization
+    util_mem     INTEGER,              -- Memory Utilization (%)
+    util_membw   INTEGER,              -- Memory Bandwidth Utilization
     
-    -- 频率指标 (MHz)
-    freq_aicore  INTEGER,              -- AI核心频率
-    freq_aicpu   INTEGER,              -- AI CPU频率
-    freq_mem     INTEGER,              -- 内存频率
+    -- Frequency Metrics (MHz)
+    freq_aicore  INTEGER,              -- AI Core Frequency
+    freq_aicpu   INTEGER,              -- AI CPU Frequency
+    freq_ctrlcpu INTEGER,              -- Control CPU Frequency [NEW]
+    freq_mem     INTEGER,              -- Memory Frequency
     
-    -- 能耗与状态指标
-    power        DOUBLE PRECISION,     -- 芯片功耗(W)
-    health       INTEGER,              -- 芯片健康状态(0:OK,1:WARN,2:ERROR,3:CRITICAL,0xFFFFFFFF:NOT_EXIST)
-    temperature  INTEGER,              -- 芯片温度(℃)
-    voltage      DOUBLE PRECISION,     -- 工作电压(V)
+    -- Memory Capacity (MB) [NEW]
+    mem_total_mb BIGINT,               -- Total Memory (MB)
+    mem_used_mb  BIGINT,               -- Used Memory (MB)
+
+    -- Power & Status
+    power        DOUBLE PRECISION,     -- Chip Power (W)
+    health       INTEGER,              -- Health Status (0:OK, 1:WARN, 2:ERR, 3:CRIT)
+    temperature  INTEGER,              -- Chip Temperature (℃)
+    voltage      DOUBLE PRECISION,     -- Input Voltage (V)
     
     PRIMARY KEY (timestamp, card_id, device_id),
     FOREIGN KEY (card_id, device_id) REFERENCES hwgauge_npu_chip_info(card_id, device_id)

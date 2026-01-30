@@ -1,8 +1,7 @@
 ﻿# HwGauge
 
-HwGauge is a lightweight hardware power-consumption exporter that exposes **CPU, GPU and NPU energy metrics as Prometheus Or PostgreSQL Gauges**.
+HwGauge is a lightweight hardware power-consumption exporter that exposes **CPU, GPU and NPU energy metrics as Prometheus Gauges, PostgreSQL records, or CSV logs**.
 It is implemented in modern C++ to provide **high-performance monitoring with minimal overhead**.
-
 
 ## ✨ Features
 
@@ -12,6 +11,7 @@ It is implemented in modern C++ to provide **high-performance monitoring with mi
 * 📊 **System Monitoring** — RAM, Disk I/O, Network, and Chassis Power (Linux /proc & sysfs)
 * 📡 **Prometheus Exposer** — Built-in HTTP server with configurable endpoint
 * 🗄️ **PostgreSQL Storage** — Store metrics in PostgreSQL for long-term retention
+* 📝 **CSV Logger** — Export metrics to CSV files for offline analysis
 * ⚙️ **Template-based Collector Framework** — clean separation of metrics & hardware backends
 * 🔌 **Unified Database Interface** — Support multiple storage backends with common API
 
@@ -20,7 +20,7 @@ It is implemented in modern C++ to provide **high-performance monitoring with mi
 ## ⚙️ Architecture Diagram
 ```mermaid
 flowchart TD
-    %% 样式定义
+    %% Style Definitions
     classDef hardware fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     classDef collector fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
     classDef output fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
@@ -44,18 +44,19 @@ flowchart TD
 
     subgraph OutputLayer ["OUTPUT LAYER"]
         direction TB
-        %% 这是一个逻辑上的汇聚节点，使图表更简洁
+        %% Logical Aggregation Node
         O_Proxy(("Unified Output<br/>Interface")):::interface
         
         C1["Prometheus<br/>Exporter"]:::output
         C2["PostgreSQL<br/>Storage"]:::output
-        C3["Terminal<br/>Printer"]:::output
+        C3["CSV File<br/>Logger"]:::output
+        C4["Terminal<br/>Printer"]:::output
     end
 
-    %% 核心控制器
+    %% Core Scheduler
     D{{Scheduler / Exposer}}:::interface
 
-    %% 关系连线
+    %% Relations
     D -.-> B1 & B2 & B3 & B4
 
     A1 --> B1
@@ -63,12 +64,13 @@ flowchart TD
     A3 --> B3
     A4 --> B4
 
-    %% 关键修改：所有收集器指向统一接口，再分发
+    %% Collectors to Proxy
     B1 & B2 & B3 & B4 ==> O_Proxy
     
     O_Proxy --> C1
     O_Proxy --> C2
     O_Proxy --> C3
+    O_Proxy --> C4
 ```
 ---
 
@@ -207,7 +209,7 @@ sudo ./bin/hwgauge --help
 | `memory_read_bandwidth_mbps`  | MB/s | Memory read throughput   |
 | `memory_write_bandwidth_mbps` | MB/s | Memory write throughput  |
 | `memory_power_usage_watts`    | W    | Memory power consumption |
-
+|`cpu_temperature`	            |°C    | CPU temperature|
 ---
 
 ### 🎮 GPU (NVIDIA NVML)
@@ -219,37 +221,45 @@ sudo ./bin/hwgauge --help
 | `gpu_frequency_mhz`              | MHz  | Core clock       |
 | `gpu_memory_frequency_mhz`       | MHz  | Memory clock     |
 | `gpu_power_usage_watts`          | W    | Power draw       |
+|`gpu_temperature`	       |°C	  | GPU temperature|
 
 ---
 
 ### 🧠 NPU（Ascend DCMI）
 
-| Metric                                 | Unit  | Description              |
-| -------------------------------------- | ----- | ------------------------ |
-| `npu_aicore_utilization_percent`       | %     | NPU AICore 利用率        |
-| `npu_aicpu_utilization_percent`        | %     | NPU AICPU 利用率         |
-| `npu_memory_utilization_percent`       | %     | NPU 内存利用率           |
-| `npu_aicore_frequency_mhz`             | MHz   | NPU AICore 频率          |
-| `npu_aicpu_frequency_mhz`              | MHz   | NPU AICPU 频率           |
-| `npu_mem_frequency_mhz`                | MHz   | NPU 内存频率             |
-| `npu_power_watts`                      | W     | NPU 功耗                 |
-| `npu_health`                           | -     | NPU 健康状态             |
-| `npu_temperature_celsius`              | °C    | NPU 温度                 |
-| `npu_voltage_volts`                    | V     | NPU 电压                 |
+| Metric | Unit | Description |
+|------|------|-------------|
+| `npu_aicore_utilization_percent` | % | AI Core utilization |
+| `npu_aicpu_utilization_percent` | % | AI CPU utilization |
+| `npu_ctrlcpu_utilization_percent` | % | Control CPU utilization |
+| `npu_vector_utilization_percent` | % | Vector Core utilization |
+| `npu_memory_utilization_percent` | % | On-chip memory utilization |
+| `npu_membw_utilization_percent` | % | Memory bandwidth utilization |
+| `npu_aicore_frequency_mhz` | MHz | AI Core frequency |
+| `npu_aicpu_frequency_mhz` | MHz | AI CPU frequency |
+| `npu_ctrlcpu_frequency_mhz` | MHz | Control CPU frequency |
+| `npu_mem_frequency_mhz` | MHz | Memory frequency |
+| `npu_memory_total_mb` | MB | Total memory capacity |
+| `npu_memory_used_mb` | MB | Used memory capacity |
+| `npu_power_watts` | W | NPU chip power consumption |
+| `npu_health_status` | - | Health status (0:OK, 1:WARN, 2:ERR, 3:CRIT) |
+| `npu_temperature` | °C | NPU chip temperature |
+| `npu_voltage_volts` | V | NPU input voltage |
 
 ---
 ### 📊 System (General)
 
 | Metric                              | Unit | Description                         |
 |-------------------------------------|------|-------------------------------------|
-| `system_memory_total_bytes`           | B    | Total physical memory               |
-| `system_memory_used_bytes`            | B    | Used physical memory                |
+| `system_memory_total_bytes`           | GB    | Total physical memory               |
+| `system_memory_used_bytes`            | GB    | Used physical memory                |
 | `system_memory_utilization_percent`   | %    | Memory utilization                  |
-| `system_disk_read_bytes_per_sec`      | B/s  | Total disk read rate                |
-| `system_disk_write_bytes_per_sec`     | B/s  | Total disk write rate               |
+| `system_disk_read_bytes_per_sec`      | MB/s  | Total disk read rate                |
+| `system_disk_write_bytes_per_sec`     | MB/s  | Total disk write rate               |
 | `system_disk_max_utilization_percent` | %    | Utilization of busiest disk         |
-| `system_net_download_bytes_per_sec`   | B/s  | Total network download rate         |
-| `system_net_upload_bytes_per_sec`     | B/s  | Total network upload rate           |
+| `system_net_download_bytes_per_sec`   | MB/s  | Total network download rate         |
+| `system_net_upload_bytes_per_sec`     | MB/s  | Total network upload rate           |
 | `system_power_usage_watts`            | W    | Total system power                  |
-
+---
+**Note: System power usage is collected asynchronously because IPMI/DCMI hardware queries can have high latency. It may not update as frequently as other metrics.**
 
