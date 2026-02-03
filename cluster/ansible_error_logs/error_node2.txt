@@ -1,0 +1,57 @@
+==================================================
+主机: node2
+时间: 2026-02-03T01:41:22Z
+状态: 启动失败
+--------------------------------------------------
+[远程日志 hwgauge.log 内容片段]:
+=====  Processor information  =====
+Linux arch_perfmon flag  : yes
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : no
+Max CPUID level          : 13
+CPU family               : 6
+CPU model number         : 62
+Number of physical cores: 16
+Number of logical cores: 32
+Number of online logical cores: 32
+Threads (logical cores) per physical core: 2
+Num sockets: 2
+Physical cores per socket: 8
+Last level cache slices per socket: 8
+Core PMU (perfmon) version: 3
+Number of core PMU generic (programmable) counters: 4
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 3
+Width of fixed counters: 48 bits
+Nominal core frequency: 2600000000 Hz
+IBRS enabled in the kernel   : no
+STIBP enabled in the kernel  : no
+Package thermal spec power: 95 Watt; Package minimum power: 60 Watt; Package maximum power: 150 Watt;
+
+INFO: Linux perf interface to program uncore PMUs is present
+ERROR: QPI LL monitoring device (0:7f:8:2) is missing. The QPI statistics will be incomplete or missing.
+ERROR: QPI LL monitoring device (0:7f:9:2) is missing. The QPI statistics will be incomplete or missing.
+Socket 0: 1 memory controllers detected with total number of 4 channels. 0 QPI ports detected. 0 M2M (mesh to memory)/B2CMI blocks detected. 0 HBM M2M blocks detected. 0 EDC/HBM channels detected. 0 Home Agents detected. 0 M3UPI/B2UPI blocks detected.
+ERROR: QPI LL monitoring device (0:ff:8:2) is missing. The QPI statistics will be incomplete or missing.
+ERROR: QPI LL monitoring device (0:ff:9:2) is missing. The QPI statistics will be incomplete or missing.
+Socket 1: 1 memory controllers detected with total number of 4 channels. 0 QPI ports detected. 0 M2M (mesh to memory)/B2CMI blocks detected. 0 HBM M2M blocks detected. 0 EDC/HBM channels detected. 0 Home Agents detected. 0 M3UPI/B2UPI blocks detected.
+Socket 0: 1 PCU units detected. 0 IIO units detected. 0 IRP units detected. 8 CHA/CBO units detected. 0 MDF units detected. 1 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+Socket 1: 1 PCU units detected. 0 IIO units detected. 0 IRP units detected. 8 CHA/CBO units detected. 0 MDF units detected. 1 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+ Disabling NMI watchdog since it consumes one hw-PMU counter. To keep NMI watchdog set environment variable PCM_KEEP_NMI_WATCHDOG=1 (this reduces the core metrics set)
+ Closed perf event handles
+Trying to use Linux perf events...
+Successfully programmed on-core PMU using Linux perf
+[2026-02-02 18:41:24.562] [info] [tid 25473] [PCM] Mapped Socket 1 temperature to /sys/class/hwmon/hwmon2/temp1_input
+[2026-02-02 18:41:24.563] [info] [tid 25473] [PCM] Mapped Socket 0 temperature to /sys/class/hwmon/hwmon1/temp1_input
+[2026-02-02 18:41:24.563] [info] [tid 25473] [Database] Disconnected from database
+[2026-02-02 18:41:24.563] [warning] [tid 25473] [Database] Failed to connect to database: connection pointer is NULL
+
+Cleaning up
+ Closed perf event handles
+ Zeroed uncore PMU registers
+ Re-enabling NMI watchdog.
+[2026-02-02 18:41:24.569] [critical] [tid 25473] Fatal error from: [Database] Connecect Failed
+==================================================
