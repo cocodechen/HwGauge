@@ -43,3 +43,4 @@
 # IDE
 .vs/
 out/
+build/

@@ -1,0 +1,32 @@
+---
+- name: 批量执行远程脚本（需要重启）
+  hosts: workers
+  gather_facts: no
+  become: yes
+
+  vars:
+    work_dir: "/users/xc"
+    script_src: "../sh/driver.sh"
+    script_name: "driver.sh"
+    script_args: ""
+
+  tasks:
+    - name: 1. 上传脚本
+      copy:
+        src: "{{ script_src }}"
+        dest: "{{ work_dir }}/{{ script_name }}"
+        mode: '0755'
+
+    - name: 2. 执行安装脚本（不包含 reboot）
+      shell: "./{{ script_name }} {{ script_args }}"
+      args:
+        chdir: "{{ work_dir }}"
+      register: output
+
+    - name: 3. 打印脚本输出
+      debug:
+        var: output.stdout_lines
+
+    - name: 4. 重启机器
+      reboot:
+        reboot_timeout: 600

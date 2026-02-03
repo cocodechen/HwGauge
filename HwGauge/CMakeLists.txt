@@ -107,12 +107,26 @@ if(HWGAUGE_USE_NPU)
     endif()
 endif()
 
-# Add PostgreSQL library
-# find_package(PostgreSQL REQUIRED)
-# target_include_directories(HwGauge PRIVATE ${PostgreSQL_INCLUDE_DIRS})
-# target_link_libraries(HwGauge PRIVATE ${PostgreSQL_LIBRARIES})
-# target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_POSTGRESQL=1)
-# message(STATUS "PostgreSQL support enabled")
+# =============================================================
+# Cluster (Redis) Support - System Library Mode
+# =============================================================
+if(HWGAUGE_USE_CLUSTER)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(HIREDIS REQUIRED hiredis)
+
+    target_include_directories(HwGauge PRIVATE
+        ${HIREDIS_INCLUDE_DIRS}
+    )
+
+    target_link_libraries(HwGauge PRIVATE
+        ${HIREDIS_LIBRARIES}
+    )
+
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_CLUSTER=1)
+
+    message(STATUS "Cluster (Redis via hiredis) support enabled")
+endif()
+
 
 # Add PostgreSQL library (conditional)
 if(HWGAUGE_USE_POSTGRESQL)

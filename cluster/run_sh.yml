@@ -1,0 +1,35 @@
+---
+- name: 批量执行远程脚本
+  hosts: workers
+  gather_facts: no
+
+  vars:
+    # 工作目录
+    work_dir: "/users/xc"
+    
+    # 脚本相关参数(可在命令行覆盖)
+    script_src: "../sh/set_env.sh"      # 本地脚本路径
+    script_name: "set_env.sh"           # 远程脚本名称
+    script_args: "-c -g"                   # 脚本参数
+
+  tasks:
+    - name: 1. 将脚本上传到远程机器
+      copy:
+        src: "{{ script_src }}"
+        dest: "{{ work_dir }}/{{ script_name }}"
+        mode: '0755'
+
+    - name: 2. 执行脚本
+      shell: "./{{ script_name }} {{ script_args }}"
+      args:
+        chdir: "{{ work_dir }}"
+      register: output
+      async: 3600
+      poll: 10
+
+    - name: 3. 显示脚本输出日志
+      debug:
+        var: output.stdout_lines
+  
+# ansible-playbook -i hosts.ini run_sh.yml
+# ansible-playbook run_sh.yml

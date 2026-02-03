@@ -2,7 +2,6 @@
 - name: 批量部署与启动 HwGauge
   hosts: workers
   gather_facts: yes
-  remote_user: xc
 
   vars:
     work_dir: "/users/xc/HwGauge/build"
@@ -94,3 +93,4 @@
 # ansible-playbook -i hosts.ini start.yml --ask-become-pass
 # 或者如果已配置免密 sudo:
 # ansible-playbook -i hosts.ini start.yml
+# ansible-playbook start.yml

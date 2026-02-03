@@ -2,7 +2,6 @@
 - name: 停止 HwGauge 服务
   hosts: workers
   gather_facts: no
-  remote_user: xc
 
   tasks:
     - name: 停止 hwgauge 进程 (使用 sudo kill)
@@ -47,3 +46,6 @@
 
     - debug:
         msg: "{{ inventory_hostname }}: {{ stop_result.stdout_lines | last }}"
+
+# ansible-playbook -i hosts.ini stop.yml
+# ansible-playbook stop.yml

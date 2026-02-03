@@ -2,6 +2,8 @@
 
 set -e
 
+sudo apt-get install -y postgresql
+
 # 自动获取 PostgreSQL 主版本号（如 12 / 14 / 16）
 PG_VER=$(ls /etc/postgresql)
 CONF_DIR="/etc/postgresql/${PG_VER}/main"

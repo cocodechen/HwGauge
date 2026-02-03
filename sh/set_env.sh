@@ -13,6 +13,8 @@
 set -e  # 遇到错误立即停止
 set -x  # 开启调试模式，打印执行的每一行命令
 
+source ~/.bashrc
+
 # 1. 初始化变量 (默认为 OFF)
 USE_CPU="OFF"
 USE_GPU="OFF"
@@ -37,31 +39,46 @@ sudo apt-get update
 sudo apt-get install -y build-essential git wget 
 # PostgreSQL 依赖
 sudo apt-get install -y postgresql-client libpq-dev
+# Redis 依赖
+sudo apt-get install -y libhiredis-dev
 # 硬件监控依赖
 sudo apt-get install -y ipmitool lm-sensors linux-modules-extra-$(uname -r)
 
+# ================= GPU 模式 =================
+export PATH=/usr/local/cuda-12.2/bin:$PATH
 if [ "$USE_GPU" == "ON" ]; then
-    echo "=== [GPU模式] 检查 CUDA 环境 ==="
-    if ! command -v nvcc &> /dev/null; then
-        echo "未检测到 nvcc，正在尝试安装 Nvidia CUDA Toolkit..."
-        # 这一步会安装开发所需的头文件和库
-        sudo apt-get install -y nvidia-cuda-toolkit
-    else
-        echo "检测到 CUDA: $(nvcc --version | grep release)"
+    echo "=== [GPU模式] 检查 NVIDIA 驱动和 CUDA 环境 ==="
+
+    # 1. 检查 NVIDIA 驱动（nvidia-smi 是唯一可信标志）
+    if ! command -v nvidia-smi &> /dev/null; then
+        echo "ERROR: 未检测到 NVIDIA 驱动（nvidia-smi 不存在）。"
+        echo "请先正确安装 NVIDIA 驱动后再运行该脚本。"
+        exit 1
     fi
+
+    # 2. 检查 CUDA Toolkit（nvcc）
+    if ! command -v nvcc &> /dev/null; then
+        echo "ERROR: 未检测到 CUDA Toolkit（nvcc 不存在）。"
+        echo "请先正确安装 CUDA Toolkit 后再运行该脚本。"
+        exit 1
+    fi
+
+    echo "检测到 NVIDIA 驱动: $(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -n1)"
+    echo "检测到 CUDA: $(nvcc --version | grep release)"
 fi
 
+
+# ================= NPU 模式 =================
 if [ "$USE_NPU" == "ON" ]; then
     echo "=== [NPU模式] 检查 Ascend 环境 ==="
-    # 简单的检查，NPU 驱动通常需要手动安装完备
-    if [ ! -d "/usr/local/Ascend" ] && [ ! -d "/usr/local/Ascend/driver" ]; then
-        echo "!!! 严重警告 !!!"
-        echo "未在 /usr/local/Ascend 找到昇腾驱动。"
-        echo "NPU 驱动无法通过简单的脚本安装，请确保你申请的 Cloudlab 镜像已包含 CANN/Driver。"
-        sleep 3
-    else
-        echo "检测到 Ascend 目录存在。"
+
+    if [ ! -d "/usr/local/Ascend" ] || [ ! -d "/usr/local/Ascend/driver" ]; then
+        echo "ERROR: 未检测到 Ascend NPU 驱动环境。"
+        echo "请确认 CloudLab 镜像已正确安装 Ascend Driver / CANN。"
+        exit 1
     fi
+
+    echo "检测到 Ascend 目录存在。"
 fi
 
 # 4. 安装 CMake 4.2.1 (如果未安装)

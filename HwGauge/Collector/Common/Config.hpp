@@ -52,6 +52,12 @@ namespace hwgauge
         bool outTer=true;
         bool outFile=false;
         std::string filepath;
+#ifdef HWGAUGE_USE_CLUSTER
+        bool hbEnable=true;
+        std::string nodeId;
+        std::string redisUri;
+        int ttlSeconds;
+#endif
 #ifdef HWGAUGE_USE_PROMETHEUS
         bool pmEnable = false;
         std::shared_ptr<prometheus::Registry> registry;

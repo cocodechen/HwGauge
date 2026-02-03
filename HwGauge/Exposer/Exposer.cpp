@@ -53,9 +53,9 @@ namespace hwgauge
 			try
 			{
 				auto cur_time=getNowTime();
-				spdlog::info("CurrentTime {}",cur_time);
+				spdlog::d("CurrentTime {}",cur_time);
 				collector->collect(cur_time);
-				spdlog::info("Retrieve metrics from {} successfully", name);
+				spdlog::debug("Retrieve metrics from {} successfully", name);
 			}
 			catch (const hwgauge::RecoverableError& e)
 			{

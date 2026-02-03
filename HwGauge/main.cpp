@@ -25,6 +25,10 @@
 #include "Collector/SYSCollector/SYSCollector.hpp"
 #endif
 
+#ifdef HWGAUGE_USE_CLUSTER
+#include "Collector/ClusterCollector/ClusterCollector.hpp"
+#endif
+
 std::unique_ptr<hwgauge::Exposer> exposer = nullptr;
 
 std::atomic<bool> g_stop_requested{false};
@@ -60,9 +64,13 @@ int main(int argc, char* argv[])
 	std::string address = default_address;
 	application.add_option("-a,--address", address, "Address to start exposer")->default_val(default_address);
 
-	// Command-line arguments: sysinfo
-	bool sysinfo=false;
-	application.add_flag("--sysInfo", sysinfo, "Enable to out the system information");
+	// Command-line arguments: sysInfo
+	bool sysInfo=false;
+	application.add_flag("--sysInfo", sysInfo, "Enable to out the system information");
+
+	// Command-line arguments: clusterInfo
+	bool clusterInfo=false;
+	application.add_flag("--clusterInfo", clusterInfo, "Enable to out the cluster information");
 
 	hwgauge::CollectorConfig cfg;
 	// Command-line arguments: outTer
@@ -72,7 +80,16 @@ int main(int argc, char* argv[])
 	application.add_flag("--outFile", cfg.outFile, "Enable to out the Collection Results to File")->default_val(false);
 	application.add_option("--filepath", cfg.filepath, "Out filename")->default_val("metric.csv");
 
+#ifdef HWGAUGE_USE_CLUSTER
+	// Command-line arguments: cluster
+	application.add_flag("--hb-enable", cfg.hbEnable, "Enable heartbeat to Redis")->default_val(true);
+	application.add_option("--node-id", cfg.nodeId, "Unique Node ID for this machine")->default_val("node-001");
+	application.add_option("--redis-uri", cfg.redisUri, "Redis server URI")->default_val("tcp://127.0.0.1:6379");
+	application.add_option("--ttl-seconds", cfg.ttlSeconds, "Heartbeat key TTL in seconds")->default_val(5);
+#endif
+
 #ifdef HWGAUGE_USE_PROMETHEUS
+	// Command-line arguments: prometheus
 	auto registry=std::make_shared<prometheus::Registry>();
 	prometheus::Exposer pm_exposer(std::move(address));
 	pm_exposer.RegisterCollectable(registry);
@@ -112,6 +129,10 @@ int main(int argc, char* argv[])
 
 #ifdef __linux__
 	if(sysinfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
+#endif
+
+#ifdef HWGAUGE_USE_CLUSTER
+	if(clusterInfo)exposer->add_collector<hwgauge::ClusterCollector>(cfg);
 #endif
 
 	spdlog::info("Staring exposer on \"{}\"", address);
