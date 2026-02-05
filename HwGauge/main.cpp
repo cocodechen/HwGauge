@@ -78,14 +78,14 @@ int main(int argc, char* argv[])
 
 	// Command-line arguments: outFile
 	application.add_flag("--outFile", cfg.outFile, "Enable to out the Collection Results to File")->default_val(false);
-	application.add_option("--filepath", cfg.filepath, "Out filename")->default_val("metric.csv");
+	application.add_option("--file-path", cfg.filepath, "Out filename")->default_val("metric.csv");
 
 #ifdef HWGAUGE_USE_CLUSTER
 	// Command-line arguments: cluster
-	application.add_flag("--hb-enable", cfg.hbEnable, "Enable heartbeat to Redis")->default_val(true);
-	application.add_option("--node-id", cfg.nodeId, "Unique Node ID for this machine")->default_val("node-001");
-	application.add_option("--redis-uri", cfg.redisUri, "Redis server URI")->default_val("tcp://127.0.0.1:6379");
-	application.add_option("--ttl-seconds", cfg.ttlSeconds, "Heartbeat key TTL in seconds")->default_val(5);
+	application.add_flag("--clu-heartbeat", cfg.hbEnable, "Enable heartbeat to Redis")->default_val(true);
+	application.add_option("--clu-nodeId", cfg.nodeId, "Unique Node ID for this machine")->default_val("node-001");
+	application.add_option("--clu-uri", cfg.redisUri, "Redis server URI")->default_val("tcp://127.0.0.1:6379");
+	application.add_option("--clu-ttl", cfg.ttlSeconds, "Heartbeat key TTL in seconds")->default_val(5);
 #endif
 
 #ifdef HWGAUGE_USE_PROMETHEUS
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
 #endif
 
 #ifdef __linux__
-	if(sysinfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
+	if(sysInfo)exposer->add_collector<hwgauge::SYSCollector>(cfg);
 #endif
 
 #ifdef HWGAUGE_USE_CLUSTER

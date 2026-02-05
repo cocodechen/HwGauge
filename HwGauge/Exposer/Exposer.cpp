@@ -53,7 +53,7 @@ namespace hwgauge
 			try
 			{
 				auto cur_time=getNowTime();
-				spdlog::d("CurrentTime {}",cur_time);
+				spdlog::debug("CurrentTime {}",cur_time);
 				collector->collect(cur_time);
 				spdlog::debug("Retrieve metrics from {} successfully", name);
 			}

@@ -5,8 +5,8 @@
 
   vars:
     work_dir: "/users/xc/HwGauge/build"
-    db_master_ip: "{{ groups['master'][0] }}"
-    node_table_name: "{{ inventory_hostname | replace('.', '_') }}"
+    master_ip: "{{ groups['master'][0] }}"
+    node_name: "{{ inventory_hostname | replace('.', '_') }}"
     local_log_path: "./ansible_error_logs"
 
   tasks:
@@ -21,12 +21,15 @@
       become: yes
       shell: >
         nohup ./bin/hwgauge
-        --interval=1
-        --sysInfo=false
+        --interval=5
+        --sysInfo=true
+        --clusterInfo=true
+        --clu-nodeId="{{node_name}}"
+        --clu-uri="tcp://{{ master_ip }}:6379"
         --outTer=false
         --db-enable=true
-        --db-host="{{ db_master_ip }}"
-        --db-table="{{ node_table_name }}"
+        --db-host="{{ master_ip }}"
+        --db-table="{{ node_name }}"
         > hwgauge.log 2>&1 &
       args:
         chdir: "{{ work_dir }}"
