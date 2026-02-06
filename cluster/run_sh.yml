@@ -10,7 +10,7 @@
     # 脚本相关参数(可在命令行覆盖)
     script_src: "../sh/set_env.sh"      # 本地脚本路径
     script_name: "set_env.sh"           # 远程脚本名称
-    script_args: "-c -g"                   # 脚本参数
+    script_args: "-c"                   # 脚本参数
 
   tasks:
     - name: 1. 将脚本上传到远程机器

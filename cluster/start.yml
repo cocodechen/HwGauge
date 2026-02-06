@@ -97,3 +97,5 @@
 # 或者如果已配置免密 sudo:
 # ansible-playbook -i hosts.ini start.yml
 # ansible-playbook start.yml
+
+sudo ./bin/hwgauge --sysInfo=true --clusterInfo=true --clu-nodeId="node-utah-1" --clu-uri="tcp://130.127.133.137:6379" --db-enable=true --db-host="130.127.133.137" --db-table="node-utah-1"

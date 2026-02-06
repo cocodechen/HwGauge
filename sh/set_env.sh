@@ -36,11 +36,13 @@ echo "=== 配置信息: CPU=${USE_CPU}, GPU=${USE_GPU}, NPU=${USE_NPU} ==="
 echo "=== 正在更新 apt 并安装基础依赖 ==="
 sudo apt-get update
 # build-essential 包含 gcc/g++, make 等
-sudo apt-get install -y build-essential git wget 
+sudo apt-get install -y build-essential git wget pkg-config
 # PostgreSQL 依赖
 sudo apt-get install -y postgresql-client libpq-dev
 # Redis 依赖
 sudo apt-get install -y libhiredis-dev
+# Ansible 依赖
+sudo apt update && sudo apt install -y ansible
 # 硬件监控依赖
 sudo apt-get install -y ipmitool lm-sensors linux-modules-extra-$(uname -r)
 
@@ -109,6 +111,7 @@ cmake --version
 
 # 5. 克隆代码
 PROJECT_DIR="$HOME/HwGauge"
+GITIGNORE="$PROJECT_DIR/.gitignore"
 if [ -d "$PROJECT_DIR" ]; then
     echo "=== 项目目录已存在，执行 git pull 更新 ==="
     cd "$PROJECT_DIR"
@@ -119,6 +122,19 @@ else
     cd "$HOME"
     git clone https://github.com/cocodechen/HwGauge.git --recursive
     cd "$PROJECT_DIR"
+fi
+# ---- 确保 build 在 .gitignore 中 ----
+touch "$GITIGNORE"
+
+if ! grep -qx "build/" "$GITIGNORE"; then
+    echo "build/" >> "$GITIGNORE"
+    echo "=== 已将 build/ 加入 .gitignore ==="
+fi
+
+# 如果 build 之前被 git 跟踪，解除跟踪
+if git ls-files --error-unmatch build >/dev/null 2>&1; then
+    git rm -r --cached build
+    echo "=== 已从 git 索引中移除 build 目录 ==="
 fi
 
 # 6. 打补丁 (Intel PCM CMakeLists.txt)
@@ -144,6 +160,7 @@ rm -rf *
 cmake -DHWGAUGE_USE_INTEL_PCM=${USE_CPU} \
       -DHWGAUGE_USE_NVML=${USE_GPU} \
       -DHWGAUGE_USE_NPU=${USE_NPU} \
+      -DHWGAUGE_USE_CLUSTER=ON\
       -DHWGAUGE_USE_PROMETHEUS=ON \
       -DHWGAUGE_USE_POSTGRESQL=ON \
       ..

@@ -68,10 +68,6 @@ int main(int argc, char* argv[])
 	bool sysInfo=false;
 	application.add_flag("--sysInfo", sysInfo, "Enable to out the system information");
 
-	// Command-line arguments: clusterInfo
-	bool clusterInfo=false;
-	application.add_flag("--clusterInfo", clusterInfo, "Enable to out the cluster information");
-
 	hwgauge::CollectorConfig cfg;
 	// Command-line arguments: outTer
 	application.add_flag("--outTer", cfg.outTer, "Enable to out the Collection Results to Terminal")->default_val(true);
@@ -81,6 +77,9 @@ int main(int argc, char* argv[])
 	application.add_option("--file-path", cfg.filepath, "Out filename")->default_val("metric.csv");
 
 #ifdef HWGAUGE_USE_CLUSTER
+	// Command-line arguments: clusterInfo
+	bool clusterInfo=false;
+	application.add_flag("--clusterInfo", clusterInfo, "Enable to out the cluster information");
 	// Command-line arguments: cluster
 	application.add_flag("--clu-heartbeat", cfg.hbEnable, "Enable heartbeat to Redis")->default_val(true);
 	application.add_option("--clu-nodeId", cfg.nodeId, "Unique Node ID for this machine")->default_val("node-001");
