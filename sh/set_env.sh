@@ -45,6 +45,8 @@ sudo apt-get install -y libhiredis-dev
 sudo apt update && sudo apt install -y ansible
 # 硬件监控依赖
 sudo apt-get install -y ipmitool lm-sensors linux-modules-extra-$(uname -r)
+# tmux
+sudo apt-get install tmux
 
 # ================= GPU 模式 =================
 export PATH=/usr/local/cuda-12.2/bin:$PATH
@@ -109,7 +111,7 @@ fi
 # 验证版本
 cmake --version
 
-# 5. 克隆代码
+# 5. 克隆数据监测代码
 PROJECT_DIR="$HOME/HwGauge"
 GITIGNORE="$PROJECT_DIR/.gitignore"
 if [ -d "$PROJECT_DIR" ]; then
@@ -178,5 +180,61 @@ sudo modprobe coretemp || echo "警告: 加载 coretemp 失败"
 # IPMI 模块
 sudo modprobe ipmi_devintf || true
 sudo modprobe ipmi_si || true
+
+# 9. 克隆负载代码
+echo "=== 正在克隆/更新 HwLoad 代码 ==="
+HWLOAD_DIR="$HOME/HwLoad"
+REPO_URL="https://github.com/cocodechen/HwLoad.git"
+
+# 处理 HwLoad 仓库
+if [ -d "$HWLOAD_DIR" ]; then
+    cd "$HWLOAD_DIR"
+    if [ -d ".git" ]; then
+        echo "[INFO] HwLoad 仓库已存在，执行 git pull"
+        git pull
+    else
+        echo "[WARN] $HWLOAD_DIR 存在但不是 git 仓库，删除后重新克隆"
+        cd "$HOME"
+        rm -rf "$HWLOAD_DIR"
+        git clone "$REPO_URL"
+        cd "$HWLOAD_DIR"
+    fi
+else
+    echo "[INFO] 正在克隆 HwLoad 仓库"
+    cd "$HOME"
+    git clone "$REPO_URL"
+    cd "$HWLOAD_DIR"
+fi
+
+# 进入 HwLoad 项目并创建 build 目录
+cd "$HWLOAD_DIR"
+mkdir -p build && cd build
+rm -rf *
+
+# CMake 配置
+echo "=== 配置 HwLoad 编译选项 ==="
+cmake \
+  -DHWLOAD_USE_CPU=${USE_CPU} \
+  -DHWLOAD_USE_GPU=${USE_GPU} \
+  -DHWLOAD_USE_NPU=${USE_NPU} \
+  ..
+
+# 检查 CMake 是否成功
+if [ $? -ne 0 ]; then
+    echo "ERROR: HwLoad CMake 配置失败"
+    exit 1
+fi
+
+# 编译
+echo "=== 开始编译 HwLoad ==="
+make -j$(nproc)
+
+# 检查编译是否成功
+if [ $? -ne 0 ]; then
+    echo "ERROR: HwLoad 编译失败"
+    exit 1
+fi
+
+echo "=== HwLoad 编译完成，可执行文件位于 $HWLOAD_DIR/build/ ==="
 
 echo "=== 脚本执行完毕 ==="

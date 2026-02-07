@@ -1,0 +1,51 @@
+---
+- name: 停止 HwGauge 服务
+  hosts: workers
+  gather_facts: no
+
+  tasks:
+    - name: 停止 hwgauge 进程 (使用 sudo kill)
+      shell: |
+        # 1. 查找进程 ID
+        # -x 精确匹配进程名，通常能匹配到那个 root 权限的子进程(20781)
+        target_pid=$(pgrep -x "hwgauge")
+
+        if [ -n "$target_pid" ]; then
+          echo "Found PID: $target_pid"
+          
+          # 2. 尝试正常停止 (SIGTERM)
+          # 关键修改：加上 sudo，否则 xc 用户杀不掉 root 进程
+          sudo kill $target_pid
+          
+          # 3. 循环等待进程消失
+          for i in {1..5}; do
+            if ! pgrep -x "hwgauge" > /dev/null; then
+              echo "stopped"
+              exit 0
+            fi
+            sleep 1
+          done
+          
+          # 4. 如果还在，强制查杀 (SIGKILL)
+          echo "Force killing..."
+          sudo kill -9 $target_pid
+          echo "force_stopped"
+        else
+          echo "not_running"
+        fi
+      register: stop_result
+      # 只有输出了 stopped 相关字样才算“发生变更”，否则算 OK
+      changed_when: "'stopped' in stop_result.stdout"
+
+    - name: 最终确认进程已消失
+      shell: "pgrep -x 'hwgauge'"
+      register: final_check
+      # 如果还能查到进程(rc=0)，则报错 FAILED
+      failed_when: final_check.rc == 0
+      ignore_errors: yes 
+
+    - debug:
+        msg: "{{ inventory_hostname }}: {{ stop_result.stdout_lines | last }}"
+
+# ansible-playbook -i hosts.ini stop.yml
+# ansible-playbook stop.yml

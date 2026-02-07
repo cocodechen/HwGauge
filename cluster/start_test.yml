@@ -1,0 +1,101 @@
+---
+- name: 批量部署与启动 HwGauge
+  hosts: workers
+  gather_facts: yes
+
+  vars:
+    work_dir: "/users/xc/HwGauge/build"
+    master_ip: "{{ hostvars[groups['master'][0]].ansible_host }}"
+    node_name: "{{ inventory_hostname | replace('-', '_') }}"
+    local_log_path: "./ansible_error_logs"
+
+  tasks:
+    - name: 清理旧日志 (防止读取到上一次的错误)
+      become: yes
+      file:
+        path: "{{ work_dir }}/hwgauge.log"
+        state: absent
+      ignore_errors: yes
+
+    - name: 启动数据采集服务
+      become: yes
+      shell: >
+        nohup ./bin/hwgauge
+        --interval=1
+        --sysInfo=true
+        --clusterInfo=false
+        --clu-nodeId="{{node_name}}"
+        --clu-uri="tcp://{{ master_ip }}:6379"
+        --outTer=false
+        --db-enable=true
+        --db-host="{{ master_ip }}"
+        --db-table="{{ node_name }}"
+        > hwgauge.log 2>&1 &
+      args:
+        chdir: "{{ work_dir }}"
+      async: 10
+      poll: 0
+      register: start_cmd
+      changed_when: true
+
+    - name: 等待进程初始化 (给它一点时间报错退出)
+      pause:
+        seconds: 3
+
+    - name: 严格检查进程存活
+      become: yes
+      shell: "pgrep -x hwgauge"
+      register: process_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: 判定运行状态
+      set_fact:
+        is_running: "{{ process_check.rc == 0 }}"
+
+    # --- 错误处理区 ---
+
+    - name: (远程) 读取启动日志
+      when: not is_running
+      become: yes
+      shell: "cat hwgauge.log 2>/dev/null || echo '日志文件不存在或无法读取'"
+      args:
+        chdir: "{{ work_dir }}"
+      register: log_output
+      ignore_errors: yes
+
+    - name: (主节点) 创建日志目录
+      delegate_to: localhost
+      run_once: yes
+      file: 
+        path: "{{ local_log_path }}" 
+        state: directory 
+        mode: '0755'
+      when: not is_running
+
+    - name: (主节点) 保存错误日志
+      when: not is_running
+      delegate_to: localhost
+      copy:
+        content: |
+          主机: {{ inventory_hostname }}
+          状态: 启动失败 (PID 未找到)
+          可能原因: 权限不足 或 配置错误
+          日志内容:
+          --------------------------
+          {{ log_output.stdout | default('无日志文件') }}
+          --------------------------
+        dest: "{{ local_log_path }}/error_{{ inventory_hostname }}.txt"
+
+    - name: 报错并中断任务
+      fail:
+        msg: "节点 {{ inventory_hostname }} 启动失败！请查看主节点日志: {{ local_log_path }}/error_{{ inventory_hostname }}.txt"
+      when: not is_running
+
+# 运行命令:
+# ansible-playbook -i hosts.ini start.yml --ask-become-pass
+# 或者如果已配置免密 sudo:
+# ansible-playbook -i hosts.ini start.yml
+# ansible-playbook start.yml
+
+# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=false --db-enable=true --db-host="130.127.133.137" --db-table="node_utah_1"

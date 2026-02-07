@@ -1,51 +1,83 @@
 ---
-- name: 停止 HwGauge 服务
+- name: 停止 HwGauge 和 HwLoad 服务
   hosts: workers
+  become: yes  # 必须使用 root，因为启动时用了 sudo，且需要杀进程
   gather_facts: no
 
+  vars:
+    # 定义需要停止的进程二进制名称
+    target_processes:
+      - hwgauge
+      - loadgen   # 假设你的负载生成器编译后的二进制文件名叫 loadgen
+
+    # 定义需要销毁的 tmux 会话名
+    target_sessions:
+      - hw_monitor
+      - hw_load
+
   tasks:
-    - name: 停止 hwgauge 进程 (使用 sudo kill)
+    # -------------------------------------------------------
+    # 步骤 1: 优雅地销毁 Tmux 会话
+    # -------------------------------------------------------
+    - name: 销毁 Tmux 会话
       shell: |
+        tmux kill-session -t {{ item }} 2>/dev/null || echo "Session {{ item }} not found"
+      loop: "{{ target_sessions }}"
+      ignore_errors: yes
+      changed_when: false
+
+    # -------------------------------------------------------
+    # 步骤 2: 暴力清理残留进程 (兜底机制)
+    # -------------------------------------------------------
+    - name: 确保进程完全终止 (清理孤儿进程)
+      shell: |
+        PROC_NAME="{{ item }}"
+        
         # 1. 查找进程 ID
-        # -x 精确匹配进程名，通常能匹配到那个 root 权限的子进程(20781)
-        target_pid=$(pgrep -x "hwgauge")
+        target_pid=$(pgrep -x "$PROC_NAME")
 
         if [ -n "$target_pid" ]; then
-          echo "Found PID: $target_pid"
+          echo "Found orphan $PROC_NAME (PID: $target_pid), killing..."
           
-          # 2. 尝试正常停止 (SIGTERM)
-          # 关键修改：加上 sudo，否则 xc 用户杀不掉 root 进程
-          sudo kill $target_pid
+          # 直接发送 SIGKILL (-9)，因为此时 Tmux 已经被杀，留下的都是异常进程
+          kill -9 $target_pid
           
-          # 3. 循环等待进程消失
-          for i in {1..5}; do
-            if ! pgrep -x "hwgauge" > /dev/null; then
-              echo "stopped"
-              exit 0
-            fi
-            sleep 1
-          done
+          # 等一小会儿
+          sleep 1
           
-          # 4. 如果还在，强制查杀 (SIGKILL)
-          echo "Force killing..."
-          sudo kill -9 $target_pid
-          echo "force_stopped"
+          # 再次检查
+          if pgrep -x "$PROC_NAME" > /dev/null; then
+             echo "failed_to_kill"
+             exit 1
+          else
+             echo "killed"
+          fi
         else
           echo "not_running"
         fi
-      register: stop_result
-      # 只有输出了 stopped 相关字样才算“发生变更”，否则算 OK
-      changed_when: "'stopped' in stop_result.stdout"
+      loop: "{{ target_processes }}"
+      register: kill_result
+      # 只有真正执行了 kill 操作才标记为 changed
+      changed_when: "'killed' in kill_result.stdout"
+      failed_when: "'failed_to_kill' in kill_result.stdout"
 
-    - name: 最终确认进程已消失
-      shell: "pgrep -x 'hwgauge'"
+    # -------------------------------------------------------
+    # 步骤 3: 最终状态确认
+    # -------------------------------------------------------
+    - name: 最终确认所有目标进程已消失
+      shell: "pgrep -x '{{ item }}'"
+      loop: "{{ target_processes }}"
       register: final_check
-      # 如果还能查到进程(rc=0)，则报错 FAILED
+      # 如果 grep 到了进程 (rc=0)，说明还在运行，报错
       failed_when: final_check.rc == 0
-      ignore_errors: yes 
+      ignore_errors: yes
 
-    - debug:
-        msg: "{{ inventory_hostname }}: {{ stop_result.stdout_lines | last }}"
-
-# ansible-playbook -i hosts.ini stop.yml
-# ansible-playbook stop.yml
+    - name: 汇报停止结果
+      debug:
+        msg: >-
+          节点 {{ inventory_hostname }}: 
+          {% if final_check.results | selectattr('rc', 'equalto', 0) | list | length > 0 %}
+            停止失败！仍有进程存活。
+          {% else %}
+            全部停止成功 (Tmux会话已销毁 + 进程已清理)。
+          {% endif %}
