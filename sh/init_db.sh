@@ -38,7 +38,7 @@ NEW_RULE="host    all             all             0.0.0.0/0               scram-
 NEW_RULE_IPV6="host    all             all             ::/0                    scram-sha-256"
 
 # 检查是否已经存在，不存在才追加（幂等性）
-if grep -qF "0.0.0.0/0" "${HBA_CONF}"; then
+if sudo grep -qF "0.0.0.0/0" "${HBA_CONF}"; then
     echo "Configuration for 0.0.0.0/0 already exists, skipping append."
 else
     echo "Appending new rules to pg_hba.conf..."
