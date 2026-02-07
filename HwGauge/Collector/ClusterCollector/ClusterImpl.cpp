@@ -1,8 +1,7 @@
 #ifdef HWGAUGE_USE_CLUSTER
 
 #include "ClusterImpl.hpp"
-#include "Collector/Common/Exception.hpp" 
-
+#include "Collector/Common/Exception.hpp"
 #include <spdlog/spdlog.h>
 #include <iostream>
 #include <chrono>
@@ -11,20 +10,22 @@
 
 namespace hwgauge
 {
-    ClusterImpl::ClusterImpl(const std::string& redisUri)
-        : redisUri_(redisUri), ctx_(nullptr), isConnected_(false), keepRunning_(false)
+    ClusterImpl::ClusterImpl(const ClusterConfig& config)
+        : config_(config), ctx_(nullptr), isConnected_(false), keepRunning_(false)
     {
-        spdlog::info("Initializing ClusterImpl with URI: {}", redisUri_);
+        spdlog::info("Initializing ClusterImpl for NodeID: {} at {}:{}", config_.nodeId, config_.host, config_.port);
+        
         // 构造函数中立即尝试连接
-        // 这里的锁其实不是必须的（因为构造时没有竞争），但为了保持一致性加上
         std::lock_guard<std::recursive_mutex> lock(redisMutex_);
         if (!ensureConnection())
         {
-            // 如果起步就失败，根据要求抛出 FatalError
-            spdlog::error("Fatal Error: Failed to establish initial connection to Redis at {}", redisUri_);
+            spdlog::error("Fatal Error: Failed to establish initial connection to Redis at {}:{}", config_.host, config_.port);
             throw FatalError("Initial Redis connection failed");
         }
         spdlog::info("Successfully connected to Redis at startup.");
+
+        // 根据配置自动启动心跳
+        if (config_.heartbeat)startHeartbeat();
     }
 
     ClusterImpl::~ClusterImpl()
@@ -50,33 +51,9 @@ namespace hwgauge
         isConnected_ = false;
     }
 
-    void ClusterImpl::parseUri(const std::string& uri, std::string& ip, int& port)
-    {
-        std::string cleanUri = uri;
-        const std::string prefix = "tcp://";
-        if (cleanUri.find(prefix) == 0) {
-            cleanUri = cleanUri.substr(prefix.length());
-        }
-        size_t colonPos = cleanUri.find(':');
-        if (colonPos != std::string::npos) {
-            ip = cleanUri.substr(0, colonPos);
-            try {
-                port = std::stoi(cleanUri.substr(colonPos + 1));
-            } catch (...) {
-                port = 6379;
-                spdlog::warn("Invalid port in URI [{}], defaulting to 6379", uri);
-            }
-        } else {
-            ip = cleanUri;
-            port = 6379;
-        }
-    }
-
-    // 内部连接函数：返回 bool，不抛出异常，供 sample 和 heartbeat 共享
+    // 内部连接函数
     bool ClusterImpl::ensureConnection()
     {
-        // 调用此函数前，外部应该已经持有锁，或者处于单线程环境(构造函数)
-        // 但为了安全，再次利用 recursive_mutex 的特性
         std::lock_guard<std::recursive_mutex> lock(redisMutex_);
         if (ctx_ && isConnected_) return true;
 
@@ -85,15 +62,21 @@ namespace hwgauge
             redisFree(ctx_);
             ctx_ = nullptr;
         }
-        std::string ip;
-        int port;
-        parseUri(redisUri_, ip, port);
+
+        int portInt = 6379;
+        try {
+            portInt = std::stoi(config_.port);
+        } catch (...) {
+            spdlog::warn("Invalid port [{}], defaulting to 6379", config_.port);
+            portInt = 6379;
+        }
 
         struct timeval timeout = { 1, 0 }; // 连接超时 1秒
-        ctx_ = redisConnectWithTimeout(ip.c_str(), port, timeout);
+        ctx_ = redisConnectWithTimeout(config_.host.c_str(), portInt, timeout);
+        
         if (ctx_ == nullptr || ctx_->err) {
             std::string errStr = (ctx_) ? ctx_->errstr : "can't allocate context";
-            spdlog::warn("Redis connection failed to {}:{}. Error: {}", ip, port, errStr);
+            spdlog::warn("Redis connection failed to {}:{}. Error: {}", config_.host, portInt, errStr);
             
             if (ctx_) {
                 redisFree(ctx_);
@@ -101,6 +84,21 @@ namespace hwgauge
             }
             isConnected_ = false;
             return false;
+        }
+
+        // 处理密码认证
+        if (!config_.password.empty()) {
+            redisReply* reply = (redisReply*)redisCommand(ctx_, "AUTH %s", config_.password.c_str());
+            if (reply == nullptr || reply->type == REDIS_REPLY_ERROR) {
+                std::string err = (reply) ? reply->str : "Unknown AUTH error";
+                spdlog::error("Redis authentication failed: {}", err);
+                if (reply) freeReplyObject(reply);
+                redisFree(ctx_);
+                ctx_ = nullptr;
+                isConnected_ = false;
+                return false;
+            }
+            freeReplyObject(reply);
         }
         
         // 设置读写超时 500ms
@@ -112,7 +110,7 @@ namespace hwgauge
         return true;
     }
 
-    void ClusterImpl::startHeartbeat(const std::string& nodeId, int ttlSeconds)
+    void ClusterImpl::startHeartbeat()
     {
         std::lock_guard<std::recursive_mutex> lock(redisMutex_);
         if (keepRunning_)
@@ -120,22 +118,25 @@ namespace hwgauge
             spdlog::warn("Heartbeat thread already running.");
             return; 
         }
-        spdlog::info("Starting heartbeat thread for NodeID: {}, TTL: {}s", nodeId, ttlSeconds);
+        
+        spdlog::info("Starting heartbeat thread for NodeID: {}, TTL: {}s", config_.nodeId, config_.ttlSeconds);
         keepRunning_ = true;
-        heartbeatThread_ = std::thread([this, nodeId, ttlSeconds]() {
-            int intervalMs = (ttlSeconds * 1000) / 2;
+        
+        // 捕获 this 指针即可访问成员 config_
+        heartbeatThread_ = std::thread([this]() {
+            int intervalMs = (this->config_.ttlSeconds * 1000) / 2;
             if (intervalMs < 100) intervalMs = 100;
 
-            while (keepRunning_) {
+            while (this->keepRunning_) {
                 {
                     // 只在发送数据的瞬间加锁
                     std::lock_guard<std::recursive_mutex> lock(this->redisMutex_);
-                    this->sendHeartbeatPayload(nodeId, ttlSeconds);
+                    this->sendHeartbeatPayload();
                 }
                 
                 // 睡眠等待 (检查 keepRunning 以便快速退出)
-                for (int i = 0; i < 10 && keepRunning_; ++i) {
-                     std::this_thread::sleep_for(std::chrono::milliseconds(intervalMs / 10));
+                for (int i = 0; i < 10 && this->keepRunning_; ++i) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(intervalMs / 10));
                 }
             }
             spdlog::info("Heartbeat thread stopped.");
@@ -150,17 +151,16 @@ namespace hwgauge
         }
     }
 
-    void ClusterImpl::sendHeartbeatPayload(const std::string& nodeId, int ttlSeconds)
+    void ClusterImpl::sendHeartbeatPayload()
     {
         // 这里不能抛出异常，否则线程会挂掉，只能记录日志并静默失败等待重试
         if (!ensureConnection()) {
-            // ensureConnection 内部已经 warn 过了
             return;
         }
 
-        std::string key = "cluster:node:" + nodeId + ":heartbeat";
+        std::string key = "cluster:node:" + config_.nodeId + ":heartbeat";
         // SET key 1 EX ttl
-        redisReply* reply = (redisReply*)redisCommand(ctx_, "SET %s %s EX %d", key.c_str(), "1", ttlSeconds);
+        redisReply* reply = (redisReply*)redisCommand(ctx_, "SET %s %s EX %d", key.c_str(), "1", config_.ttlSeconds);
 
         if (reply == nullptr) {
             spdlog::warn("Heartbeat failed: IO Error. Connection marked down.");
@@ -172,7 +172,7 @@ namespace hwgauge
         if (reply->type == REDIS_REPLY_ERROR) {
             spdlog::warn("Heartbeat logic error: {}", reply->str);
         } else {
-            // spdlog::trace("Heartbeat sent successfully."); // 仅在极详细模式下开启
+            // spdlog::trace("Heartbeat sent successfully."); 
         }
 
         freeReplyObject(reply);
@@ -182,7 +182,6 @@ namespace hwgauge
     {
         // 假设外部 sample 已经加锁
         if (!ensureConnection()) {
-            // 这里抛出异常，通知上层 sample 流程中断
             spdlog::warn("countActiveNodes: Connection lost.");
             throw RecoverableError("Connection lost while counting nodes");
         }
@@ -192,7 +191,7 @@ namespace hwgauge
         
         do {
             redisReply* reply = (redisReply*)redisCommand(ctx_, "SCAN %s MATCH %s COUNT 100", 
-                                                          cursor.c_str(), heartbeatPattern_.c_str());
+                                                        cursor.c_str(), heartbeatPattern_.c_str());
             
             if (reply == nullptr) {
                 isConnected_ = false; 
@@ -235,7 +234,7 @@ namespace hwgauge
 
     std::vector<ClusterMetrics> ClusterImpl::sample(std::vector<ClusterLabel>& labels)
     {
-        // 全局加锁，防止心跳线程干扰
+        // 全局加锁
         std::lock_guard<std::recursive_mutex> lock(redisMutex_);
 
         std::vector<ClusterMetrics> metricsList;
@@ -255,14 +254,14 @@ namespace hwgauge
             isConnected_ = false;
             if (ctx_) { redisFree(ctx_); ctx_ = nullptr; }
             spdlog::warn("Sampling failed: PING IO error.");
-            m.redisLatencyMs=-1.0;
+            m.redisLatencyMs = -1.0;
         }
         else if (reply->type == REDIS_REPLY_ERROR)
         {
             std::string err = reply->str;
             freeReplyObject(reply);
             spdlog::error("Sampling failed: PING protocol error: {}", err);
-            m.redisLatencyMs=-1.0;
+            m.redisLatencyMs = -1.0;
         }
         else
         {
@@ -271,19 +270,19 @@ namespace hwgauge
             freeReplyObject(reply);
         }
 
-        // 3. 统计节点 (如果前面 Ping 成功，连接大概率是好的，但仍需捕获异常)
+        // 3. 统计节点
         try
         {
             m.activeNodeCount = static_cast<double>(countActiveNodes());
         }
         catch (const RecoverableError& e)
         {
-            m.activeNodeCount=-1.0;
+            m.activeNodeCount = -1.0;
             spdlog::warn("Sampling aborted during node counting: {}", e.what());
         }
         metricsList.push_back(m);
         return metricsList;
     }
-}
 
+}
 #endif

@@ -8,7 +8,7 @@
 
 namespace hwgauge
 {
-    NPUDatabase::NPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)
+    NPUDatabase::NPUDatabase(const DBConfig& config_, const std::string& table_name_prefix)
         : Database<NPULabel, NPUMetrics>(config_)
     {
         // 设置表名

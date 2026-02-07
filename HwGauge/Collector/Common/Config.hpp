@@ -10,7 +10,7 @@ namespace hwgauge
 {
 #ifdef HWGAUGE_USE_POSTGRESQL
     /*数据库连接配置结构体*/
-    struct ConnectionConfig
+    struct DBConfig
     {
         std::string host;
         std::string port;
@@ -20,7 +20,7 @@ namespace hwgauge
         int connect_timeout;
 
         // 默认构造函数
-        ConnectionConfig()
+        DBConfig()
             : host("localhost"),
             port("5432"),
             dbname("postgres"),
@@ -30,7 +30,7 @@ namespace hwgauge
         {}
 
         // 参数构造函数
-        ConnectionConfig(std::string host_,
+        DBConfig(std::string host_,
                         std::string port_,
                         std::string dbname_,
                         std::string user_,
@@ -46,6 +46,20 @@ namespace hwgauge
     };
 #endif
 
+#ifdef HWGAUGE_USE_CLUSTER
+    /*集群配置结构体*/
+    struct ClusterConfig
+    {
+        bool heartbeat=true;
+        std::string nodeId;
+
+        std::string host;
+        std::string port;
+        std::string password;
+        int ttlSeconds;
+    };
+#endif
+
     /*Collector配置*/
     struct CollectorConfig
     {
@@ -53,10 +67,7 @@ namespace hwgauge
         bool outFile=false;
         std::string filepath;
 #ifdef HWGAUGE_USE_CLUSTER
-        bool hbEnable=true;
-        std::string nodeId;
-        std::string redisUri;
-        int ttlSeconds;
+        ClusterConfig clusterConfig;
 #endif
 #ifdef HWGAUGE_USE_PROMETHEUS
         bool pmEnable = false;
@@ -64,7 +75,7 @@ namespace hwgauge
 #endif
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable = false;
-        ConnectionConfig dbConfig;
+        DBConfig dbConfig;
         std::string dbTableName;
 #endif
     };

@@ -8,7 +8,7 @@
 
 namespace hwgauge
 {
-    GPUDatabase::GPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)
+    GPUDatabase::GPUDatabase(const DBConfig& config_, const std::string& table_name_prefix)
         : Database<GPULabel, GPUMetrics>(config_)
     {
         // 设置表名

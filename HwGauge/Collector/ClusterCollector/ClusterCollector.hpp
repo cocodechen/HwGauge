@@ -24,11 +24,10 @@ namespace hwgauge
     {
     public:
         explicit ClusterCollector(const CollectorConfig& cfg)
-            : impl(std::make_unique<ClusterImpl>(cfg.redisUri)),
+            : impl(std::make_unique<ClusterImpl>(cfg.clusterConfig)),
               outTer(cfg.outTer)
         {
             label_list = labels();
-            if(cfg.hbEnable)impl->startHeartbeat(cfg.nodeId, cfg.ttlSeconds);
         }
         
         virtual ~ClusterCollector() = default;

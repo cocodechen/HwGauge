@@ -81,10 +81,12 @@ int main(int argc, char* argv[])
 	bool clusterInfo=false;
 	application.add_flag("--clusterInfo", clusterInfo, "Enable to out the cluster information");
 	// Command-line arguments: cluster
-	application.add_flag("--clu-heartbeat", cfg.hbEnable, "Enable heartbeat to Redis")->default_val(true);
-	application.add_option("--clu-nodeId", cfg.nodeId, "Unique Node ID for this machine")->default_val("node-001");
-	application.add_option("--clu-uri", cfg.redisUri, "Redis server URI")->default_val("tcp://127.0.0.1:6379");
-	application.add_option("--clu-ttl", cfg.ttlSeconds, "Heartbeat key TTL in seconds")->default_val(5);
+	application.add_flag("--clu-heartbeat", cfg.clusterConfig.heartbeat, "Enable heartbeat to Redis")->default_val(true);
+	application.add_option("--clu-nodeId", cfg.clusterConfig.nodeId, "Unique Node ID for this machine")->default_val("node-001");
+	application.add_option("--clu-host", cfg.clusterConfig.host, "Cluster host")->default_val("localhost");
+	application.add_option("--clu-port", cfg.clusterConfig.port, "Cluster port")->default_val("6379");
+	application.add_option("--clu-password", cfg.clusterConfig.password, "Cluster password")->default_val("123456");
+	application.add_option("--clu-ttl", cfg.clusterConfig.ttlSeconds, "Heartbeat key TTL in seconds")->default_val(5);
 #endif
 
 #ifdef HWGAUGE_USE_PROMETHEUS

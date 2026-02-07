@@ -8,7 +8,7 @@
 
 namespace hwgauge
 {
-    SYSDatabase::SYSDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)
+    SYSDatabase::SYSDatabase(const DBConfig& config_, const std::string& table_name_prefix)
         : Database<SYSLabel, SYSMetrics>(config_)
     {
         // 设置表名

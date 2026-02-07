@@ -22,7 +22,7 @@ namespace hwgauge
     {
         public:
             /* 构造函数：建立连接 */
-            explicit Database(const ConnectionConfig& config_)
+            explicit Database(const DBConfig& config_)
                 : conn(nullptr), config(config_)
             {
                 // 建立连接
@@ -67,7 +67,7 @@ namespace hwgauge
             
         protected:
             PGconn* conn;               // PostgreSQL连接对象指针
-            ConnectionConfig config;    // 连接配置
+            DBConfig config;    // 连接配置
             std::string metric_table_name;      // 指标数据表名
             std::string info_table_name;        // 静态数据表名
             std::string metric_insert_sql;      // 指标数据插入语句

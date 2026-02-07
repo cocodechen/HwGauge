@@ -8,7 +8,7 @@
 
 namespace hwgauge
 {
-    CPUDatabase::CPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix)
+    CPUDatabase::CPUDatabase(const DBConfig& config_, const std::string& table_name_prefix)
         : Database<CPULabel, CPUMetrics>(config_)
     {
         // 设置表名

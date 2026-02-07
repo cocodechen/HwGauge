@@ -13,7 +13,7 @@ namespace hwgauge
     {
     public:
         /* 构造函数 */
-        explicit CPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix);
+        explicit CPUDatabase(const DBConfig& config_, const std::string& table_name_prefix);
         
         /* 析构函数 */
         ~CPUDatabase();

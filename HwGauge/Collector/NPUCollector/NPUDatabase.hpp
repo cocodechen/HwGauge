@@ -12,7 +12,7 @@ namespace hwgauge
     {
     public:
         /* 构造函数 */
-        explicit NPUDatabase(const ConnectionConfig& config_, const std::string& table_name_prefix);
+        explicit NPUDatabase(const DBConfig& config_, const std::string& table_name_prefix);
         
         /* 析构函数 */
         ~NPUDatabase();

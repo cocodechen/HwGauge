@@ -98,6 +98,4 @@
 # ansible-playbook -i hosts.ini start.yml
 # ansible-playbook start.yml
 
-# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=true --clu-nodeId="node_utah_1" --clu-uri="tcp://130.127.133.137:6379" --db-enable=true --db-host="130.127.133.137" --db-table="node_utah_1"
-# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=true --clu-nodeId="node_clem_2" --clu-uri="tcp://130.127.133.137:6379" --db-enable=true --db-host="130.127.133.137" --db-table="node_clem_2"
-# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=true --clu-nodeId="node_clem_1" --clu-uri="tcp://localhost:6379" --db-enable=true --db-host="localhost" --db-table="node_clem_1"
+# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=true --clu-nodeId="node_utah_1" --clu-uri="tcp://155.98.36.146:6379" --db-enable=true --db-host="155.98.36.146" --db-table="node_utah_1"
