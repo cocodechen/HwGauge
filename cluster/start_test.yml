@@ -98,4 +98,6 @@
 # ansible-playbook -i hosts.ini start.yml
 # ansible-playbook start.yml
 
-# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=false --db-enable=true --db-host="130.127.133.137" --db-table="node_utah_1"
+# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=false --db-enable=true --db-host="130.127.133.137" --db-password="17HA169pUyGfi1Z" --db-table="node_clem_1"
+
+# sudo ./bin/hwgauge --sysInfo=true --clusterInfo=false --db-enable=true --db-host="10.10.1.1" --db-password="U2QV2PkKVM2Ki6Ff" --db-table="node1"

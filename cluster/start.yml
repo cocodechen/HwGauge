@@ -8,11 +8,12 @@
     gauge_dir: "/users/xc/HwGauge/build"
     master_ip: "{{ hostvars[groups['master'][0]].ansible_host }}"
     node_name: "{{ inventory_hostname | replace('-', '_') }}"
+    password:  "U2QV2PkKVM2Ki6Ff"
     gauge_log: "hwgauge.log"
     
     # --- HwLoad 配置 ---
     load_dir: "/users/xc/HwLoad/build"
-    load_cmd: "./loadgen cpu:random"
+    load_cmd: "./loadgen cpu:random gpu:random"
     
     # --- 日志回传配置 ---
     local_log_path: "./ansible_error_logs"
@@ -50,6 +51,7 @@
         --db-enable=true
         --db-host='{{ master_ip }}'
         --db-table='{{ node_name }}'
+        --db-password='{{ password }}'
         > {{ gauge_log }} 2>&1
         "
       # 注：上面的 > {{ gauge_log }} 是为了让原来的报错检查逻辑还能复用日志文件
