@@ -14,6 +14,8 @@ ALLOWED_IPS=(
     "10.10.1.1" # node0
     "10.10.1.2" # node1
     "10.10.1.3" # node2
+    "10.10.1.4" # node3
+    "10.10.1.5" # node4
 )
 
 # ALLOWED_IPS=(
@@ -142,5 +144,4 @@ echo "当前允许连接的 IP 数量: ${#ALLOWED_IPS[@]}"
 echo "pg_hba.conf 已重写，未在列表中的 IP 即使有密码也无法连接。"
 echo "========================================================"
 
-# wide current password: 17HA169pUyGfi1Z
-# local current password: U2QV2PkKVM2Ki6Ff
+# current password: WaflT3NHu3dooAt

@@ -1,6 +1,6 @@
 ---
 - name: 批量部署 HwGauge 与 HwLoad (Tmux 托管)
-  hosts: workers
+  hosts: cluster
   gather_facts: yes
 
   vars:
@@ -8,12 +8,12 @@
     gauge_dir: "/users/xc/HwGauge/build"
     master_ip: "{{ hostvars[groups['master'][0]].ansible_host }}"
     node_name: "{{ inventory_hostname | replace('-', '_') }}"
-    password:  "U2QV2PkKVM2Ki6Ff"
+    password:  "WaflT3NHu3dooAt"
     gauge_log: "hwgauge.log"
     
     # --- HwLoad 配置 ---
     load_dir: "/users/xc/HwLoad/build"
-    load_cmd: "./loadgen cpu:random gpu:random"
+    load_cmd: "./loadgen cpu:random"
     
     # --- 日志回传配置 ---
     local_log_path: "./ansible_error_logs"
