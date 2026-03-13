@@ -7,6 +7,9 @@
 
 namespace hwgauge
 {
+    // 空类，用于模板类占位
+    class NullType {};
+    
     // 辅助打印函数，需要在外部重载
     template<typename L, typename M>
     void printMetric(const L& label, const M& metric);

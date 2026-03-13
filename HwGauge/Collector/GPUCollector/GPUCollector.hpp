@@ -12,9 +12,20 @@
 
 namespace hwgauge
 {
+#ifdef HWGAUGE_USE_POSTGRESQL
+    using GPUDatabaseType = GPUDatabase;
+#else
+    using GPUDatabaseType = NullType;
+#endif
+
+#ifdef HWGAUGE_USE_PROMETHEUS
+    using GPUPrometheusType = GPUPrometheus;
+#else
+    using GPUPrometheusType = NullType;
+#endif
     // 定义别名
     using GPUCollector = DeviceCollector<
-        GPULabel, GPUMetrics, NVML, GPUDatabase, GPUCsvLogger, GPUPrometheus
+        GPULabel, GPUMetrics, NVML, GPUDatabaseType, GPUCsvLogger, GPUPrometheusType
     >;
     
     // 定义特定的打印函数

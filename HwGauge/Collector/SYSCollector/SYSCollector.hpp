@@ -12,9 +12,20 @@
 
 namespace hwgauge
 {
+#ifdef HWGAUGE_USE_POSTGRESQL
+    using SYSDatabaseType = SYSDatabase;
+#else
+    using SYSDatabaseType = NullType;
+#endif
+
+#ifdef HWGAUGE_USE_PROMETHEUS
+    using SYSPrometheusType = SYSPrometheus;
+#else
+    using SYSPrometheusType = NullType;
+#endif
     // 定义别名
     using SYSCollector = DeviceCollector<
-        SYSLabel, SYSMetrics, SYSImpl, SYSDatabase, SYSCsvLogger, SYSPrometheus
+        SYSLabel, SYSMetrics, SYSImpl, SYSDatabaseType, SYSCsvLogger, SYSPrometheusType
     >;
     
     // 定义特定的打印函数

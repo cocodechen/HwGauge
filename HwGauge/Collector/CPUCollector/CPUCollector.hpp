@@ -12,9 +12,20 @@
 
 namespace hwgauge
 {
+#ifdef HWGAUGE_USE_POSTGRESQL
+    using CPUDatabaseType = CPUDatabase;
+#else
+    using CPUDatabaseType = NullType;
+#endif
+
+#ifdef HWGAUGE_USE_PROMETHEUS
+    using CPUPrometheusType = CPUPrometheus;
+#else
+    using CPUPrometheusType = NullType;
+#endif
     // 定义别名
     using CPUCollector = DeviceCollector<
-        CPULabel, CPUMetrics, PCM, CPUDatabase, CPUCsvLogger, CPUPrometheus
+        CPULabel, CPUMetrics, PCM, CPUDatabaseType, CPUCsvLogger, CPUPrometheusType
     >;
     
     // 定义特定的打印函数

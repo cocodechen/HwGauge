@@ -12,9 +12,21 @@
 
 namespace hwgauge
 {
+#ifdef HWGAUGE_USE_POSTGRESQL
+    using NPUDatabaseType = NPUDatabase;
+#else
+    using NPUDatabaseType = NullType;
+#endif
+
+#ifdef HWGAUGE_USE_PROMETHEUS
+    using NPUPrometheusType = NPUPrometheus;
+#else
+    using NPUPrometheusType = NullType;
+#endif
+
     // 定义别名
     using NPUCollector = DeviceCollector<
-        NPULabel, NPUMetrics, NPUImpl, NPUDatabase, NPUCsvLogger, NPUPrometheus
+        NPULabel, NPUMetrics, NPUImpl, NPUDatabaseType, NPUCsvLogger, NPUPrometheusType
     >;
     
     // 定义特定的打印函数
