@@ -240,7 +240,7 @@ namespace hwgauge
         // 用于检测是否所有 Socket 的带宽都为 0
         bool allBandwidthZero = true; 
 
-         for (const auto& label : labels)
+        for (const auto& label : labels)
         {
             auto s = label.index; 
             const auto& before = beforeState[s];

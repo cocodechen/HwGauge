@@ -169,7 +169,7 @@ cmake --build . --parallel
 | `HWGAUGE_USE_INTEL_PCM` | `OFF`    | Enable Intel CPU collectors  |
 | `HWGAUGE_USE_NVML`      | `OFF`    | Enable NVIDIA GPU collectors |
 | `HWGAUGE_USE_NPU`       | `OFF`    | Enable Ascend NPU collectors |
-| `HWGAUGE_USE_PROMETHEUS` | `OFF`  | Enable Prometheus exporte|
+| `HWGAUGE_USE_PROMETHEUS` | `OFF`  | Enable Prometheus exporter|
 |`HWGAUGE_USE_POSTGRESQL`|`OFF`|Enable PostgreSQL storage|
 
 Disable collectors you don't need to reduce dependencies.
