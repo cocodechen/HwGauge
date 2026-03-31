@@ -21,8 +21,8 @@ namespace hwgauge
             "INSERT INTO "+ metric_table_name +
             "(timestamp, mem_total_gb, mem_used_gb, mem_util_percent, "
             "disk_read_mbps, disk_write_mbps, max_disk_util_percent, "
-            "net_download_mbps, net_upload_mbps, system_power_watts) " 
-            "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);";
+            "net_download_mbps, net_upload_mbps, system_power_watts, total_power_watts) " 
+            "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11);";
 
         spdlog::info("[SYSDatabase] Initialize successfully");
     }
@@ -43,6 +43,7 @@ namespace hwgauge
             "net_download_mbps DOUBLE PRECISION,"
             "net_upload_mbps DOUBLE PRECISION,"
             "system_power_watts DOUBLE PRECISION,"
+            "total_power_watts DOUBLE PRECISION,"
             "PRIMARY KEY (timestamp)"
             ");";
         if (!execSQL(sql))
@@ -74,8 +75,8 @@ namespace hwgauge
             const SYSLabel& label = label_list[i];
             const SYSMetrics& metric = metric_list[i];
 
-            std::vector<std::string> buf(10);
-            const char* params[10] = {
+            std::vector<std::string> buf(11);
+            const char* params[11] = {
                 to_sql_param_string(cur_time, buf[0]),
                 to_sql_param_double(metric.memTotalGB, buf[1]),
                 to_sql_param_double(metric.memUsedGB, buf[2]),
@@ -86,9 +87,10 @@ namespace hwgauge
                 to_sql_param_double(metric.netDownloadMBps, buf[7]),
                 to_sql_param_double(metric.netUploadMBps, buf[8]),
                 to_sql_param_double(metric.systemPowerWatts, buf[9]),
+                to_sql_param_double(metric.totalPowerWatts, buf[10]),
             };
 
-            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 10)))
+            if (!execSQL(metric_insert_sql, std::vector<const char*>(params, params + 11)))
             {
                 if(useTransaction) rollbackTransaction();
                 return;

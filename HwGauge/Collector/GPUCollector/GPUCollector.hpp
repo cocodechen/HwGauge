@@ -44,6 +44,13 @@ namespace hwgauge
             << ", temp="   << m.temperature<<"C"
             << " }\n";
     }
+
+    // 定义全局信息设置函数
+    template<>
+    inline void setContextInfo(const GPULabel& l, const GPUMetrics& m)
+    {
+       sharedPower.gpu_power += m.powerUsage;
+    }
 }
 
 #endif

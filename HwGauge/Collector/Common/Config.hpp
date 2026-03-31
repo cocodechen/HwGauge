@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 #ifdef HWGAUGE_USE_PROMETHEUS
 #include <prometheus/registry.h>
@@ -79,4 +80,5 @@ namespace hwgauge
         std::string dbTableName;
 #endif
     };
+
 }

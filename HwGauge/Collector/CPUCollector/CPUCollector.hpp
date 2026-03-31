@@ -47,6 +47,14 @@ namespace hwgauge
             << ", memoryPowerUsage=" << m.memoryPowerUsage
             << " }\n";
     }
+
+    // 定义全局信息设置函数
+    template<>
+    inline void setContextInfo(const CPULabel& l, const CPUMetrics& m)
+    {
+       sharedPower.cpu_power += m.powerUsage;
+       sharedPower.memory_power += m.memoryPowerUsage;
+    }
 }
 
 #endif

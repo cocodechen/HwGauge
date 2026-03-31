@@ -14,7 +14,6 @@ namespace pcm
     class SocketCounterState;
 }
 
-
 namespace hwgauge {
 
     class PCM {

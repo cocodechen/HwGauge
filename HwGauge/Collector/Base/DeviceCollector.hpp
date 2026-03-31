@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collector/Base/Collector.hpp"
+#include "Collector/Common/Context.hpp"
 #include <memory>
 #include <vector>
 #include <iostream>
@@ -13,6 +14,10 @@ namespace hwgauge
     // 辅助打印函数，需要在外部重载
     template<typename L, typename M>
     void printMetric(const L& label, const M& metric);
+
+    // 向外提供/获取全局信息，需要在外部重载
+    template<typename L, typename M>
+    void setContextInfo(const L& label, const M& metric);
 
     /**
      * @tparam LabelT : 标签结构 (GPULabel)
@@ -65,9 +70,10 @@ namespace hwgauge
         {
             auto metric_list = sample(label_list);
 
-            if(outTer) {
-                for(size_t i=0; i<label_list.size(); i++) 
-                    printMetric(label_list[i], metric_list[i]);
+            for(size_t i=0; i<label_list.size(); i++) 
+            {
+                setContextInfo(label_list[i], metric_list[i]);
+                if(outTer)printMetric(label_list[i], metric_list[i]);
             }
 
             if(outFile && cl) cl->write(cur_time, label_list, metric_list);

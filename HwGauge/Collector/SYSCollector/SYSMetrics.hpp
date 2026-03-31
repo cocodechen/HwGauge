@@ -29,12 +29,13 @@ namespace hwgauge
 
         // 功耗
         double systemPowerWatts;  // 整机功耗 (W)
+        double totalPowerWatts; // CPU、内存、GPU等所有组件的功耗之和
 
         SYSMetrics() 
             : memTotalGB(-1.0), memUsedGB(-1.0), memUtilizationPercent(-1.0),
               diskReadMBps(-1.0), diskWriteMBps(-1.0), maxDiskUtilPercent(-1.0),
               netDownloadMBps(-1.0), netUploadMBps(-1.0),
-              systemPowerWatts(-1.0) 
+              systemPowerWatts(-1.0), totalPowerWatts(-1.0)
         {}
     };
 }

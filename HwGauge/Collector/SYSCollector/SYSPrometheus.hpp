@@ -33,6 +33,7 @@ namespace hwgauge
         
         // 功耗指标
         prometheus::Family<prometheus::Gauge>* systemPowerFamily;
+        prometheus::Family<prometheus::Gauge>* totalPowerFamily;
     };
 }
 

@@ -62,6 +62,13 @@ namespace hwgauge
             << ", health="     << m.health
             << " }\n";
     }
+
+    // 定义全局信息设置函数
+    template<>
+    inline void setContextInfo(const NPULabel& l, const NPUMetrics& m)
+    {
+       sharedPower.npu_power += m.chip_power;
+    }
 }
 
 #endif

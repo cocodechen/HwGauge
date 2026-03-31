@@ -40,6 +40,13 @@ namespace hwgauge
             << "Power: " << m.systemPowerWatts << " W"
             << " }\n";
     }
+
+    // 定义全局信息接口
+    template<>
+    inline void setContextInfo(const SYSLabel& l, const SYSMetrics& m)
+    {
+        m.totalPowerWatts=shared.getTotalPower();
+    }
 }
 
 #endif

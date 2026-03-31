@@ -11,7 +11,7 @@ namespace hwgauge {
                "MemTotal(GB),MemUsed(GB),MemUtil(%),"
                "DiskRead(MB/s),DiskWrite(MB/s),MaxDiskUtil(%),"
                "NetDown(MB/s),NetUp(MB/s),"
-               "SysPower(W)";
+               "SysPower(W),TotalPower(W)";
     }
 
     std::string SYSCsvLogger::formatRow(const SYSLabel& l, const SYSMetrics& m) const {
@@ -27,7 +27,8 @@ namespace hwgauge {
            << m.maxDiskUtilPercent << ","
            << m.netDownloadMBps << ","
            << m.netUploadMBps << ","
-           << m.systemPowerWatts;
+           << m.systemPowerWatts << ","
+           << m.totalPowerWatts;
 
         return ss.str();
     }

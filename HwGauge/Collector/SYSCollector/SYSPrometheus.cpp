@@ -58,6 +58,11 @@ namespace hwgauge
             .Name("system_power_watts")
             .Help("Total system power consumption in watts")
             .Register(registry_ref);
+
+        totalPowerFamily = &prometheus::BuildGauge()
+            .Name("system_total_power_watts")   
+            .Help("Total power consumption of all components (CPU, memory, GPU, etc.) in watts")
+            .Register(registry_ref);
     }
 
     void SYSPrometheus::write(const std::vector<SYSLabel>& label_list, const std::vector<SYSMetrics>& metric_list)
@@ -91,6 +96,7 @@ namespace hwgauge
             
             // 更新功耗指标
             systemPowerFamily->Add(labels).Set(metric.systemPowerWatts);
+            totalPowerFamily->Add(labels).Set(metric.totalPowerWatts);
         }
     }
 }

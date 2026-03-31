@@ -220,7 +220,6 @@ namespace hwgauge
     }
 
     /* ---------- sampling ---------- */
-
     std::vector<CPUMetrics> PCM::sample(std::vector<CPULabel>&labels)
     {
         if (!initialized || !pcmInstance)
