@@ -37,15 +37,18 @@ namespace hwgauge
             << "Mem: " << m.memUsedGB << "/" << m.memTotalGB << "GB (" << m.memUtilizationPercent << "%), "
             << "Disk: R=" << m.diskReadMBps << " W=" << m.diskWriteMBps << " MB/s (MaxUtil: " << m.maxDiskUtilPercent << "%), "
             << "Net: In=" << m.netDownloadMBps << " Out=" << m.netUploadMBps << " MB/s, "
-            << "Power: " << m.systemPowerWatts << " W"
+            << "systemPower: " << m.systemPowerWatts << " totalPower: " << m.totalPowerWatts << " W"
             << " }\n";
     }
 
     // 定义全局信息接口
     template<>
-    inline void setContextInfo(const SYSLabel& l, const SYSMetrics& m)
+    inline void setContextInfo(std::vector<SYSLabel>& l, std::vector<SYSMetrics>& m)
     {
-        m.totalPowerWatts=shared.getTotalPower();
+        for(size_t i=0; i<l.size(); i++) 
+        {
+            m[i].totalPowerWatts=sharedPower.getTotalPower();
+        }
     }
 }
 

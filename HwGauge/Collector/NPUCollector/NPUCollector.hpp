@@ -65,9 +65,12 @@ namespace hwgauge
 
     // 定义全局信息设置函数
     template<>
-    inline void setContextInfo(const NPULabel& l, const NPUMetrics& m)
+    inline void setContextInfo(std::vector<NPULabel>& l, std::vector<NPUMetrics>& m)
     {
-       sharedPower.npu_power += m.chip_power;
+        for(size_t i=0; i<l.size(); i++) 
+        {
+            sharedPower.npu_power = sharedPower.npu_power.value_or(0.0) + m[i].chip_power;
+        }
     }
 }
 

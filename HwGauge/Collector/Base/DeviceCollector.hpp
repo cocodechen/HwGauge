@@ -17,7 +17,7 @@ namespace hwgauge
 
     // 向外提供/获取全局信息，需要在外部重载
     template<typename L, typename M>
-    void setContextInfo(const L& label, const M& metric);
+    void setContextInfo(std::vector<L>& label, std::vector<M>& metric);
 
     /**
      * @tparam LabelT : 标签结构 (GPULabel)
@@ -70,9 +70,10 @@ namespace hwgauge
         {
             auto metric_list = sample(label_list);
 
+            setContextInfo(label_list, metric_list);
+
             for(size_t i=0; i<label_list.size(); i++) 
             {
-                setContextInfo(label_list[i], metric_list[i]);
                 if(outTer)printMetric(label_list[i], metric_list[i]);
             }
 

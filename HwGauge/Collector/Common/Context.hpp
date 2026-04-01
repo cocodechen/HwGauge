@@ -1,7 +1,6 @@
 #pragma once
 
 #include <optional>
-#include <mutex>
 
 namespace hwgauge
 {
@@ -12,12 +11,22 @@ namespace hwgauge
         std::optional<double> gpu_power;
         std::optional<double> npu_power;
 
+        // 重置函数
+        inline void reSet() {
+            cpu_power.reset();
+            memory_power.reset();
+            gpu_power.reset();
+            npu_power.reset();
+        }
+
         // 计算总和的辅助函数
-        double getTotalPower() const {
+        inline double getTotalPower() const {
             return cpu_power.value_or(0.0) + 
                 memory_power.value_or(0.0) +
                 gpu_power.value_or(0.0) + 
                 npu_power.value_or(0.0);
         }
-    }sharedPower;
+    };
+
+    inline SharedPowerContext sharedPower; // 定义全局共享上下文，注意要加inline以避免多重定义问题
 } 

@@ -47,10 +47,14 @@ namespace hwgauge
 
     // 定义全局信息设置函数
     template<>
-    inline void setContextInfo(const GPULabel& l, const GPUMetrics& m)
+    inline void setContextInfo(std::vector<GPULabel>& l, std::vector<GPUMetrics>& m)
     {
-       sharedPower.gpu_power += m.powerUsage;
+        for(size_t i=0; i<l.size(); i++) 
+        {
+            sharedPower.gpu_power = sharedPower.gpu_power.value_or(0.0) + m[i].powerUsage;
+        }
     }
+
 }
 
 #endif

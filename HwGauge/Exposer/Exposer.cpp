@@ -1,5 +1,6 @@
 #include "Exposer.hpp"
 #include "spdlog/spdlog.h"
+#include "Collector/Common/Context.hpp"
 
 #include <chrono>     // std::chrono::system_clock
 #include <ctime>      // std::time_t, std::localtime, std::tm
@@ -23,8 +24,6 @@ namespace hwgauge
 	void Exposer::run()
 	{
 		running.store(true, std::memory_order_release);
-		//exposer.RegisterCollectable(registry);
-
 		using clock = std::chrono::steady_clock;
 
 		auto next_tick = clock::now();
@@ -46,14 +45,15 @@ namespace hwgauge
 		running.store(false, std::memory_order_release);
 	}
 
-	void Exposer::collect() {
+	void Exposer::collect()
+	{
+		auto cur_time=getNowTime();
+		spdlog::debug("CurrentTime {}",cur_time);
 		for (auto& collector : collectors)
 		{
 			std::string name = collector->name();
 			try
 			{
-				auto cur_time=getNowTime();
-				spdlog::debug("CurrentTime {}",cur_time);
 				collector->collect(cur_time);
 				spdlog::debug("Retrieve metrics from {} successfully", name);
 			}
@@ -71,5 +71,6 @@ namespace hwgauge
 				return;
 			}
 		}
+		sharedPower.reSet(); // 每轮结束重置共享上下文，准备下一轮采集
 	}
 }

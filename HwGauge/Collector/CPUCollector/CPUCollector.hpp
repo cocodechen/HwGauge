@@ -50,10 +50,13 @@ namespace hwgauge
 
     // 定义全局信息设置函数
     template<>
-    inline void setContextInfo(const CPULabel& l, const CPUMetrics& m)
+    inline void setContextInfo(std::vector<CPULabel>& l, std::vector<CPUMetrics>& m)
     {
-       sharedPower.cpu_power += m.powerUsage;
-       sharedPower.memory_power += m.memoryPowerUsage;
+        for(size_t i=0; i<l.size(); i++) 
+        {
+            sharedPower.cpu_power = sharedPower.cpu_power.value_or(0.0) + m[i].powerUsage;
+            sharedPower.memory_power = sharedPower.memory_power.value_or(0.0) + m[i].memoryPowerUsage;
+        }
     }
 }
 
