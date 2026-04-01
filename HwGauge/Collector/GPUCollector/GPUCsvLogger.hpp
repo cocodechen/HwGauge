@@ -11,8 +11,7 @@ namespace hwgauge
     class GPUCsvLogger : public CsvLogger<GPULabel, GPUMetrics>
     {
     public:
-        // 使用基类的构造函数
-        using CsvLogger<GPULabel, GPUMetrics>::CsvLogger;
+        explicit GPUCsvLogger(const std::string& filepath);
         ~GPUCsvLogger() override = default;
 
     protected:

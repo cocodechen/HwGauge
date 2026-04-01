@@ -7,7 +7,7 @@
 namespace hwgauge {
     class NPUCsvLogger : public CsvLogger<NPULabel, NPUMetrics> {
     public:
-        using CsvLogger<NPULabel, NPUMetrics>::CsvLogger;
+        explicit NPUCsvLogger(const std::string& filepath);
     protected:
         std::string getHeader() const override;
         std::string formatRow(const NPULabel& l, const NPUMetrics& m) const override;

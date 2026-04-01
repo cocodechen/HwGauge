@@ -6,6 +6,21 @@
 
 namespace hwgauge
 {
+    CPUCsvLogger::CPUCsvLogger(const std::string& filepath) : CsvLogger(filepath) 
+    {
+        auto pos = m_filepath.rfind(".csv");
+        if (pos != std::string::npos) {
+            m_filepath.insert(pos, "_cpu");
+        }
+
+        m_ofs.open(m_filepath, std::ios::out | std::ios::app);
+        
+        if (!m_ofs.is_open()) {
+            spdlog::error("[CPUCsvLogger] Failed to open file: {}", m_filepath);
+            throw FatalError("CPUCsvLogger open failed: " + m_filepath);
+        }
+        spdlog::info("[CPUCsvLogger] Initialized logger for: {}", m_filepath);
+    }
 
     std::string CPUCsvLogger::getHeader() const {
         return "Index,Name,Util(%),Freq(MHz),Temp(C),Power(W),"

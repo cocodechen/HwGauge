@@ -38,14 +38,6 @@ namespace hwgauge
                     throw FatalError("CsvLogger dir creation failed");
                 }
             }
-            // 3. 打开文件
-            m_ofs.open(m_filepath, std::ios::out | std::ios::app);
-            
-            if (!m_ofs.is_open()) {
-                spdlog::error("[CsvLogger] Failed to open file: {}", m_filepath);
-                throw FatalError("CsvLogger open failed: " + m_filepath);
-            }
-            spdlog::info("[CsvLogger] Initialized logger for: {}", m_filepath);
         }
 
         virtual ~CsvLogger()
@@ -97,7 +89,6 @@ namespace hwgauge
         virtual std::string getHeader() const = 0;
         virtual std::string formatRow(const LabelT& label, const MetricT& metric) const = 0;
 
-    private:
         std::string m_filepath;
         std::ofstream m_ofs;
         std::mutex m_mutex;

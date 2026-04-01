@@ -9,7 +9,9 @@ namespace hwgauge
     class CPUCsvLogger : public CsvLogger<CPULabel, CPUMetrics>
     {
     public:
-        using CsvLogger<CPULabel, CPUMetrics>::CsvLogger;
+        //using CsvLogger<CPULabel, CPUMetrics>::CsvLogger;
+        explicit CPUCsvLogger(const std::string& filepath);
+
     protected:
         std::string getHeader() const override;
         std::string formatRow(const CPULabel& l, const CPUMetrics& m) const override;

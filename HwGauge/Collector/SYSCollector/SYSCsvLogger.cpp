@@ -6,6 +6,22 @@
 
 namespace hwgauge {
 
+    SYSCsvLogger::SYSCsvLogger(const std::string& filepath) : CsvLogger(filepath) 
+    {
+        auto pos = m_filepath.rfind(".csv");
+        if (pos != std::string::npos) {
+            m_filepath.insert(pos, "_sys");
+        }
+
+        m_ofs.open(m_filepath, std::ios::out | std::ios::app);
+        
+        if (!m_ofs.is_open()) {
+            spdlog::error("[SYSCsvLogger] Failed to open file: {}", m_filepath);
+            throw FatalError("SYSCsvLogger open failed: " + m_filepath);
+        }
+        spdlog::info("[SYSCsvLogger] Initialized logger for: {}", m_filepath);
+    }
+
     std::string SYSCsvLogger::getHeader() const {
         return "MachineName,"
                "MemTotal(GB),MemUsed(GB),MemUtil(%),"

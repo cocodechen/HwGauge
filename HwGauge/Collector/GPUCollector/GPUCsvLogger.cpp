@@ -6,6 +6,22 @@
 
 namespace hwgauge
 {
+    GPUCsvLogger::GPUCsvLogger(const std::string& filepath) : CsvLogger(filepath) 
+    {
+        auto pos = m_filepath.rfind(".csv");
+        if (pos != std::string::npos) {
+            m_filepath.insert(pos, "_gpu");
+        }
+
+        m_ofs.open(m_filepath, std::ios::out | std::ios::app);
+        
+        if (!m_ofs.is_open()) {
+            spdlog::error("[GPUCsvLogger] Failed to open file: {}", m_filepath);
+            throw FatalError("GPUCsvLogger open failed: " + m_filepath);
+        }
+        spdlog::info("[GPUCsvLogger] Initialized logger for: {}", m_filepath);
+    }
+
     std::string GPUCsvLogger::getHeader()const
     {
         return "Index,Name,GpuUtil(%),MemUtil(%),GpuFreq(MHz),MemFreq(MHz),Power(W),Temp(C)";

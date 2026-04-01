@@ -6,6 +6,22 @@
 
 namespace hwgauge {
 
+    NPUCsvLogger::NPUCsvLogger(const std::string& filepath) : CsvLogger(filepath) 
+    {
+        auto pos = m_filepath.rfind(".csv");
+        if (pos != std::string::npos) {
+            m_filepath.insert(pos, "_npu");
+        }
+
+        m_ofs.open(m_filepath, std::ios::out | std::ios::app);
+        
+        if (!m_ofs.is_open()) {
+            spdlog::error("[NPUCsvLogger] Failed to open file: {}", m_filepath);
+            throw FatalError("NPUCsvLogger open failed: " + m_filepath);
+        }
+        spdlog::info("[NPUCsvLogger] Initialized logger for: {}", m_filepath);
+    }
+
     std::string NPUCsvLogger::getHeader() const {
         return "CardID,DevID,Type,Name,"
                "FreqAICore(MHz),FreqAICPU(MHz),FreqCtrl(MHz),"
