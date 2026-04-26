@@ -15,7 +15,7 @@ namespace hwgauge
 	class Exposer
 	{
 	public:
-		Exposer(std::chrono::seconds interval) :
+		Exposer(std::chrono::duration<double> interval) :
 			interval(interval) {}
 
 		template<typename T, typename... Args>
@@ -42,7 +42,7 @@ namespace hwgauge
 		void collect();
 	private:
 		std::atomic<bool> running = false;
-		std::chrono::seconds interval;
+		std::chrono::duration<double> interval;
 		std::vector<std::unique_ptr<Collector>> collectors;
 	};
 }

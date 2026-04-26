@@ -13,12 +13,22 @@ namespace hwgauge
 	/* 获取当前时间戳 */
 	inline std::string getNowTime()
 	{
-		auto now = std::chrono::system_clock::now();
-		std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+		using namespace std::chrono;
+
+		auto now = system_clock::now();
+
+		// 秒级部分（给 put_time 用）
+		std::time_t now_time = system_clock::to_time_t(now);
 		std::tm now_tm = *std::localtime(&now_time);
-		std::ostringstream timestamp_ss;
-		timestamp_ss << std::put_time(&now_tm, "%Y-%m-%d %H:%M:%S");
-		return timestamp_ss.str();
+
+		// 毫秒部分
+		auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
+
+		std::ostringstream ss;
+		ss << std::put_time(&now_tm, "%Y-%m-%d %H:%M:%S")
+		<< '.' << std::setw(3) << std::setfill('0') << ms.count();
+
+		return ss.str();
 	}
 	
 	void Exposer::run()
@@ -31,7 +41,7 @@ namespace hwgauge
 		while (running.load(std::memory_order_acquire)) {
 			collect();
 
-			next_tick += interval;
+			next_tick += std::chrono::duration_cast<clock::duration>(interval);
 			auto now = clock::now();
 
 			if (now < next_tick)

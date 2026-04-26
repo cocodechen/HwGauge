@@ -53,8 +53,9 @@ int main(int argc, char* argv[])
 	spdlog::info("Spdlog initialized successfully");
 
 	// Command-line arguments: interval
-	constexpr int default_interval = 5;
-	int interval_seconds = default_interval;
+	constexpr double default_interval = 5.0;
+	double interval_seconds = default_interval;
+
 	application.add_option("-i,--interval", interval_seconds, "Collection interval in seconds")
 		->default_val(default_interval)
 		->check(CLI::PositiveNumber);
@@ -115,7 +116,7 @@ int main(int argc, char* argv[])
 	CLI11_PARSE(application, argc, argv);
 
 	// Create exposer
-	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::seconds(interval_seconds));
+	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::duration<double>(interval_seconds));
 #ifdef HWGAUGE_USE_INTEL_PCM
 	exposer->add_collector<hwgauge::CPUCollector>(cfg);
 #endif
