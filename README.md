@@ -12,6 +12,7 @@ It is implemented in modern C++ to provide **high-performance monitoring with mi
 * 📡 **Prometheus Exposer** — Built-in HTTP server with configurable endpoint
 * 🗄️ **PostgreSQL Storage** — Store metrics in PostgreSQL for long-term retention
 * 📝 **CSV Logger** — Export metrics to CSV files for offline analysis
+* 🌐 **Local HTTP API** — Expose real-time metrics as JSON via a local HTTP endpoint for other processes
 * ⚙️ **Template-based Collector Framework** — clean separation of metrics & hardware backends
 * 🔌 **Unified Database Interface** — Support multiple storage backends with common API
 
@@ -51,6 +52,7 @@ flowchart TD
         C2["PostgreSQL<br/>Storage"]:::output
         C3["CSV File<br/>Logger"]:::output
         C4["Terminal<br/>Printer"]:::output
+        C5["HTTP API<br/>Endpoint"]:::output
     end
 
     %% Core Scheduler
@@ -71,6 +73,7 @@ flowchart TD
     O_Proxy --> C2
     O_Proxy --> C3
     O_Proxy --> C4
+    O_Proxy --> C5
 ```
 ---
 
@@ -82,9 +85,11 @@ flowchart TD
 | C++17 compiler     | GCC / Clang / MSVC                                                 |
 | CUDA Toolkit       | Required for NVML GPU monitoring                                   |
 | NPU SDK/Driver     | Required for NPU monitoring                                        |
-| prometheus-cpp     | Prometheus client development library(for Prometheus module)|
+| prometheus-cpp     | Prometheus client development library(for Prometheus module)       |
 | libpq-dev          | PostgreSQL client development library (for SQL module)             |
 | PostgreSQL Server  | PostgreSQL server for storing metrics (optional)                   |
+| nlohmann/json	     | JSON library (required if enabling HTTP API)                       |
+| cpp-httplib	     | Lightweight HTTP library (required if enabling HTTP API)           |
 | Sudo privileges    | Needed to access hardware registers (PCM)                          |
 ---
 
@@ -170,7 +175,8 @@ cmake --build . --parallel
 | `HWGAUGE_USE_NVML`      | `OFF`    | Enable NVIDIA GPU collectors |
 | `HWGAUGE_USE_NPU`       | `OFF`    | Enable Ascend NPU collectors |
 | `HWGAUGE_USE_PROMETHEUS` | `OFF`  | Enable Prometheus exporter|
-|`HWGAUGE_USE_POSTGRESQL`|`OFF`|Enable PostgreSQL storage|
+| `HWGAUGE_USE_POSTGRESQL`|`OFF`|Enable PostgreSQL storage|
+| `HWGAUGE_USE_LOCAL_HTTP`|	`OFF`|	Enable local HTTP API endpoint|
 
 Disable collectors you don't need to reduce dependencies.
 
@@ -260,6 +266,19 @@ sudo ./bin/hwgauge --help
 | `system_net_download_bytes_per_sec`   | MB/s  | Total network download rate         |
 | `system_net_upload_bytes_per_sec`     | MB/s  | Total network upload rate           |
 | `system_power_usage_watts`            | W    | Total system power                  |
+| `system_total_power_watts`	        | W	   | Sum of component power (CPU + GPU + NPU + Memory) |
 ---
 **Note: System power usage is collected asynchronously because IPMI/DCMI hardware queries can have high latency. It may not update as frequently as other metrics.**
 
+## 🌐 Local HTTP API
+
+If built with `HWGAUGE_USE_LOCAL_HTTP=ON`, HwGauge starts a local HTTP server (default `localhost:8080`) providing JSON endpoints for each hardware type.
+
+| Endpoint       | Description                                      |
+|----------------|--------------------------------------------------|
+| `/api/cpu`     | Latest CPU metrics and labels                    |
+| `/api/gpu`     | Latest GPU metrics and labels                    |
+| `/api/npu`     | Latest NPU metrics and labels                    |
+| `/api/sys`     | Latest system metrics and labels                 |
+---
+All endpoints return JSON with timestamp and data arrays. Each data element contains the corresponding label and metric fields.

@@ -24,9 +24,15 @@ namespace hwgauge
     using NPUPrometheusType = NullType;
 #endif
 
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    using NPUHttpApiType = HttpApi<NPULabel, NPUMetrics>;
+#else
+    using NPUHttpApiType = NullType;
+#endif
+
     // 定义别名
     using NPUCollector = DeviceCollector<
-        NPULabel, NPUMetrics, NPUImpl, NPUDatabaseType, NPUCsvLogger, NPUPrometheusType
+        NPULabel, NPUMetrics, NPUImpl, NPUDatabaseType, NPUCsvLogger, NPUPrometheusType, NPUHttpApiType
     >;
     
     // 定义特定的打印函数

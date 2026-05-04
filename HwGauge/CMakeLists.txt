@@ -174,7 +174,15 @@ if(HWGAUGE_USE_LOCAL_HTTP)
     )
     FetchContent_MakeAvailable(cpp_httplib)
 
-    target_link_libraries(HwGauge PRIVATE nlohmann_json::nlohmann_json cpp-httplib::cpp-httplib)
+    # 引入 C++ 线程库（httplib 的后台 Server 需要多线程支持）
+    find_package(Threads REQUIRED)
+
+    # 注意这里的名字改成了 httplib::httplib
+    target_link_libraries(HwGauge PRIVATE 
+        nlohmann_json::nlohmann_json 
+        httplib::httplib 
+        Threads::Threads
+    )
     target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_LOCAL_HTTP=1)
     
     message(STATUS "Local HTTP JSON API support enabled")

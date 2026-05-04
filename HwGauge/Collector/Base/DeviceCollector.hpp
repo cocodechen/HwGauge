@@ -2,6 +2,7 @@
 
 #include "Collector/Base/Collector.hpp"
 #include "Collector/Common/Context.hpp"
+#include "Collector/Base/HttpApi.hpp"
 #include <memory>
 #include <vector>
 #include <iostream>

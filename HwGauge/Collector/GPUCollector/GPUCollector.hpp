@@ -23,9 +23,16 @@ namespace hwgauge
 #else
     using GPUPrometheusType = NullType;
 #endif
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    using GPUHttpApiType = HttpApi<GPULabel, GPUMetrics>;
+#else
+    using GPUHttpApiType = NullType;
+#endif
+
     // 定义别名
     using GPUCollector = DeviceCollector<
-        GPULabel, GPUMetrics, NVML, GPUDatabaseType, GPUCsvLogger, GPUPrometheusType
+        GPULabel, GPUMetrics, NVML, GPUDatabaseType, GPUCsvLogger, GPUPrometheusType, GPUHttpApiType
     >;
     
     // 定义特定的打印函数

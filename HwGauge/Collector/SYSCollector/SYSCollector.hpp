@@ -23,9 +23,15 @@ namespace hwgauge
 #else
     using SYSPrometheusType = NullType;
 #endif
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    using SYSHttpApiType = HttpApi<SYSLabel, SYSMetrics>;
+#else
+    using SYSHttpApiType = NullType;
+#endif
     // 定义别名
     using SYSCollector = DeviceCollector<
-        SYSLabel, SYSMetrics, SYSImpl, SYSDatabaseType, SYSCsvLogger, SYSPrometheusType
+        SYSLabel, SYSMetrics, SYSImpl, SYSDatabaseType, SYSCsvLogger, SYSPrometheusType, SYSHttpApiType
     >;
     
     // 定义特定的打印函数

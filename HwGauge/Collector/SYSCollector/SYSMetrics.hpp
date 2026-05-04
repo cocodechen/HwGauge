@@ -4,6 +4,10 @@
 
 #include <string>
 
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+#include <nlohmann/json.hpp>
+#endif
+
 namespace hwgauge
 {
     struct SYSLabel
@@ -38,6 +42,27 @@ namespace hwgauge
               systemPowerWatts(-1.0), totalPowerWatts(-1.0)
         {}
     };
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    inline void to_json(nlohmann::json& j, const SYSLabel& l) {
+        j = nlohmann::json{{"name", l.name}};
+    }
+
+    inline void to_json(nlohmann::json& j, const SYSMetrics& m) {
+        j = nlohmann::json{
+            {"memTotalGB", m.memTotalGB},
+            {"memUsedGB", m.memUsedGB},
+            {"memUtilizationPercent", m.memUtilizationPercent},
+            {"diskReadMBps", m.diskReadMBps},
+            {"diskWriteMBps", m.diskWriteMBps},
+            {"maxDiskUtilPercent", m.maxDiskUtilPercent},
+            {"netDownloadMBps", m.netDownloadMBps},
+            {"netUploadMBps", m.netUploadMBps},
+            {"systemPowerWatts", m.systemPowerWatts},
+            {"totalPowerWatts", m.totalPowerWatts}
+        };
+    }
+#endif
 }
 
 #endif

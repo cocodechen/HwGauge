@@ -4,6 +4,10 @@
 
 #include <string>
 
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+#include <nlohmann/json.hpp>
+#endif
+
 namespace hwgauge
 {
     struct GPULabel
@@ -22,6 +26,23 @@ namespace hwgauge
 
         double temperature;
     };
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    inline void to_json(nlohmann::json& j, const GPULabel& l) {
+        j = nlohmann::json{{"index", l.index}, {"name", l.name}};
+    }
+
+    inline void to_json(nlohmann::json& j, const GPUMetrics& m) {
+        j = nlohmann::json{
+            {"gpuUtilization", m.gpuUtilization},
+            {"memoryUtilization", m.memoryUtilization},
+            {"gpuFrequency", m.gpuFrequency},
+            {"memoryFrequency", m.memoryFrequency},
+            {"powerUsage", m.powerUsage},
+            {"temperature", m.temperature}
+        };
+    }
+#endif
 }
 
 #endif

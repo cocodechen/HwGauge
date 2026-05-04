@@ -4,6 +4,10 @@
 
 #include <string>
 
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+#include <nlohmann/json.hpp>
+#endif
+
 namespace hwgauge
 {
     struct NPULabel
@@ -46,6 +50,37 @@ namespace hwgauge
         double voltage;
     };
 
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    inline void to_json(nlohmann::json& j, const NPULabel& l) {
+        j = nlohmann::json{
+            {"card_id", l.card_id},
+            {"device_id", l.device_id},
+            {"chip_type", l.chip_type},
+            {"chip_name", l.chip_name}
+        };
+    }
+
+    inline void to_json(nlohmann::json& j, const NPUMetrics& m) {
+        j = nlohmann::json{
+            {"freq_aicore", m.freq_aicore},
+            {"freq_aicpu", m.freq_aicpu},
+            {"freq_ctrlcpu", m.freq_ctrlcpu},
+            {"util_aicore", m.util_aicore},
+            {"util_aicpu", m.util_aicpu},
+            {"util_ctrlcpu", m.util_ctrlcpu},
+            {"util_vec", m.util_vec},
+            {"mem_total_mb", m.mem_total_mb},
+            {"mem_usage_mb", m.mem_usage_mb},
+            {"util_mem", m.util_mem},
+            {"util_membw", m.util_membw},
+            {"freq_mem", m.freq_mem},
+            {"chip_power", m.chip_power},
+            {"health", m.health},
+            {"temperature", m.temperature},
+            {"voltage", m.voltage}
+        };
+    }
+#endif
 }
 
 #endif
