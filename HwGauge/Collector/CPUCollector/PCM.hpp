@@ -27,7 +27,7 @@ namespace hwgauge {
         PCM(PCM&& other) noexcept;
         PCM& operator=(PCM&& other) noexcept;
 
-        std::string name() { return "PCM CPU Collector"; }
+        std::string name() { return "cpu"; }
 
         std::vector<CPULabel>   labels();
         std::vector<CPUMetrics> sample(std::vector<CPULabel>&labels);

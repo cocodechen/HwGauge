@@ -20,7 +20,7 @@ namespace hwgauge
 
     std::string NPUImpl::name() const
     {
-        return "ascend_npu";
+        return "npu";
     }
 
     std::vector<NPULabel> NPUImpl::labels()

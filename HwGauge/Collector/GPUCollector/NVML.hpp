@@ -18,7 +18,7 @@ namespace hwgauge {
 		NVML(NVML&& other) noexcept;
 		NVML& operator=(NVML&& other) noexcept;
 
-		std::string name() { return "NVML Collector"; }
+		std::string name() { return "gpu"; }
 		std::vector<GPULabel> labels();
 		std::vector<GPUMetrics> sample(std::vector<GPULabel>&labels);
 

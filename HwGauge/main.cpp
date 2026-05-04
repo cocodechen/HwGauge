@@ -113,7 +113,26 @@ int main(int argc, char* argv[])
 	// Command-line arguments: table_name
 	application.add_option("--db-table", cfg.dbTableName, "Database table name for device metrics")->default_val("test");
 #endif
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    // Command-line arguments: Local HTTP
+    application.add_flag("--http-enable", cfg.httpEnable, "Enable Local JSON HTTP API")->default_val(false);
+    std::string http_host = "127.0.0.1";
+    int http_port = 8081;
+    application.add_option("--http-host", http_host, "Host for Local HTTP API")->default_val("127.0.0.1");
+    application.add_option("--http-port", http_port, "Port for Local HTTP API")->default_val(8081);
+
+    std::shared_ptr<hwgauge::LocalHttpServer> local_http_server = nullptr;
+#endif
 	CLI11_PARSE(application, argc, argv);
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    if (cfg.httpEnable) {
+        local_http_server = std::make_shared<hwgauge::LocalHttpServer>();
+        cfg.httpServer = local_http_server; // 注入给配置，供各 Collector 使用
+        local_http_server->start(http_host, http_port);
+    }
+#endif
 
 	// Create exposer
 	exposer = std::make_unique<hwgauge::Exposer>(std::chrono::duration<double>(interval_seconds));
@@ -155,5 +174,11 @@ int main(int argc, char* argv[])
 
 	signal_watcher.join();
 	exposer.reset();
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    if (local_http_server) {
+        local_http_server->stop();
+    }
+#endif
 	return 0;
 }

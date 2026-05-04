@@ -15,6 +15,7 @@ option(HWGAUGE_USE_CLUSTER "Enable Cluster info via Redis" OFF)
 
 option(HWGAUGE_USE_PROMETHEUS "Enable Prometheus backend" OFF)
 option(HWGAUGE_USE_POSTGRESQL "Enable PostgreSQL backend" OFF)
+option(HWGAUGE_USE_LOCAL_HTTP "Enable local HTTP JSON API" OFF)
 
 # Project declaration
 project(HwGauge

@@ -152,6 +152,33 @@ if(HWGAUGE_USE_POSTGRESQL)
 
 endif()
 
+# =============================================================
+# Add Local Http library
+# =============================================================
+if(HWGAUGE_USE_LOCAL_HTTP)
+    include(FetchContent)
+    
+    # 获取 nlohmann/json
+    FetchContent_Declare(
+        nlohmann_json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.11.3
+    )
+    FetchContent_MakeAvailable(nlohmann_json)
+
+    # 获取 cpp-httplib
+    FetchContent_Declare(
+        cpp_httplib
+        GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+        GIT_TAG v0.14.3
+    )
+    FetchContent_MakeAvailable(cpp_httplib)
+
+    target_link_libraries(HwGauge PRIVATE nlohmann_json::nlohmann_json cpp-httplib::cpp-httplib)
+    target_compile_definitions(HwGauge PRIVATE HWGAUGE_USE_LOCAL_HTTP=1)
+    
+    message(STATUS "Local HTTP JSON API support enabled")
+endif()
 
 # Add spdlog library
 target_link_libraries(HwGauge PRIVATE spdlog::spdlog)

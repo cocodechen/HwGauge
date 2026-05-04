@@ -79,6 +79,10 @@ namespace hwgauge
         DBConfig dbConfig;
         std::string dbTableName;
 #endif
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+        bool httpEnable = false;
+        std::shared_ptr<class LocalHttpServer> httpServer = nullptr; 
+#endif
     };
 
 }

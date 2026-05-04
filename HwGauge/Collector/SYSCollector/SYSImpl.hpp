@@ -45,7 +45,7 @@ namespace hwgauge
         SYSImpl(SYSImpl&&) = delete;
         SYSImpl& operator=(SYSImpl&&) = delete;
 
-        std::string name() { return "Linux System Collector"; }
+        std::string name() { return "linux"; }
 
         // 获取标签（通常只有一个 "Host"）
         std::vector<SYSLabel> labels();

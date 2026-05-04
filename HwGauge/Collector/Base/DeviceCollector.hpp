@@ -33,7 +33,8 @@ namespace hwgauge
         typename ImplT, 
         typename DbT,
         typename CsvT,
-        typename PromT
+        typename PromT,
+        typename HttpT
     >
     class DeviceCollector : public Collector
     {
@@ -62,6 +63,15 @@ namespace hwgauge
                 db->init(label_list);
             }
 #endif
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+            httpEnable = cfg.httpEnable;
+            if (httpEnable && cfg.httpServer) {
+                // 自动根据硬件名称生成路由，比如 "/api/PCM" 或 "/api/NVML"
+                std::string path = "/api/" + impl->name();
+                httpApi = std::make_unique<HttpT>(cfg.httpServer, path);
+                httpApi->init();
+            }
+#endif
         }
         
         virtual ~DeviceCollector() = default;
@@ -85,6 +95,10 @@ namespace hwgauge
 #ifdef HWGAUGE_USE_POSTGRESQL
             if(dbEnable && db) db->writeMetric(cur_time, label_list, metric_list);
 #endif
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+            // 每次收集完，更新 HTTP 模块缓存的最新的数据
+            if(httpEnable && httpApi) httpApi->write(cur_time, label_list, metric_list);
+#endif
         }
 
         std::string name() override { return impl->name(); }
@@ -106,6 +120,10 @@ namespace hwgauge
 #ifdef HWGAUGE_USE_POSTGRESQL
         bool dbEnable;
         std::unique_ptr<DbT> db;
+#endif
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+        bool httpEnable;
+        std::unique_ptr<HttpT> httpApi;
 #endif
     };
 }

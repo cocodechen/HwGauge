@@ -23,9 +23,15 @@ namespace hwgauge
 #else
     using CPUPrometheusType = NullType;
 #endif
+
+#ifdef HWGAUGE_USE_LOCAL_HTTP
+    using CPUHttpApiType = HttpApi<CPULabel, CPUMetrics>;
+#else
+    using CPUHttpApiType = NullType;
+#endif
     // 定义别名
     using CPUCollector = DeviceCollector<
-        CPULabel, CPUMetrics, PCM, CPUDatabaseType, CPUCsvLogger, CPUPrometheusType
+        CPULabel, CPUMetrics, PCM, CPUDatabaseType, CPUCsvLogger, CPUPrometheusType, CPUHttpApiType
     >;
     
     // 定义特定的打印函数
