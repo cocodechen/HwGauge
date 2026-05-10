@@ -168,7 +168,7 @@ namespace hwgauge
             metric.mem_total_mb = (unsigned long)hbm_info.memory_size; // MB
             metric.mem_usage_mb = (unsigned long)hbm_info.memory_usage;
             if(metric.mem_total_mb<metric.mem_usage_mb)throw RecoverableError("[NPUImpl] The memory total mb is larger than used mb");
-            metric.util_mem=(int)(((double)metric.mem_usage_mb/metric.mem_total_mb)*100.0);
+            metric.util_mem=((double)metric.mem_usage_mb/metric.mem_total_mb)*100.0;
             metric.util_membw = hbm_info.bandwith_util_rate;
             metric.freq_mem=hbm_info.freq;
         }

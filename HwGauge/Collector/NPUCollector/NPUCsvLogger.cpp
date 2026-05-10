@@ -50,6 +50,7 @@ namespace hwgauge {
            << m.util_vec << ","
            
            // 存储
+           << std::fixed << std::setprecision(2)
            << m.mem_total_mb << ","
            << m.mem_usage_mb << ","
            << m.util_mem << ","
@@ -57,7 +58,7 @@ namespace hwgauge {
            << m.freq_mem << ","
            
            // 功耗环境 (浮点数)
-           << std::fixed << std::setprecision(2) << m.chip_power << ","
+           << m.chip_power << ","
            << m.temperature << ","  // int
            << m.voltage << ","      // double
            << m.health;             // unsigned int (hex might be better? keeping decimal for csv)

@@ -34,7 +34,7 @@ namespace hwgauge
         // --- 存储资源 为片上内存---
         long long mem_total_mb; // 总显存 (MB)
         long long mem_usage_mb;  // 已用显存 (MB)
-        int util_mem;    // 显存已用百分比 (%) -> 由 (Total-Free)/Total 计算得出
+        double util_mem;    // 显存已用百分比 (%) -> 由 (Total-Free)/Total 计算得出
         int util_membw;  // 显存带宽利用率 (%) 
         int freq_mem;    // 显存频率 (MHz)
 
